@@ -1995,8 +1995,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   dashSpeed: 15
-  dashDuration: 0.2
+  dashDuration: 0.4
   dashCooldown: 1
+  fishSquisher: {fileID: 1591549571}
 --- !u!4 &846229815
 Transform:
   m_ObjectHideFlags: 0
@@ -3044,6 +3045,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1591549570}
+  - component: {fileID: 1591549571}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -3069,6 +3071,48 @@ Transform:
   - {fileID: 483527731}
   m_Father: {fileID: 846229815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1591549571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591549569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e780d56ed2c154e13b51e8cd458e2827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSettings:
+    duration: 0.3
+    targetScaleX: 1.3
+    targetScaleY: 0.7
+    scaleCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  attackSettings:
+    duration: 0.2
+    targetScaleX: 0.8
+    targetScaleY: 1.2
+    scaleCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  eatSettings:
+    duration: 0.5
+    targetScaleX: 1.1
+    targetScaleY: 0.9
+    scaleCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!1 &1712285635
 GameObject:
   m_ObjectHideFlags: 0

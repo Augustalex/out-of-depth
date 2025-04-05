@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputActions inputActions;
 
+    [Header("Fish Squisher Reference")]
+    public FishSquisher fishSquisher; // Reference to the squish script
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -59,6 +62,7 @@ public class PlayerController : MonoBehaviour
             isDashing = true;
             dashTime = Time.time + dashDuration;
             lastDashTime = Time.time;
+            fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
         }
     }
 }
