@@ -63,28 +63,33 @@ public class PupilController : MonoBehaviour
     {
         if (targetRigidbody == null || eyeCenter == null)
         {
-            // Don't do anything if references are missing
-            return;
+            return; // Exit if references are missing
         }
 
         // --- Determine Target Look Position ---
-        Vector2 targetVelocity = targetRigidbody.linearVelocity;
-        bool isMoving = targetVelocity.magnitude > movementThreshold;
+        Vector2 targetVelocityWorld = targetRigidbody.linearVelocity; // Get velocity in world space
+        bool isMoving = targetVelocityWorld.magnitude > movementThreshold;
 
         if (isMoving)
         {
-            // Target is moving: Look in the direction of movement
-            Vector2 lookDirection = targetVelocity.normalized;
-            // Scale direction by elliptical radius
-            currentLookTargetLocal = new Vector2(lookDirection.x * lookRadius.x, lookDirection.y * lookRadius.y);
+            // --- THIS IS THE FIX ---
+            // Convert the world velocity direction into the eyeCenter's local coordinate space.
+            // InverseTransformDirection correctly handles parent rotation and scale (flipping).
+            Vector2 lookDirectionLocal = eyeCenter.InverseTransformDirection(targetVelocityWorld).normalized;
+            // -----------------------
+
+            // Now use this LOCAL direction to calculate the target pupil position within the local radius.
+            currentLookTargetLocal = new Vector2(lookDirectionLocal.x * lookRadius.x, lookDirectionLocal.y * lookRadius.y);
+
             wasMovingLastFrame = true;
         }
         else
         {
             // Target is idle
+            // The idle logic already generates a random LOCAL direction,
+            // so it doesn't need correction for flipping.
             if (wasMovingLastFrame)
             {
-                // Just stopped moving, reset idle timer immediately to pick a new direction
                 SetupNewIdleTarget();
                 wasMovingLastFrame = false;
             }
@@ -94,12 +99,11 @@ public class PupilController : MonoBehaviour
             {
                 SetupNewIdleTarget();
             }
-            // Keep currentLookTargetLocal as is until timer runs out
+            // Keep currentLookTargetLocal (the idle target) until timer runs out
         }
 
         // --- Update Pupil Position ---
-        // Smoothly move the pupil towards the target local position
-        // Using localPosition assumes this pupil GameObject is a child of the eyeCenter
+        // Smoothly move the pupil towards the target local position using localPosition
         transform.localPosition = Vector3.Lerp(transform.localPosition, (Vector3)currentLookTargetLocal, Time.deltaTime * lookSpeed);
     }
 

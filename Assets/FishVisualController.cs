@@ -79,18 +79,27 @@ public class FishVisualController : MonoBehaviour
     /// </summary>
     private void HandleVerticalTilt(float verticalInput)
     {
-        // Calculate the target tilt angle (-maxTiltAngle to +maxTiltAngle)
-        float targetTiltZ = verticalInput * maxTiltAngle;
+        // Calculate the base target tilt angle (-maxTiltAngle to +maxTiltAngle)
+        float baseTargetTiltZ = verticalInput * maxTiltAngle;
+
+        // --- THIS IS THE FIX ---
+        // If the sprite is currently flipped (facing left), invert the target tilt angle.
+        // This makes "up" input visually tilt the nose up regardless of facing direction.
+        float correctedTargetTiltZ = isCurrentlyFacingRight ? baseTargetTiltZ : -baseTargetTiltZ;
+        // -----------------------
 
         // Get the current rotation in Euler angles (local space)
-        Vector3 currentLocalEuler = spriteTransform.localEulerAngles;
+        // Make sure we are reading the Z angle correctly even if it wraps around 360
+        // Using localEulerAngles.z directly can sometimes be problematic if other axes are rotated.
+        // It's safer to work with the Quaternion or ensure X/Y are always 0. Assuming X/Y are 0 for simplicity.
+        float currentTiltZ = spriteTransform.localEulerAngles.z;
 
-        // Smoothly interpolate the current Z angle towards the target Z angle
-        // LerpAngle handles wrapping correctly (e.g., from 350 degrees to 10 degrees)
-        float smoothTiltZ = Mathf.LerpAngle(currentLocalEuler.z, targetTiltZ, Time.deltaTime * tiltSpeed);
+        // Smoothly interpolate the current Z angle towards the *corrected* target Z angle
+        float smoothTiltZ = Mathf.LerpAngle(currentTiltZ, correctedTargetTiltZ, Time.deltaTime * tiltSpeed);
 
         // Apply the new rotation, keeping X and Y rotation unchanged (relative to parent)
-        spriteTransform.localRotation = Quaternion.Euler(currentLocalEuler.x, currentLocalEuler.y, smoothTiltZ);
+        // Ensure we only modify the Z axis based on the current X and Y.
+        spriteTransform.localRotation = Quaternion.Euler(spriteTransform.localEulerAngles.x, spriteTransform.localEulerAngles.y, smoothTiltZ);
     }
 
     /// <summary>
