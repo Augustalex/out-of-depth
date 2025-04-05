@@ -5,27 +5,36 @@ using System.Collections.Generic; // Required for using Lists
 [RequireComponent(typeof(SpriteRenderer))]
 public class RandomSpriteAssigner : MonoBehaviour
 {
-    [Tooltip("The list of sprites to choose from randomly.")]
+    [Header("Sprite Source")]
+    [Tooltip("The list of sprites to choose from randomly. All sprites in this list MUST have the same dimensions.")]
     public List<Sprite> availableSprites;
 
-    private SpriteRenderer spriteRenderer;
+    [Header("Targets to Update")]
+    [Tooltip("Optional list of OTHER SpriteRenderers to update with the chosen sprite.")]
+    public List<SpriteRenderer> additionalRenderers;
+
+    [Tooltip("Optional list of SpriteMasks to update with the chosen sprite.")]
+    public List<SpriteMask> masks;
+
+    // Reference to the SpriteRenderer on this GameObject
+    private SpriteRenderer mainSpriteRenderer;
 
     void Awake()
     {
-        // Get the SpriteRenderer component attached to this GameObject.
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        // Get the main SpriteRenderer component attached to this GameObject.
+        mainSpriteRenderer = GetComponent<SpriteRenderer>();
 
         // --- Input Validation ---
 
-        // Check if the list is assigned and not empty.
+        // Check if the source list is assigned and not empty.
         if (availableSprites == null || availableSprites.Count == 0)
         {
-            Debug.LogError($"[{gameObject.name}] No sprites assigned to the RandomSpriteAssigner list. Disabling script.", this);
+            Debug.LogError($"[{gameObject.name}] No sprites assigned to the 'Available Sprites' list on the RandomSpriteAssigner. Disabling script.", this);
             this.enabled = false; // Disable this script component
             return;
         }
 
-        // Check if all sprites have the same dimensions.
+        // Check if all sprites in the source list have the same dimensions.
         if (!ValidateSpriteDimensions())
         {
             // Error message is handled within ValidateSpriteDimensions()
@@ -35,8 +44,8 @@ public class RandomSpriteAssigner : MonoBehaviour
 
         // --- Logic ---
 
-        // If validation passed, select and assign a random sprite.
-        AssignRandomSprite();
+        // If validation passed, select and assign a random sprite to all targets.
+        AssignRandomSpriteToAll();
     }
 
     /// <summary>
@@ -49,23 +58,56 @@ public class RandomSpriteAssigner : MonoBehaviour
         // If there's 0 or 1 sprite, dimensions are trivially consistent.
         if (availableSprites.Count <= 1)
         {
+            // Check for null entry even if only one sprite exists
+            if (availableSprites.Count == 1 && availableSprites[0] == null)
+            {
+                Debug.LogError($"[{gameObject.name}] The single sprite entry in 'Available Sprites' is null. Disabling script.", this);
+                return false;
+            }
             return true;
         }
 
-        // Get the dimensions of the first sprite to use as a reference.
-        // Using sprite.rect which respects packing and trimming.
-        Rect firstSpriteRect = availableSprites[0].rect;
-        float referenceWidth = firstSpriteRect.width;
-        float referenceHeight = firstSpriteRect.height;
+        // Find the first non-null sprite to use as reference
+        Sprite referenceSprite = null;
+        int referenceIndex = -1;
+        for (int i = 0; i < availableSprites.Count; ++i)
+        {
+            if (availableSprites[i] != null)
+            {
+                referenceSprite = availableSprites[i];
+                referenceIndex = i;
+                break;
+            }
+        }
 
-        // Iterate through the rest of the sprites (starting from the second one).
-        for (int i = 1; i < availableSprites.Count; i++)
+        // If all entries were null
+        if (referenceSprite == null)
+        {
+            Debug.LogError($"[{gameObject.name}] All entries in the 'Available Sprites' list are null. Disabling script.", this);
+            return false;
+        }
+
+
+        // Get the dimensions of the reference sprite.
+        Rect referenceRect = referenceSprite.rect;
+        float referenceWidth = referenceRect.width;
+        float referenceHeight = referenceRect.height;
+
+        // Iterate through all sprites (including the reference one again to catch subsequent nulls).
+        for (int i = 0; i < availableSprites.Count; i++)
         {
             Sprite currentSprite = availableSprites[i];
             if (currentSprite == null)
             {
-                Debug.LogWarning($"[{gameObject.name}] Found a null entry at index {i} in the availableSprites list.", this);
-                continue; // Skip null entries, but warn the user
+                // Allow null entries if user wants them, but warn. They won't be selected.
+                // However, for validation purposes, we treat this as an issue if strict matching is needed.
+                // If you want to ALLOW nulls and just skip them during random selection,
+                // you might move the null check to AssignRandomSpriteToAll instead.
+                // For strict validation (all MUST be valid sprites of same size), this error is appropriate.
+                Debug.LogWarning($"[{gameObject.name}] Found a null entry at index {i} in the 'Available Sprites' list during validation.", this);
+                // Depending on strictness, you might return false here or just continue.
+                // Let's continue for now, assuming nulls won't be picked later.
+                continue;
             }
 
             Rect currentSpriteRect = currentSprite.rect;
@@ -74,40 +116,87 @@ public class RandomSpriteAssigner : MonoBehaviour
             if (!Mathf.Approximately(currentSpriteRect.width, referenceWidth) ||
                 !Mathf.Approximately(currentSpriteRect.height, referenceHeight))
             {
-                Debug.LogError($"[{gameObject.name}] Sprite dimension mismatch! " +
-                               $"Sprite '{availableSprites[0].name}' has dimensions ({referenceWidth}x{referenceHeight}), " +
+                Debug.LogError($"[{gameObject.name}] Sprite dimension mismatch in 'Available Sprites'! " +
+                               $"Sprite '{referenceSprite.name}' (at index {referenceIndex}) has dimensions ({referenceWidth}x{referenceHeight}), " +
                                $"but sprite '{currentSprite.name}' (at index {i}) has dimensions ({currentSpriteRect.width}x{currentSpriteRect.height}). " +
-                               $"All sprites must have the same dimensions. Disabling script.", this);
+                               $"All sprites in 'Available Sprites' must have the same dimensions. Disabling script.", this);
                 return false; // Dimensions do not match
             }
         }
 
-        // If the loop completes without returning false, all dimensions match.
+        // If the loop completes without returning false, all non-null dimensions match.
         return true;
     }
 
     /// <summary>
-    /// Selects a random sprite from the list and assigns it to the SpriteRenderer.
-    /// Assumes the list is not empty and validation has passed.
+    /// Selects a random sprite from the availableSprites list and assigns it
+    /// to the main SpriteRenderer, all additional SpriteRenderers, and all SpriteMasks.
+    /// Handles null entries in the target lists gracefully.
     /// </summary>
-    private void AssignRandomSprite()
+    private void AssignRandomSpriteToAll()
     {
-        // Select a random index from the list.
-        int randomIndex = Random.Range(0, availableSprites.Count);
+        // --- Select a valid Sprite ---
+        Sprite selectedSprite = null;
+        int attempts = 0; // Safety break
+        int maxAttempts = availableSprites.Count * 2; // Allow some retries
 
-        // Get the sprite at the random index.
-        Sprite selectedSprite = availableSprites[randomIndex];
+        // Keep picking until we find a non-null sprite (or exhaust attempts)
+        while (selectedSprite == null && attempts < maxAttempts)
+        {
+            int randomIndex = Random.Range(0, availableSprites.Count);
+            selectedSprite = availableSprites[randomIndex];
+            attempts++;
+        }
 
-        // Assign the selected sprite to the SpriteRenderer.
-        if (selectedSprite != null)
+        // If we couldn't find a non-null sprite after several tries
+        if (selectedSprite == null)
         {
-            spriteRenderer.sprite = selectedSprite;
-            // Optional: Log which sprite was chosen
-            // Debug.Log($"[{gameObject.name}] Assigned random sprite: {selectedSprite.name}", this);
+            Debug.LogError($"[{gameObject.name}] Failed to select a non-null sprite from 'Available Sprites' after {attempts} attempts. Check the list for null entries.", this);
+            return; // Don't try to assign a null sprite
         }
-        else
+
+
+        // --- Assign to Main Renderer ---
+        mainSpriteRenderer.sprite = selectedSprite;
+
+
+        // --- Assign to Additional Renderers ---
+        if (additionalRenderers != null)
         {
-            Debug.LogWarning($"[{gameObject.name}] The randomly selected sprite at index {randomIndex} was null.", this);
+            // Use Count property for safety, although foreach handles null list
+            for (int i = 0; i < additionalRenderers.Count; i++)
+            {
+                SpriteRenderer renderer = additionalRenderers[i];
+                if (renderer != null)
+                {
+                    renderer.sprite = selectedSprite;
+                }
+                else
+                {
+                    // Warn only once perhaps, or use a more robust logging system
+                    Debug.LogWarning($"[{gameObject.name}] Found a null entry at index {i} in the 'Additional Renderers' list. Skipping.", this);
+                }
+            }
         }
+
+        // --- Assign to Masks ---
+        if (masks != null)
+        {
+            for (int i = 0; i < masks.Count; i++)
+            {
+                SpriteMask mask = masks[i];
+                if (mask != null)
+                {
+                    mask.sprite = selectedSprite;
+                }
+                else
+                {
+                    Debug.LogWarning($"[{gameObject.name}] Found a null entry at index {i} in the 'Masks' list. Skipping.", this);
+                }
+            }
+        }
+
+        // Optional: Log the final action
+        Debug.Log($"[{gameObject.name}] Assigned random sprite '{selectedSprite.name}' to main renderer, {additionalRenderers?.Count ?? 0} additional renderer(s), and {masks?.Count ?? 0} mask(s).", this);
     }
 }
