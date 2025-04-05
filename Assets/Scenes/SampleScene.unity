@@ -3686,7 +3686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   dashSpeed: 15
-  dashDuration: 0.4
+  dashDuration: 5
   dashCooldown: 1
   dashImpulse: 10
   fishSquisher: {fileID: 1123044834}
@@ -6479,8 +6479,8 @@ MonoBehaviour:
   useSquishX: 1
   squishXAmount: 0.05
   squishXFrequency: 6
-  useSquishY: 0
-  squishYAmount: 0.1
+  useSquishY: 1
+  squishYAmount: 0.02
   squishYFrequency: 6
 --- !u!1 &1600509558
 GameObject:

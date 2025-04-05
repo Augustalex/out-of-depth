@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private bool isDashing = false;
     private float dashEndTime;
     private float lastDashTime = -Mathf.Infinity;
+    private bool isDashButtonHeld = false; // New variable to track if dash button is being held
 
     [Header("Visuals & Effects References")]
     public FishSquisher fishSquisher;
@@ -116,16 +117,23 @@ public class PlayerController : MonoBehaviour
         if (!isDashing && Time.time >= lastDashTime + dashCooldown && moveInput != Vector2.zero)
         {
             isDashing = true;
+            isDashButtonHeld = true;
             dashEndTime = Time.time + dashDuration;
             lastDashTime = Time.time;
-            Vector2 dashDirection = moveInput.normalized;
 
             if (fishSquisher != null) fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
             if (playerSoundController != null) playerSoundController.PlayDashSound();
 
+            // Initial impulse to start the sprint
+            Vector2 dashDirection = moveInput.normalized;
             rb.AddForce(dashDirection * dashImpulse, ForceMode2D.Impulse);
-            rb.linearVelocity = dashDirection * dashSpeed;
         }
+    }
+
+    // New method to handle releasing the dash button
+    public void ReleaseDash()
+    {
+        isDashButtonHeld = false;
     }
 
     private void Update()
@@ -135,9 +143,11 @@ public class PlayerController : MonoBehaviour
             fishVisuals.UpdateVisuals(moveInput);
         }
 
+        // End dash if max duration is reached
         if (isDashing && Time.time >= dashEndTime)
         {
             isDashing = false;
+            isDashButtonHeld = false;
         }
 
         foreach (var driver in flutterDrivers)
@@ -153,9 +163,18 @@ public class PlayerController : MonoBehaviour
 
         if (isDashing)
         {
-            Vector2 dashDirection = rb.linearVelocity.normalized;
-            if (dashDirection == Vector2.zero) dashDirection = currentMoveDirection;
-            targetVelocity = dashDirection * dashSpeed;
+            // If dash button is released or we've reached max duration, end the dash
+            if (!isDashButtonHeld || Time.time >= dashEndTime)
+            {
+                isDashing = false;
+                isDashButtonHeld = false;
+                targetVelocity = currentMoveDirection * moveSpeed;
+            }
+            else
+            {
+                // Continue sprinting in the direction of movement input
+                targetVelocity = currentMoveDirection * dashSpeed;
+            }
         }
         else
         {
