@@ -1997,7 +1997,9 @@ MonoBehaviour:
   dashSpeed: 15
   dashDuration: 0.4
   dashCooldown: 1
+  dashImpulse: 10
   fishSquisher: {fileID: 1591549571}
+  fishVisuals: {fileID: 1591549572}
 --- !u!4 &846229815
 Transform:
   m_ObjectHideFlags: 0
@@ -3046,6 +3048,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1591549570}
   - component: {fileID: 1591549571}
+  - component: {fileID: 1591549572}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -3113,6 +3116,22 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+--- !u!114 &1591549572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591549569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4148da026560043bb8d7e04815c8ba09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTiltAngle: 15
+  tiltSpeed: 10
+  spriteFacesRightInitially: 1
+  flipThreshold: 0.1
 --- !u!1 &1712285635
 GameObject:
   m_ObjectHideFlags: 0
