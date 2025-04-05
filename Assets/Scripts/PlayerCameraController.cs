@@ -69,6 +69,8 @@ public class PlayerCameraController : MonoBehaviour
     // Public method for external input handling by PlayerInputManager
     public void HandleZoomInput(float scrollInput)
     {
+        Debug.Log($"Zoom input received: {scrollInput}");
+
         // The scroll wheel often gives large values (e.g., +/- 120). Normalize it slightly.
         // We only care about the direction (positive or negative).
         float scrollDirection = Mathf.Sign(scrollInput);
@@ -79,6 +81,8 @@ public class PlayerCameraController : MonoBehaviour
 
         // Clamp the target size within the defined min/max range
         currentTargetOrthographicSize = Mathf.Clamp(currentTargetOrthographicSize, minOrthographicSize, maxOrthographicSize);
+
+        Debug.Log($"New target size: {currentTargetOrthographicSize}");
     }
 
     // Legacy method kept for compatibility if using PlayerInput component with Send/Broadcast Messages

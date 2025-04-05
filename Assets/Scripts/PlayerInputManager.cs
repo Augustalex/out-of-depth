@@ -22,6 +22,7 @@ public class PlayerInputManager : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Player.Enable();
+        inputActions.Camera.Enable(); // Enable the Camera action map as well
 
         // Movement
         inputActions.Player.Move.performed += OnMovePerformed;
@@ -55,6 +56,7 @@ public class PlayerInputManager : MonoBehaviour
         inputActions.Player.Move.canceled -= OnMoveCanceled;
 
         inputActions.Player.Disable();
+        inputActions.Camera.Disable(); // Disable the Camera action map when disabling
 
         // Reset player state when input is disabled
         playerController.ResetState();
