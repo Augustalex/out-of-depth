@@ -1,0 +1,494 @@
+fileFormatVersion: 2
+guid: a2bb52e85e95c43e08bd8fc8fa8eba57
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6319857457649422631
+    second: background_godrays_0
+  - first:
+      213: 8250985132055272973
+    second: background_godrays_1
+  - first:
+      213: -7204596190391282099
+    second: background_godrays_2
+  - first:
+      213: 877387130249550949
+    second: background_godrays_3
+  - first:
+      213: -1892309703519067076
+    second: background_godrays_4
+  - first:
+      213: -4136086428064630728
+    second: background_godrays_5
+  - first:
+      213: 1998707918747912098
+    second: background_godrays_6
+  - first:
+      213: -2035044885117676317
+    second: background_godrays_7
+  - first:
+      213: -5046227234370905418
+    second: background_godrays_8
+  - first:
+      213: -1751442760356216350
+    second: background_godrays_9
+  - first:
+      213: -4834282047187964611
+    second: background_godrays_10
+  - first:
+      213: 5980658136943503098
+    second: background_godrays_11
+  - first:
+      213: 7567138563685973644
+    second: background_godrays_12
+  - first:
+      213: 2976844128586597797
+    second: background_godrays_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: background_godrays_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 643
+        width: 635
+        height: 1071
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dee3b5502b5b48a0800000000000000
+      internalID: -6319857457649422631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_1
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 791
+        width: 1072
+        height: 923
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0e1f231343618270800000000000000
+      internalID: 8250985132055272973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_2
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 731
+        width: 295
+        height: 526
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d465899bfe1240c90800000000000000
+      internalID: -7204596190391282099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_3
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 729
+        width: 969
+        height: 985
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56c160542fa1d2c00800000000000000
+      internalID: 877387130249550949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_4
+      rect:
+        serializedVersion: 2
+        x: 1358
+        y: 964
+        width: 480
+        height: 750
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c34a8bcb95a2db5e0800000000000000
+      internalID: -1892309703519067076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_5
+      rect:
+        serializedVersion: 2
+        x: 1481
+        y: 900
+        width: 1106
+        height: 814
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 838b4eebe4ba996c0800000000000000
+      internalID: -4136086428064630728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_6
+      rect:
+        serializedVersion: 2
+        x: 2258
+        y: 1140
+        width: 425
+        height: 574
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a7cab23346dcbb10800000000000000
+      internalID: 1998707918747912098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_7
+      rect:
+        serializedVersion: 2
+        x: 2278
+        y: 1021
+        width: 578
+        height: 693
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e4d598857112c3e0800000000000000
+      internalID: -2035044885117676317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_8
+      rect:
+        serializedVersion: 2
+        x: 2471
+        y: 1087
+        width: 450
+        height: 627
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ba9b6ff01338f9b0800000000000000
+      internalID: -5046227234370905418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_9
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 975
+        width: 536
+        height: 739
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e1c988c610a1b7e0800000000000000
+      internalID: -1751442760356216350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_10
+      rect:
+        serializedVersion: 2
+        x: 2713
+        y: 1000
+        width: 849
+        height: 714
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3d2059571e29ecb0800000000000000
+      internalID: -4834282047187964611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_11
+      rect:
+        serializedVersion: 2
+        x: 2939
+        y: 798
+        width: 701
+        height: 916
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af6219f73e09ff250800000000000000
+      internalID: 5980658136943503098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_12
+      rect:
+        serializedVersion: 2
+        x: 3247
+        y: 939
+        width: 849
+        height: 775
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8e79a66e60e30960800000000000000
+      internalID: 7567138563685973644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: background_godrays_13
+      rect:
+        serializedVersion: 2
+        x: 3757
+        y: 885
+        width: 339
+        height: 419
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a58c1486ffdf4920800000000000000
+      internalID: 2976844128586597797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      background_godrays_0: -6319857457649422631
+      background_godrays_1: 8250985132055272973
+      background_godrays_10: -4834282047187964611
+      background_godrays_11: 5980658136943503098
+      background_godrays_12: 7567138563685973644
+      background_godrays_13: 2976844128586597797
+      background_godrays_2: -7204596190391282099
+      background_godrays_3: 877387130249550949
+      background_godrays_4: -1892309703519067076
+      background_godrays_5: -4136086428064630728
+      background_godrays_6: 1998707918747912098
+      background_godrays_7: -2035044885117676317
+      background_godrays_8: -5046227234370905418
+      background_godrays_9: -1751442760356216350
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
