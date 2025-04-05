@@ -1,10 +1,9 @@
+// PlayerController.cs
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem; // Make sure this is included
 
-// You might need this if PlayerInputActions is in a specific namespace
-// using UnityEngine.InputSystem;
-
-[RequireComponent(typeof(Rigidbody2D))] // Good practice to require Rigidbody2D
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -12,60 +11,59 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 15f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 1f;
-    public float dashImpulse = 10f; // Keep this if you like the impulse feel
+    public float dashImpulse = 10f;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private bool isDashing = false;
-    private float dashEndTime; // Renamed for clarity
-    private float lastDashTime = -Mathf.Infinity; // Initialize to allow dashing immediately
+    private float dashEndTime;
+    private float lastDashTime = -Mathf.Infinity;
 
-    private PlayerInputActions inputActions;
+    private PlayerInputActions inputActions; // Your Input Actions asset class
 
     [Header("Visuals & Effects References")]
-    public FishSquisher fishSquisher; // Reference to the squish script
-    public FishVisualController fishVisuals; // Reference to the visual controller
+    public FishSquisher fishSquisher;
+    public FishVisualController fishVisuals;
+    public PlayerSoundController playerSoundController;
+
+    // --- NEW REFERENCE ---
+    [Header("Body Control")]
+    [Tooltip("Reference to the BodyController managing mouth open/close visuals.")]
+    public BodyController bodyController; // << ADD THIS REFERENCE
 
     [Header("Flutter drivers")]
-    [SerializeField] // Expose in Inspector but keep private
+    [SerializeField]
     private List<FlutterDriver> flutterDrivers = new List<FlutterDriver>();
 
 
-    [Header("Sound References")] // << NEW SECTION
-    public PlayerSoundController playerSoundController; // << ADD THIS REFERENCE
-
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>(); // Get Rigidbody early
-        inputActions = new PlayerInputActions();
+        rb = GetComponent<Rigidbody2D>();
+        inputActions = new PlayerInputActions(); // Initialize your Input Actions
 
-        // --- Auto-find references if not set in Inspector (Good Practice) ---
-        if (fishVisuals == null)
+        // --- Auto-find references if not set in Inspector ---
+        if (fishVisuals == null) fishVisuals = GetComponentInChildren<FishVisualController>() ?? GetComponentInParent<FishVisualController>() ?? GetComponent<FishVisualController>();
+        if (fishSquisher == null) fishSquisher = GetComponentInChildren<FishSquisher>() ?? GetComponentInParent<FishSquisher>() ?? GetComponent<FishSquisher>();
+        if (playerSoundController == null) playerSoundController = GetComponentInChildren<PlayerSoundController>() ?? GetComponentInParent<PlayerSoundController>() ?? GetComponent<PlayerSoundController>();
+
+        // --- >>> TRY TO FIND BODY CONTROLLER <<< ---
+        if (bodyController == null)
         {
-            fishVisuals = GetComponentInChildren<FishVisualController>();
-            if (fishVisuals == null) // Still null? Maybe it's on the parent or same object
-                fishVisuals = GetComponentInParent<FishVisualController>() ?? GetComponent<FishVisualController>();
-        }
-        if (fishSquisher == null)
-        {
-            fishSquisher = GetComponentInChildren<FishSquisher>();
-            if (fishSquisher == null)
-                fishSquisher = GetComponentInParent<FishSquisher>() ?? GetComponent<FishSquisher>();
-        }
-        if (playerSoundController == null) // << TRY TO FIND SOUND CONTROLLER
-        {
-            playerSoundController = GetComponentInChildren<PlayerSoundController>();
-            if (playerSoundController == null)
-                playerSoundController = GetComponentInParent<PlayerSoundController>() ?? GetComponent<PlayerSoundController>();
+            bodyController = GetComponentInChildren<BodyController>(); // Often on a child object
+            if (bodyController == null) // Or maybe on the same object?
+                bodyController = GetComponent<BodyController>();
+            if (bodyController == null) // Or parent? Less likely but possible
+                bodyController = GetComponentInParent<BodyController>();
         }
 
         // --- Error Checks ---
-        if (fishVisuals == null)
-            Debug.LogWarning("PlayerController: FishVisualController reference not found.", this);
-        if (fishSquisher == null)
-            Debug.LogWarning("PlayerController: FishSquisher reference not found.", this);
-        if (playerSoundController == null) // << CHECK SOUND CONTROLLER
-            Debug.LogWarning("PlayerController: PlayerSoundController reference not found. Dash sounds will not play.", this);
+        if (fishVisuals == null) Debug.LogWarning("PlayerController: FishVisualController reference not found.", this);
+        if (fishSquisher == null) Debug.LogWarning("PlayerController: FishSquisher reference not found.", this);
+        if (playerSoundController == null) Debug.LogWarning("PlayerController: PlayerSoundController reference not found. Dash sounds will not play.", this);
+
+        // --- >>> CHECK BODY CONTROLLER <<< ---
+        if (bodyController == null)
+            Debug.LogWarning("PlayerController: BodyController reference not found. Mouth control will not work.", this);
     }
 
     private void OnEnable()
@@ -74,132 +72,133 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.performed += OnMovePerformed;
         inputActions.Player.Move.canceled += OnMoveCanceled;
         inputActions.Player.Dash.performed += OnDashPerformed;
+
+        // --- >>> SUBSCRIBE TO MOUTH ACTIONS <<< ---
+        // Use 'started' for press and 'canceled' for release for Button actions
+        inputActions.Player.OpenMouth.started += OnMouthOpenStarted;
+        inputActions.Player.OpenMouth.canceled += OnMouthOpenCanceled;
     }
 
     private void OnDisable()
     {
+        // --- >>> UNSUBSCRIBE FROM MOUTH ACTIONS <<< ---
+        inputActions.Player.OpenMouth.started -= OnMouthOpenStarted;
+        inputActions.Player.OpenMouth.canceled -= OnMouthOpenCanceled;
+
         inputActions.Player.Disable();
         inputActions.Player.Move.performed -= OnMovePerformed;
         inputActions.Player.Move.canceled -= OnMoveCanceled;
         inputActions.Player.Dash.performed -= OnDashPerformed;
 
-        // Reset velocity on disable to prevent drifting if the game is paused/unpaused
+
         if (rb != null) rb.linearVelocity = Vector2.zero;
-        moveInput = Vector2.zero; // Reset input state
-        isDashing = false; // Reset dash state
+        moveInput = Vector2.zero;
+        isDashing = false;
+
+        // --- Ensure mouth state is reset if disabled while open ---
+        if (bodyController != null)
+        {
+            bodyController.SetMouthState(false); // Close mouth when player is disabled
+        }
     }
 
-    // Using named methods for input for better readability and easier removal in OnDisable
-    private void OnMovePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    // --- Input Action Handlers ---
+
+    private void OnMovePerformed(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
     }
 
-    private void OnMoveCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector2.zero;
     }
 
-    private void OnDashPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void OnDashPerformed(InputAction.CallbackContext context)
     {
         TryDash();
     }
 
+    // --- >>> MOUTH CONTROL HANDLERS <<< ---
+    private void OnMouthOpenStarted(InputAction.CallbackContext context)
+    {
+        if (bodyController != null)
+        {
+            bodyController.SetMouthState(true); // Open the mouth
+        }
+        else
+        {
+            Debug.LogWarning("Tried to open mouth, but BodyController reference is missing!", this);
+        }
+    }
+
+    private void OnMouthOpenCanceled(InputAction.CallbackContext context)
+    {
+        if (bodyController != null)
+        {
+            bodyController.SetMouthState(false); // Close the mouth
+        }
+        else
+        {
+            // Warning already shown in Awake/Start, but can add context here if needed
+            // Debug.LogWarning("Tried to close mouth, but BodyController reference is missing!", this);
+        }
+    }
+
+    // --- Update / FixedUpdate / TryDash (Keep your existing logic here) ---
 
     private void Update()
     {
-        // --- Visual Updates ---
         if (fishVisuals != null)
         {
             fishVisuals.UpdateVisuals(moveInput);
         }
 
-        // --- Dash Timer ---
         if (isDashing && Time.time >= dashEndTime)
         {
             isDashing = false;
-            // You might want to reset velocity smoothly here instead of abruptly stopping
-            // For now, FixedUpdate will handle setting velocity based on moveInput
         }
 
         foreach (var driver in flutterDrivers)
         {
-            driver.SetVelocity(rb.linearVelocity.magnitude); // Pass the current speed to the flutter drivers
+            driver.SetVelocity(rb.linearVelocity.magnitude);
         }
     }
 
 
     private void FixedUpdate()
     {
-        // Store the direction we intend to move/dash in
-        Vector2 currentMoveDirection = moveInput.normalized; // Normalize for consistent direction
-
+        Vector2 currentMoveDirection = moveInput.normalized;
         Vector2 targetVelocity;
+
         if (isDashing)
         {
-            // Maintain dash speed in the *original* dash direction (usually feels better)
-            // If you want the dash to follow input changes, use currentMoveDirection here.
-            // Assuming we want to dash in the direction we started moving:
-            // We already applied impulse in TryDash, now mainly rely on velocity override.
-            // Note: The impulse adds an initial burst, velocity maintains speed.
-            // Let's get the direction from the *current* velocity if dashing, or input if starting
-            Vector2 dashDirection = rb.linearVelocity.normalized; // Use current direction of movement
-            if (dashDirection == Vector2.zero) dashDirection = currentMoveDirection; // Fallback if somehow stopped mid-dash
-
+            Vector2 dashDirection = rb.linearVelocity.normalized;
+            if (dashDirection == Vector2.zero) dashDirection = currentMoveDirection;
             targetVelocity = dashDirection * dashSpeed;
         }
         else
         {
-            // Normal movement
             targetVelocity = currentMoveDirection * moveSpeed;
         }
 
-        // Apply the calculated velocity
         rb.linearVelocity = targetVelocity;
     }
 
     private void TryDash()
     {
-        // Check cooldown, if currently dashing, and if there's movement input
         if (!isDashing && Time.time >= lastDashTime + dashCooldown && moveInput != Vector2.zero)
         {
             isDashing = true;
             dashEndTime = Time.time + dashDuration;
             lastDashTime = Time.time;
-
-            // Store the direction *at the start* of the dash
             Vector2 dashDirection = moveInput.normalized;
 
-            // Apply effects and sound *before* physics changes if possible
-            // Trigger the Dash squish animation
-            if (fishSquisher != null)
-            {
-                fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
-            }
+            if (fishSquisher != null) fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
+            if (playerSoundController != null) playerSoundController.PlayDashSound();
 
-            // --- >>> Play the Dash Sound <<< ---
-            if (playerSoundController != null)
-            {
-                playerSoundController.PlayDashSound(); // Call the sound controller!
-            }
-            else
-            {
-                // Warning already shown in Awake, but can add another here if preferred
-                // Debug.LogWarning("Dash triggered, but PlayerSoundController reference is missing!", this);
-            }
-
-            // --- Physics ---
-            // Option 1: Pure velocity change (handled in FixedUpdate)
-            // rb.velocity = dashDirection * dashSpeed; // Set velocity directly (less 'punchy')
-
-            // Option 2: Impulse + Velocity change (more 'punchy')
-            // Reset velocity slightly before impulse to make impulse more pronounced if needed
-            // rb.velocity = Vector2.zero; // Optional reset
             rb.AddForce(dashDirection * dashImpulse, ForceMode2D.Impulse);
-
-            // Ensure FixedUpdate uses the correct speed right away if needed (can sometimes help responsiveness)
-            rb.linearVelocity = dashDirection * dashSpeed; // Set this if impulse isn't enough or feels inconsistent
-
+            rb.linearVelocity = dashDirection * dashSpeed;
         }
     }
 }
