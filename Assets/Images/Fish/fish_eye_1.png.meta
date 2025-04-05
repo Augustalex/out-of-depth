@@ -116,12 +116,12 @@ TextureImporter:
       name: fish_eye_1_0
       rect:
         serializedVersion: 2
-        x: 387
-        y: 245
-        width: 39
-        height: 38
+        x: 0
+        y: 0
+        width: 500
+        height: 500
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7edcb4cd6623841fe90f35217ce97c3d
     internalID: 0
     vertices: []
     indices: 
@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fish_eye_1_0: 5405937331237210331
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

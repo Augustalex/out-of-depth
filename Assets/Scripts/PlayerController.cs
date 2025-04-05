@@ -12,6 +12,14 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 1f;
     public float dashImpulse = 10f;
 
+    [Header("Rotation Stability")]
+    [Tooltip("How quickly the player returns to intended rotation")]
+    public float rotationStabilitySpeed = 10f;
+    [Tooltip("The intended rotation angle in degrees (Z-axis)")]
+    public float targetRotationAngle = 0f;
+    [Tooltip("Minimum velocity required to apply rotation correction")]
+    public float minVelocityForRotationCorrection = 0.1f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private bool isDashing = false;
@@ -193,5 +201,27 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = targetVelocity;
+
+        // Apply rotation stability when player is moving
+        if (rb.linearVelocity.magnitude > minVelocityForRotationCorrection)
+        {
+            // Get current rotation and calculate the difference to target
+            float currentRotation = transform.eulerAngles.z;
+
+            // Normalize current rotation to -180 to 180 range for easier calculations
+            if (currentRotation > 180f)
+                currentRotation -= 360f;
+
+            // Find shortest path to target rotation
+            float angleDifference = Mathf.DeltaAngle(currentRotation, targetRotationAngle);
+
+            // Apply rotation correction with smoothing
+            if (Mathf.Abs(angleDifference) > 0.1f)
+            {
+                float newRotation = Mathf.LerpAngle(currentRotation, targetRotationAngle,
+                    rotationStabilitySpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Euler(0, 0, newRotation);
+            }
+        }
     }
 }
