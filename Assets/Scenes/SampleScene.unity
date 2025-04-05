@@ -3873,7 +3873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 519420032}
-  parallaxMultiplier: 0.5
+  parallaxMultiplier: 0.4
 --- !u!1 &1988818511
 GameObject:
   m_ObjectHideFlags: 0
