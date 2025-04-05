@@ -1733,6 +1733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 775057761}
   - component: {fileID: 775057762}
+  - component: {fileID: 775057763}
   m_Layer: 0
   m_Name: Top
   m_TagString: Untagged
@@ -1749,7 +1750,7 @@ Transform:
   m_GameObject: {fileID: 775057760}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.546, y: 0.864, z: 0}
+  m_LocalPosition: {x: -0.44, y: 0.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1810,6 +1811,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &775057763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775057760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e64016ab574840979ff675e2d605678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseFrequencyMultiplier: 1
+  intensityLerpSpeed: 5
+  velocityForMaxIntensity: 5
+  useRotateZ: 1
+  rotationAmount: 2
+  rotationFrequency: 2
+  useSquishX: 0
+  squishXAmount: 0.1
+  squishXFrequency: 6
+  useSquishY: 1
+  squishYAmount: 0.1
+  squishYFrequency: 2
 --- !u!1 &785434892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,8 +2179,13 @@ MonoBehaviour:
   dashDuration: 0.4
   dashCooldown: 1
   dashImpulse: 10
-  fishSquisher: {fileID: 1591549571}
-  fishVisuals: {fileID: 1591549572}
+  fishSquisher: {fileID: 1123044834}
+  fishVisuals: {fileID: 1343770589}
+  flutterDrivers:
+  - {fileID: 2074475493}
+  - {fileID: 775057763}
+  - {fileID: 1109577163}
+  - {fileID: 1591549573}
   playerSoundController: {fileID: 846229816}
 --- !u!4 &846229815
 Transform:
@@ -2170,7 +2200,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1591549570}
+  - {fileID: 1343770588}
   - {fileID: 1024691483}
   - {fileID: 879326940}
   m_Father: {fileID: 0}
@@ -2778,6 +2808,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109577161}
   - component: {fileID: 1109577162}
+  - component: {fileID: 1109577163}
   m_Layer: 0
   m_Name: Bottom
   m_TagString: Untagged
@@ -2794,7 +2825,7 @@ Transform:
   m_GameObject: {fileID: 1109577160}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.872, y: -1.018, z: 0}
+  m_LocalPosition: {x: -0.75, y: -0.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2855,6 +2886,105 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1109577163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109577160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e64016ab574840979ff675e2d605678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseFrequencyMultiplier: 1
+  intensityLerpSpeed: 5
+  velocityForMaxIntensity: 5
+  useRotateZ: 1
+  rotationAmount: 8
+  rotationFrequency: 5
+  useSquishX: 0
+  squishXAmount: 0.1
+  squishXFrequency: 6
+  useSquishY: 1
+  squishYAmount: 0.1
+  squishYFrequency: 6
+--- !u!1 &1123044832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123044833}
+  - component: {fileID: 1123044834}
+  m_Layer: 0
+  m_Name: MovementSquisherPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123044833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123044832}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1591549570}
+  m_Father: {fileID: 1343770588}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123044834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123044832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e780d56ed2c154e13b51e8cd458e2827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSettings:
+    duration: 0.3
+    targetScaleX: 1.3
+    targetScaleY: 0.7
+    scaleCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  attackSettings:
+    duration: 0.2
+    targetScaleX: 0.8
+    targetScaleY: 1.2
+    scaleCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  eatSettings:
+    duration: 0.5
+    targetScaleX: 1.1
+    targetScaleY: 0.9
+    scaleCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!1 &1152416444
 GameObject:
   m_ObjectHideFlags: 0
@@ -3203,6 +3333,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1343770587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1343770588}
+  - component: {fileID: 1343770589}
+  m_Layer: 0
+  m_Name: CharacterControllerPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1343770588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343770587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1123044833}
+  m_Father: {fileID: 846229815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1343770589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343770587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4148da026560043bb8d7e04815c8ba09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTiltAngle: 15
+  tiltSpeed: 10
+  spriteFacesRightInitially: 1
+  flipThreshold: 0.1
 --- !u!1 &1400349552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3628,8 +3807,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1591549570}
-  - component: {fileID: 1591549571}
-  - component: {fileID: 1591549572}
+  - component: {fileID: 1591549573}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -3645,7 +3823,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591549569}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3657,9 +3835,9 @@ Transform:
   - {fileID: 2096769928}
   - {fileID: 483527731}
   - {fileID: 1552235885}
-  m_Father: {fileID: 846229815}
+  m_Father: {fileID: 1123044833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1591549571
+--- !u!114 &1591549573
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3668,55 +3846,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1591549569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e780d56ed2c154e13b51e8cd458e2827, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e64016ab574840979ff675e2d605678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSettings:
-    duration: 0.3
-    targetScaleX: 1.3
-    targetScaleY: 0.7
-    scaleCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  attackSettings:
-    duration: 0.2
-    targetScaleX: 0.8
-    targetScaleY: 1.2
-    scaleCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  eatSettings:
-    duration: 0.5
-    targetScaleX: 1.1
-    targetScaleY: 0.9
-    scaleCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
---- !u!114 &1591549572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591549569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4148da026560043bb8d7e04815c8ba09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxTiltAngle: 15
-  tiltSpeed: 10
-  spriteFacesRightInitially: 1
-  flipThreshold: 0.1
+  baseFrequencyMultiplier: 1
+  intensityLerpSpeed: 5
+  velocityForMaxIntensity: 5
+  useRotateZ: 0
+  rotationAmount: 8
+  rotationFrequency: 5
+  useSquishX: 1
+  squishXAmount: 0.05
+  squishXFrequency: 6
+  useSquishY: 0
+  squishYAmount: 0.1
+  squishYFrequency: 6
 --- !u!1 &1712285635
 GameObject:
   m_ObjectHideFlags: 0
@@ -4937,6 +5081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2074475491}
   - component: {fileID: 2074475492}
+  - component: {fileID: 2074475493}
   m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
@@ -4953,7 +5098,7 @@ Transform:
   m_GameObject: {fileID: 2074475490}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.102, y: -0.399, z: 0}
+  m_LocalPosition: {x: -1.84, y: -0.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5014,6 +5159,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2074475493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074475490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e64016ab574840979ff675e2d605678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseFrequencyMultiplier: 1
+  intensityLerpSpeed: 5
+  velocityForMaxIntensity: 5
+  useRotateZ: 1
+  rotationAmount: 8
+  rotationFrequency: 5
+  useSquishX: 1
+  squishXAmount: 0.1
+  squishXFrequency: 6
+  useSquishY: 0
+  squishYAmount: 0.1
+  squishYFrequency: 6
 --- !u!1 &2096769927
 GameObject:
   m_ObjectHideFlags: 0

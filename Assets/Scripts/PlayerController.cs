@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // You might need this if PlayerInputActions is in a specific namespace
@@ -24,6 +25,11 @@ public class PlayerController : MonoBehaviour
     [Header("Visuals & Effects References")]
     public FishSquisher fishSquisher; // Reference to the squish script
     public FishVisualController fishVisuals; // Reference to the visual controller
+
+    [Header("Flutter drivers")]
+    [SerializeField] // Expose in Inspector but keep private
+    private List<FlutterDriver> flutterDrivers = new List<FlutterDriver>();
+
 
     [Header("Sound References")] // << NEW SECTION
     public PlayerSoundController playerSoundController; // << ADD THIS REFERENCE
@@ -114,6 +120,11 @@ public class PlayerController : MonoBehaviour
             isDashing = false;
             // You might want to reset velocity smoothly here instead of abruptly stopping
             // For now, FixedUpdate will handle setting velocity based on moveInput
+        }
+
+        foreach (var driver in flutterDrivers)
+        {
+            driver.SetVelocity(rb.linearVelocity.magnitude); // Pass the current speed to the flutter drivers
         }
     }
 
