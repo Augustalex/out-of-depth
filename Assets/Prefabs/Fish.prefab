@@ -840,6 +840,7 @@ GameObject:
   - component: {fileID: 7488052155300138295}
   - component: {fileID: 8340884570026657536}
   - component: {fileID: 2638527343620335090}
+  - component: {fileID: 6067223064374682377}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -1037,6 +1038,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6067223064374682377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf733b76bd8a549aebff4d5b008952d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6017094326816255575
 GameObject:
   m_ObjectHideFlags: 0
