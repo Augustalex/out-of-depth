@@ -1843,7 +1843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundAmbienceClip: {fileID: 8300000, guid: 5511b9df6b53f48b2ac8cf842f8f37fe, type: 3}
-  peacefulMusicClip: {fileID: 0}
+  peacefulMusicClip: {fileID: 8300000, guid: 90692d6c9082d4eea946453683009993, type: 3}
   starvingMusicClip: {fileID: 0}
   creepyMusicClip: {fileID: 0}
   dangerMusicClip: {fileID: 0}
