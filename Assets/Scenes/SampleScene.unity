@@ -2386,6 +2386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 846229815}
   - component: {fileID: 846229814}
+  - component: {fileID: 846229818}
   - component: {fileID: 846229816}
   - component: {fileID: 846229813}
   - component: {fileID: 846229812}
@@ -2618,6 +2619,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &846229818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846229811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9db2ee8b4bcb4286935883a2ac55f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 1877751964}
+  minOrthographicSize: 3
+  maxOrthographicSize: 10
+  zoomStep: 0.5
+  zoomSmoothTime: 0.15
 --- !u!1 &871407472
 GameObject:
   m_ObjectHideFlags: 0
