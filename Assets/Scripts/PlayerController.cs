@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private List<FlutterDriver> flutterDrivers = new List<FlutterDriver>();
 
+    [Header("Camera Control")]
+    [SerializeField] private PlayerCameraController cameraController;
+
     // Track the current mouth state
     private bool isMouthOpen = false;
 
@@ -53,10 +56,17 @@ public class PlayerController : MonoBehaviour
                 bodyController = GetComponentInParent<BodyController>();
         }
 
+        // Find camera controller if not set
+        if (cameraController == null)
+        {
+            cameraController = FindObjectOfType<PlayerCameraController>();
+        }
+
         // --- Error Checks ---
         if (fishVisuals == null) Debug.LogWarning("PlayerController: FishVisualController reference not found.", this);
         if (fishSquisher == null) Debug.LogWarning("PlayerController: FishSquisher reference not found.", this);
         if (playerSoundController == null) Debug.LogWarning("PlayerController: PlayerSoundController reference not found. Dash sounds will not play.", this);
+        if (cameraController == null) Debug.LogWarning("PlayerController: PlayerCameraController reference not found. Velocity-based camera zoom will not work.", this);
 
         if (bodyController == null)
             Debug.LogWarning("PlayerController: BodyController reference not found. Mouth control will not work.", this);
@@ -153,6 +163,12 @@ public class PlayerController : MonoBehaviour
         foreach (var driver in flutterDrivers)
         {
             driver.SetVelocity(rb.linearVelocity.magnitude);
+        }
+
+        // Update camera controller with current velocity
+        if (cameraController != null)
+        {
+            cameraController.SetPlayerVelocity(rb.linearVelocity.magnitude);
         }
     }
 

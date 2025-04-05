@@ -21,8 +21,19 @@ public class PlayerCameraController : MonoBehaviour
     [Tooltip("How quickly the camera smooths to the target zoom level. Smaller values are faster.")]
     [SerializeField] private float zoomSmoothTime = 0.15f;
 
+    [Header("Velocity-Based Zoom")]
+    [Tooltip("How much the camera zooms out based on player velocity")]
+    [SerializeField] private float velocityZoomFactor = 0.2f;
+
+    [Tooltip("Maximum additional zoom from velocity")]
+    [SerializeField] private float maxVelocityZoom = 3f;
+
+    [Tooltip("Base orthographic size when player is not moving")]
+    [SerializeField] private float baseOrthographicSize = 5f;
+
     private float currentTargetOrthographicSize;
     private float zoomVelocity = 0f; // Needed for SmoothDamp
+    private float playerVelocity = 0f;
 
     void Awake()
     {
@@ -47,6 +58,13 @@ public class PlayerCameraController : MonoBehaviour
 
     void Update()
     {
+        // Calculate velocity-based zoom
+        float velocityZoomAmount = Mathf.Clamp(playerVelocity * velocityZoomFactor, 0f, maxVelocityZoom);
+        currentTargetOrthographicSize = baseOrthographicSize + velocityZoomAmount;
+
+        // Ensure we respect min/max zoom limits
+        currentTargetOrthographicSize = Mathf.Clamp(currentTargetOrthographicSize, minOrthographicSize, maxOrthographicSize);
+
         // Check current size using the 'Lens' property
         if (Mathf.Abs(virtualCamera.Lens.OrthographicSize - currentTargetOrthographicSize) > 0.01f)
         {
@@ -83,6 +101,12 @@ public class PlayerCameraController : MonoBehaviour
         currentTargetOrthographicSize = Mathf.Clamp(currentTargetOrthographicSize, minOrthographicSize, maxOrthographicSize);
 
         Debug.Log($"New target size: {currentTargetOrthographicSize}");
+    }
+
+    // New method to set player velocity from PlayerController
+    public void SetPlayerVelocity(float velocity)
+    {
+        playerVelocity = velocity;
     }
 
     // Legacy method kept for compatibility if using PlayerInput component with Send/Broadcast Messages
