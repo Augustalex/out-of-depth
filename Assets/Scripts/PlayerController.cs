@@ -75,9 +75,18 @@ public class PlayerController : MonoBehaviour
             bodyController.SetMouthState(isOpen);
 
             // If we're closing the mouth and it was previously open, trigger squish
-            if (!isOpen && isMouthOpen && fishSquisher != null)
+            if (!isOpen && isMouthOpen)
             {
-                fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Eat);
+                if (fishSquisher != null)
+                {
+                    fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Eat);
+                }
+
+                // Play eat sound when mouth closes
+                if (playerSoundController != null)
+                {
+                    playerSoundController.PlayEatSound();
+                }
             }
 
             isMouthOpen = isOpen;

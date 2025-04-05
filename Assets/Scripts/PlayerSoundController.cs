@@ -10,10 +10,17 @@ public class PlayerSoundController : MonoBehaviour
     [SerializeField] // Expose in Inspector but keep private
     private List<AudioClip> dashSounds = new List<AudioClip>(); // List to hold dash sounds
 
+    [SerializeField] // Expose in Inspector but keep private
+    private List<AudioClip> eatSounds = new List<AudioClip>(); // List to hold eat sounds
+
     [Header("Configuration")]
     [Range(0f, 1f)] // Add a slider for volume in the Inspector
     [SerializeField]
     private float dashVolume = 1.0f;
+
+    [Range(0f, 1f)] // Add a slider for volume in the Inspector
+    [SerializeField]
+    private float eatVolume = 1.0f;
 
     // Reference to the required AudioSource component
     private AudioSource audioSource;
@@ -61,6 +68,41 @@ public class PlayerSoundController : MonoBehaviour
             // PlayOneShot is good for effects as it doesn't interrupt other sounds
             // playing on the same AudioSource (if needed) and can overlap.
             audioSource.PlayOneShot(clipToPlay, dashVolume);
+        }
+        else
+        {
+            Debug.LogWarning($"PlayerSoundController: AudioClip at index {randomIndex} is null.", this);
+        }
+    }
+
+    /// <summary>
+    /// Plays a random eat sound from the list.
+    /// </summary>
+    public void PlayEatSound()
+    {
+        // Check if there are any eat sounds assigned in the list
+        if (eatSounds == null || eatSounds.Count == 0)
+        {
+            Debug.LogWarning("PlayerSoundController: No eat sounds assigned in the list.", this);
+            return; // Exit if no sounds are available
+        }
+
+        // Check if the AudioSource component is ready
+        if (audioSource == null)
+        {
+            Debug.LogError("PlayerSoundController: AudioSource component not found!", this);
+            return; // Exit if AudioSource is missing (shouldn't happen due to [RequireComponent])
+        }
+
+        // Select a random AudioClip from the list
+        int randomIndex = Random.Range(0, eatSounds.Count);
+        AudioClip clipToPlay = eatSounds[randomIndex];
+
+        // Check if the selected clip is actually valid
+        if (clipToPlay != null)
+        {
+            // Play the selected sound effect once, using the specified volume
+            audioSource.PlayOneShot(clipToPlay, eatVolume);
         }
         else
         {
