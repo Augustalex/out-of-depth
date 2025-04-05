@@ -2101,7 +2101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashSounds:
+  - {fileID: 8300000, guid: 8f5810c84eb1f4cb09c12ba540cf3531, type: 3}
   - {fileID: 8300000, guid: f670f847b2d784778987d46a33f96414, type: 3}
+  - {fileID: 8300000, guid: ae4688c2ecdf4421aa74521e3ecea773, type: 3}
   dashVolume: 1
 --- !u!82 &846229817
 AudioSource:
