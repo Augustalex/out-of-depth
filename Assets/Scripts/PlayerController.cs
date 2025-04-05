@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private List<FlutterDriver> flutterDrivers = new List<FlutterDriver>();
 
+    // Track the current mouth state
+    private bool isMouthOpen = false;
 
     private void Awake()
     {
@@ -90,7 +92,6 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled -= OnMoveCanceled;
         inputActions.Player.Dash.performed -= OnDashPerformed;
 
-
         if (rb != null) rb.linearVelocity = Vector2.zero;
         moveInput = Vector2.zero;
         isDashing = false;
@@ -125,6 +126,7 @@ public class PlayerController : MonoBehaviour
         if (bodyController != null)
         {
             bodyController.SetMouthState(true); // Open the mouth
+            isMouthOpen = true;
         }
         else
         {
@@ -137,6 +139,14 @@ public class PlayerController : MonoBehaviour
         if (bodyController != null)
         {
             bodyController.SetMouthState(false); // Close the mouth
+
+            // Only trigger the squish animation if the mouth was previously open
+            if (isMouthOpen && fishSquisher != null)
+            {
+                fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Eat);
+            }
+
+            isMouthOpen = false;
         }
         else
         {
@@ -164,7 +174,6 @@ public class PlayerController : MonoBehaviour
             driver.SetVelocity(rb.linearVelocity.magnitude);
         }
     }
-
 
     private void FixedUpdate()
     {
