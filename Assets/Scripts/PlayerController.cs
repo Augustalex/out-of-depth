@@ -165,15 +165,10 @@ public class PlayerController : MonoBehaviour
             driver.SetVelocity(rb.linearVelocity.magnitude);
         }
 
-        // Update camera controller with current velocity
-        if (cameraController != null)
-        {
-            cameraController.SetPlayerVelocity(rb.linearVelocity.magnitude);
-        }
-    }
+        // The camera controller now directly accesses the Rigidbody2D
+        // No need to update it with velocity information
 
-    private void FixedUpdate()
-    {
+
         Vector2 currentMoveDirection = moveInput.normalized;
         Vector2 targetVelocity;
 

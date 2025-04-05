@@ -8,6 +8,9 @@ public class PlayerCameraController : MonoBehaviour
     [Tooltip("The Cinemachine Camera component to control.")]
     [SerializeField] private CinemachineCamera virtualCamera;
 
+    [Tooltip("Reference to the player's Rigidbody2D component.")]
+    [SerializeField] private Rigidbody2D playerRigidbody;
+
     [Header("Zoom Settings")]
     [Tooltip("Minimum Orthographic Size (closest zoom).")]
     [SerializeField] private float minOrthographicSize = 3f;
@@ -31,9 +34,14 @@ public class PlayerCameraController : MonoBehaviour
     [Tooltip("Base orthographic size when player is not moving")]
     [SerializeField] private float baseOrthographicSize = 5f;
 
+    [Tooltip("How quickly the camera adjusts to velocity changes")]
+    [SerializeField] private float velocityZoomSmoothTime = 0.5f;
+
     private float currentTargetOrthographicSize;
     private float zoomVelocity = 0f; // Needed for SmoothDamp
-    private float playerVelocity = 0f;
+    private float manualZoomOffset = 0f; // Tracks manual zoom adjustments
+    private float currentVelocityZoom = 0f; // Current velocity-based zoom
+    private float velocityZoomVelocity = 0f; // For smoothing velocity zoom
 
     void Awake()
     {
@@ -54,13 +62,78 @@ public class PlayerCameraController : MonoBehaviour
         // Initialize the target size to the camera's starting size
         // Use the 'Lens' property
         currentTargetOrthographicSize = virtualCamera.Lens.OrthographicSize;
+
+        // Find the player's Rigidbody2D if not set
+        if (playerRigidbody == null)
+        {
+            FindPlayer();
+        }
+    }
+
+    void FindPlayer()
+    {
+        // Try to find player through tag first
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        // If that fails, look for PlayerController component
+        if (player == null)
+        {
+            PlayerController playerController = FindObjectOfType<PlayerController>();
+            if (playerController != null)
+            {
+                player = playerController.gameObject;
+            }
+        }
+
+        // Set the Rigidbody2D if we found the player
+        if (player != null)
+        {
+            playerRigidbody = player.GetComponent<Rigidbody2D>();
+            if (playerRigidbody == null)
+            {
+                Debug.LogWarning("PlayerCameraController: Player found but has no Rigidbody2D component.", this);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("PlayerCameraController: Could not find player. Velocity-based zoom will not work.", this);
+        }
+    }
+
+    public void SetPlayer(GameObject player)
+    {
+        if (player != null)
+        {
+            playerRigidbody = player.GetComponent<Rigidbody2D>();
+            if (playerRigidbody == null)
+            {
+                Debug.LogWarning("PlayerCameraController: Provided player has no Rigidbody2D component.", this);
+            }
+        }
     }
 
     void Update()
     {
-        // Calculate velocity-based zoom
-        float velocityZoomAmount = Mathf.Clamp(playerVelocity * velocityZoomFactor, 0f, maxVelocityZoom);
-        currentTargetOrthographicSize = baseOrthographicSize + velocityZoomAmount;
+        // Get player velocity directly from the Rigidbody2D
+        float playerVelocity = 0f;
+        if (playerRigidbody != null)
+        {
+            playerVelocity = playerRigidbody.linearVelocity.magnitude;
+        }
+
+        // Calculate target velocity-based zoom amount
+        float targetVelocityZoom = Mathf.Clamp(playerVelocity * velocityZoomFactor, 0f, maxVelocityZoom);
+
+        // Smoothly interpolate to the target velocity zoom
+        currentVelocityZoom = Mathf.SmoothDamp(
+            currentVelocityZoom,
+            targetVelocityZoom,
+            ref velocityZoomVelocity,
+            velocityZoomSmoothTime
+        );
+
+        // Calculate final target size by combining base size, velocity zoom, and manual zoom offset
+        currentTargetOrthographicSize = baseOrthographicSize + currentVelocityZoom + manualZoomOffset;
 
         // Ensure we respect min/max zoom limits
         currentTargetOrthographicSize = Mathf.Clamp(currentTargetOrthographicSize, minOrthographicSize, maxOrthographicSize);
@@ -93,20 +166,24 @@ public class PlayerCameraController : MonoBehaviour
         // We only care about the direction (positive or negative).
         float scrollDirection = Mathf.Sign(scrollInput);
 
-        // Adjust the target orthographic size
+        // Adjust the manual zoom offset
         // Subtract because scrolling UP (positive value usually) should zoom IN (decrease orthographic size)
-        currentTargetOrthographicSize -= scrollDirection * zoomStep;
+        manualZoomOffset -= scrollDirection * zoomStep;
 
-        // Clamp the target size within the defined min/max range
-        currentTargetOrthographicSize = Mathf.Clamp(currentTargetOrthographicSize, minOrthographicSize, maxOrthographicSize);
+        // Calculate what the final size would be with this manual zoom
+        float potentialSize = baseOrthographicSize + currentVelocityZoom + manualZoomOffset;
 
-        Debug.Log($"New target size: {currentTargetOrthographicSize}");
-    }
+        // If this would exceed limits, adjust the manual zoom offset to respect the limits
+        if (potentialSize < minOrthographicSize)
+        {
+            manualZoomOffset = minOrthographicSize - (baseOrthographicSize + currentVelocityZoom);
+        }
+        else if (potentialSize > maxOrthographicSize)
+        {
+            manualZoomOffset = maxOrthographicSize - (baseOrthographicSize + currentVelocityZoom);
+        }
 
-    // New method to set player velocity from PlayerController
-    public void SetPlayerVelocity(float velocity)
-    {
-        playerVelocity = velocity;
+        Debug.Log($"New manual zoom offset: {manualZoomOffset}, Target size: {potentialSize}");
     }
 
     // Legacy method kept for compatibility if using PlayerInput component with Send/Broadcast Messages
