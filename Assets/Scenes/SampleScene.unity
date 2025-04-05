@@ -1847,7 +1847,7 @@ MonoBehaviour:
   starvingMusicClip: {fileID: 0}
   creepyMusicClip: {fileID: 0}
   dangerMusicClip: {fileID: 0}
-  maxAmbienceVolume: 0.5
+  maxAmbienceVolume: 0.8
   maxMusicVolume: 0.8
   musicCrossfadeDuration: 2
 --- !u!4 &815803508
