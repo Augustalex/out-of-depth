@@ -2385,6 +2385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 846229815}
+  - component: {fileID: 846229819}
   - component: {fileID: 846229814}
   - component: {fileID: 846229818}
   - component: {fileID: 846229816}
@@ -2636,6 +2637,20 @@ MonoBehaviour:
   maxOrthographicSize: 10
   zoomStep: 0.5
   zoomSmoothTime: 0.15
+--- !u!114 &846229819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846229811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08796923b1e87404e84732e07556f3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 846229814}
+  cameraController: {fileID: 846229818}
 --- !u!1 &871407472
 GameObject:
   m_ObjectHideFlags: 0

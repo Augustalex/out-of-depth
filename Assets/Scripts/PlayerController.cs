@@ -1,7 +1,6 @@
 // PlayerController.cs
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; // Make sure this is included
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -19,17 +18,14 @@ public class PlayerController : MonoBehaviour
     private float dashEndTime;
     private float lastDashTime = -Mathf.Infinity;
 
-    private PlayerInputActions inputActions; // Your Input Actions asset class
-
     [Header("Visuals & Effects References")]
     public FishSquisher fishSquisher;
     public FishVisualController fishVisuals;
     public PlayerSoundController playerSoundController;
 
-    // --- NEW REFERENCE ---
     [Header("Body Control")]
     [Tooltip("Reference to the BodyController managing mouth open/close visuals.")]
-    public BodyController bodyController; // << ADD THIS REFERENCE
+    public BodyController bodyController;
 
     [Header("Flutter drivers")]
     [SerializeField]
@@ -41,14 +37,12 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        inputActions = new PlayerInputActions(); // Initialize your Input Actions
 
         // --- Auto-find references if not set in Inspector ---
         if (fishVisuals == null) fishVisuals = GetComponentInChildren<FishVisualController>() ?? GetComponentInParent<FishVisualController>() ?? GetComponent<FishVisualController>();
         if (fishSquisher == null) fishSquisher = GetComponentInChildren<FishSquisher>() ?? GetComponentInParent<FishSquisher>() ?? GetComponent<FishSquisher>();
         if (playerSoundController == null) playerSoundController = GetComponentInChildren<PlayerSoundController>() ?? GetComponentInParent<PlayerSoundController>() ?? GetComponent<PlayerSoundController>();
 
-        // --- >>> TRY TO FIND BODY CONTROLLER <<< ---
         if (bodyController == null)
         {
             bodyController = GetComponentInChildren<BodyController>(); // Often on a child object
@@ -63,99 +57,67 @@ public class PlayerController : MonoBehaviour
         if (fishSquisher == null) Debug.LogWarning("PlayerController: FishSquisher reference not found.", this);
         if (playerSoundController == null) Debug.LogWarning("PlayerController: PlayerSoundController reference not found. Dash sounds will not play.", this);
 
-        // --- >>> CHECK BODY CONTROLLER <<< ---
         if (bodyController == null)
             Debug.LogWarning("PlayerController: BodyController reference not found. Mouth control will not work.", this);
     }
 
-    private void OnEnable()
-    {
-        inputActions.Player.Enable();
-        inputActions.Player.Move.performed += OnMovePerformed;
-        inputActions.Player.Move.canceled += OnMoveCanceled;
-        inputActions.Player.Dash.performed += OnDashPerformed;
+    // --- Public API methods for PlayerInputManager ---
 
-        // --- >>> SUBSCRIBE TO MOUTH ACTIONS <<< ---
-        // Use 'started' for press and 'canceled' for release for Button actions
-        inputActions.Player.OpenMouth.started += OnMouthOpenStarted;
-        inputActions.Player.OpenMouth.canceled += OnMouthOpenCanceled;
+    public void SetMoveInput(Vector2 input)
+    {
+        moveInput = input;
     }
 
-    private void OnDisable()
-    {
-        // --- >>> UNSUBSCRIBE FROM MOUTH ACTIONS <<< ---
-        inputActions.Player.OpenMouth.started -= OnMouthOpenStarted;
-        inputActions.Player.OpenMouth.canceled -= OnMouthOpenCanceled;
-
-        inputActions.Player.Disable();
-        inputActions.Player.Move.performed -= OnMovePerformed;
-        inputActions.Player.Move.canceled -= OnMoveCanceled;
-        inputActions.Player.Dash.performed -= OnDashPerformed;
-
-        if (rb != null) rb.linearVelocity = Vector2.zero;
-        moveInput = Vector2.zero;
-        isDashing = false;
-
-        // --- Ensure mouth state is reset if disabled while open ---
-        if (bodyController != null)
-        {
-            bodyController.SetMouthState(false); // Close mouth when player is disabled
-        }
-    }
-
-    // --- Input Action Handlers ---
-
-    private void OnMovePerformed(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-    }
-
-    private void OnMoveCanceled(InputAction.CallbackContext context)
-    {
-        moveInput = Vector2.zero;
-    }
-
-    private void OnDashPerformed(InputAction.CallbackContext context)
-    {
-        TryDash();
-    }
-
-    // --- >>> MOUTH CONTROL HANDLERS <<< ---
-    private void OnMouthOpenStarted(InputAction.CallbackContext context)
+    public void SetMouthState(bool isOpen)
     {
         if (bodyController != null)
         {
-            bodyController.SetMouthState(true); // Open the mouth
-            isMouthOpen = true;
-        }
-        else
-        {
-            Debug.LogWarning("Tried to open mouth, but BodyController reference is missing!", this);
-        }
-    }
+            bodyController.SetMouthState(isOpen);
 
-    private void OnMouthOpenCanceled(InputAction.CallbackContext context)
-    {
-        if (bodyController != null)
-        {
-            bodyController.SetMouthState(false); // Close the mouth
-
-            // Only trigger the squish animation if the mouth was previously open
-            if (isMouthOpen && fishSquisher != null)
+            // If we're closing the mouth and it was previously open, trigger squish
+            if (!isOpen && isMouthOpen && fishSquisher != null)
             {
                 fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Eat);
             }
 
-            isMouthOpen = false;
+            isMouthOpen = isOpen;
         }
-        else
+        else if (isOpen) // Only log warning when trying to open mouth
         {
-            // Warning already shown in Awake/Start, but can add context here if needed
-            // Debug.LogWarning("Tried to close mouth, but BodyController reference is missing!", this);
+            Debug.LogWarning("Tried to change mouth state, but BodyController reference is missing!", this);
         }
     }
 
-    // --- Update / FixedUpdate / TryDash (Keep your existing logic here) ---
+    public void ResetState()
+    {
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+        moveInput = Vector2.zero;
+        isDashing = false;
+
+        // Ensure mouth state is reset
+        if (bodyController != null)
+        {
+            bodyController.SetMouthState(false); // Close mouth
+            isMouthOpen = false;
+        }
+    }
+
+    public void TryDash()
+    {
+        if (!isDashing && Time.time >= lastDashTime + dashCooldown && moveInput != Vector2.zero)
+        {
+            isDashing = true;
+            dashEndTime = Time.time + dashDuration;
+            lastDashTime = Time.time;
+            Vector2 dashDirection = moveInput.normalized;
+
+            if (fishSquisher != null) fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
+            if (playerSoundController != null) playerSoundController.PlayDashSound();
+
+            rb.AddForce(dashDirection * dashImpulse, ForceMode2D.Impulse);
+            rb.linearVelocity = dashDirection * dashSpeed;
+        }
+    }
 
     private void Update()
     {
@@ -192,22 +154,5 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = targetVelocity;
-    }
-
-    private void TryDash()
-    {
-        if (!isDashing && Time.time >= lastDashTime + dashCooldown && moveInput != Vector2.zero)
-        {
-            isDashing = true;
-            dashEndTime = Time.time + dashDuration;
-            lastDashTime = Time.time;
-            Vector2 dashDirection = moveInput.normalized;
-
-            if (fishSquisher != null) fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
-            if (playerSoundController != null) playerSoundController.PlayDashSound();
-
-            rb.AddForce(dashDirection * dashImpulse, ForceMode2D.Impulse);
-            rb.linearVelocity = dashDirection * dashSpeed;
-        }
     }
 }

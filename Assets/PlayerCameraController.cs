@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem; // Required for InputValue
-using Unity.Cinemachine;            // Required for CinemachineCamera
+using Unity.Cinemachine;       // Required for CinemachineCamera
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -34,7 +34,6 @@ public class PlayerCameraController : MonoBehaviour
             return;
         }
 
-        // --- ACCESS CHANGED HERE ---
         // Check if the camera is orthographic using the 'Lens' property
         if (!virtualCamera.Lens.Orthographic)
         {
@@ -44,12 +43,10 @@ public class PlayerCameraController : MonoBehaviour
         // Initialize the target size to the camera's starting size
         // Use the 'Lens' property
         currentTargetOrthographicSize = virtualCamera.Lens.OrthographicSize;
-        // ------------------------
     }
 
     void Update()
     {
-        // --- ACCESS CHANGED HERE ---
         // Check current size using the 'Lens' property
         if (Mathf.Abs(virtualCamera.Lens.OrthographicSize - currentTargetOrthographicSize) > 0.01f)
         {
@@ -67,17 +64,11 @@ public class PlayerCameraController : MonoBehaviour
             virtualCamera.Lens.OrthographicSize = currentTargetOrthographicSize;
             zoomVelocity = 0f; // Reset velocity when target is reached
         }
-        // ------------------------
     }
 
-    // --- Input System Message Handling ---
-    // This method name ("OnZoom") must match the Action name in your Input Actions asset.
-    // It will be called by the PlayerInput component (if Behavior is set to Send Messages or Broadcast Messages).
-    public void OnZoom(InputValue value)
+    // Public method for external input handling by PlayerInputManager
+    public void HandleZoomInput(float scrollInput)
     {
-        // Read the scroll input value (expects an Axis/float)
-        float scrollInput = value.Get<float>();
-
         // The scroll wheel often gives large values (e.g., +/- 120). Normalize it slightly.
         // We only care about the direction (positive or negative).
         float scrollDirection = Mathf.Sign(scrollInput);
@@ -88,5 +79,12 @@ public class PlayerCameraController : MonoBehaviour
 
         // Clamp the target size within the defined min/max range
         currentTargetOrthographicSize = Mathf.Clamp(currentTargetOrthographicSize, minOrthographicSize, maxOrthographicSize);
+    }
+
+    // Legacy method kept for compatibility if using PlayerInput component with Send/Broadcast Messages
+    // Can be removed if exclusively using the PlayerInputManager approach
+    public void OnZoom(InputValue value)
+    {
+        HandleZoomInput(value.Get<float>());
     }
 }
