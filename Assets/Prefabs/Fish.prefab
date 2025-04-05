@@ -569,8 +569,8 @@ GameObject:
   m_Component:
   - component: {fileID: 271783147492268111}
   - component: {fileID: 5144393665774497167}
-  - component: {fileID: 5089725960283626224}
   - component: {fileID: 4160144833415852354}
+  - component: {fileID: 1479906017788438888}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -648,8 +648,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &5089725960283626224
-CircleCollider2D:
+--- !u!114 &4160144833415852354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4402836729620390664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6499a95f137c4678b00a402a3cc2960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableSprites:
+  - {fileID: 21300000, guid: 1ca4ab74d8a62489ca8eb4f40601a382, type: 3}
+  - {fileID: 21300000, guid: 04fcc8dbc189a4713a8d2b9f1621efcd, type: 3}
+  - {fileID: 21300000, guid: de608fd368f2b4fe49ef81ed575b3597, type: 3}
+  - {fileID: 21300000, guid: 389c45ce492694c3db18ec359e117498, type: 3}
+  additionalRenderers: []
+  masks: []
+--- !u!70 &1479906017788438888
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -683,26 +702,8 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1.07
---- !u!114 &4160144833415852354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4402836729620390664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6499a95f137c4678b00a402a3cc2960, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  availableSprites:
-  - {fileID: 21300000, guid: 1ca4ab74d8a62489ca8eb4f40601a382, type: 3}
-  - {fileID: 21300000, guid: 04fcc8dbc189a4713a8d2b9f1621efcd, type: 3}
-  - {fileID: 21300000, guid: de608fd368f2b4fe49ef81ed575b3597, type: 3}
-  - {fileID: 21300000, guid: 389c45ce492694c3db18ec359e117498, type: 3}
-  additionalRenderers: []
-  masks: []
+  m_Size: {x: 4.22, y: 1.25}
+  m_Direction: 1
 --- !u!1 &4837603957204943240
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,11 +837,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4337551655793932537}
-  - component: {fileID: 4605073687758340474}
   - component: {fileID: 7488052155300138295}
   - component: {fileID: 8340884570026657536}
   - component: {fileID: 2638527343620335090}
   - component: {fileID: 6067223064374682377}
+  - component: {fileID: 1462675850075399222}
+  - component: {fileID: 8258382212973970609}
+  - component: {fileID: 5690493482341660329}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -864,36 +867,6 @@ Transform:
   - {fileID: 5952242458528033262}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4605073687758340474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5854994121049501140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a4199bfd68a4006aaa7d1bce538052, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  dashSpeed: 15
-  dashDuration: 5
-  dashCooldown: 1
-  dashImpulse: 10
-  rotationStabilitySpeed: 10
-  targetRotationAngle: 0
-  minVelocityForRotationCorrection: 0.1
-  fishSquisher: {fileID: 2445442782670804299}
-  fishVisuals: {fileID: 1910560555213740970}
-  playerSoundController: {fileID: 7488052155300138295}
-  bodyController: {fileID: 0}
-  flutterDrivers:
-  - {fileID: 8059429886750309076}
-  - {fileID: 1372330743931689767}
-  - {fileID: 5186942802464075980}
-  - {fileID: 4287571863654930685}
-  cameraController: {fileID: 0}
 --- !u!114 &7488052155300138295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1047,9 +1020,86 @@ MonoBehaviour:
   m_GameObject: {fileID: 5854994121049501140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf733b76bd8a549aebff4d5b008952d5, type: 3}
+  m_Script: {fileID: 11500000, guid: ffdb6690241f14d6d89a648d452eca6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointValue: 1
+  onEaten:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1462675850075399222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b412b0c92791453ca82a1b3f594f5d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8258382212973970609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce41b8de125d4a168521c836402bcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  dashSpeed: 15
+  dashDuration: 0.2
+  dashCooldown: 1
+  dashImpulse: 10
+  rotationStabilitySpeed: 10
+  targetRotationAngle: 0
+  minVelocityForRotationCorrection: 0.1
+  fishSquisher: {fileID: 0}
+  fishVisuals: {fileID: 0}
+  playerSoundController: {fileID: 0}
+  flutterDrivers: []
+  cameraController: {fileID: 0}
+--- !u!58 &5690493482341660329
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 1.38
 --- !u!1 &6017094326816255575
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,6 +43,11 @@ public class PlayerController : MonoBehaviour
     [Header("Camera Control")]
     [SerializeField] private PlayerCameraController cameraController;
 
+    [Header("Mouth Detection")]
+    [Tooltip("Reference to a collider that represents the mouth area")]
+    [SerializeField]
+    public CircleCollider2D mouthCollider;
+
     // Track the current mouth state
     private bool isMouthOpen = false;
 
@@ -106,6 +111,9 @@ public class PlayerController : MonoBehaviour
                 {
                     playerSoundController.PlayEatSound();
                 }
+
+                // Check for edible objects when mouth closes
+                CheckForEdibleObjects();
             }
 
             isMouthOpen = isOpen;
@@ -113,6 +121,28 @@ public class PlayerController : MonoBehaviour
         else if (isOpen) // Only log warning when trying to open mouth
         {
             Debug.LogWarning("Tried to change mouth state, but BodyController reference is missing!", this);
+        }
+    }
+
+    // New method to check for and consume edible objects
+    private void CheckForEdibleObjects()
+    {
+        if (mouthCollider == null) return;
+
+        // Get the world position of the mouth collider
+        Vector2 mouthPosition = (Vector2)mouthCollider.transform.position + mouthCollider.offset;
+
+        // Perform circle overlap check for edible objects (2D physics)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(mouthPosition, 10f);
+
+        foreach (Collider2D collider in colliders)
+        {
+            // Check if the object has an Edible component
+            Edible edible = collider.GetComponent<Edible>();
+            if (edible != null)
+            {
+                edible.GetEaten();
+            }
         }
     }
 
