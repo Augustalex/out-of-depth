@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 2d2d05160ac3b49dd9e7c1701ad22a9f
+guid: 5426f429fac02466ea2f22126840c719
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3362520724335712427
-    second: angler_eye_0
-  - first:
-      213: 1145400302133978715
-    second: angler_eye_1
+      213: -6010128476470715651
+    second: angler_fin_top_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 500
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -116,45 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: angler_eye_0
+      name: angler_fin_top_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 500
-        height: 500
+        x: 103
+        y: 275
+        width: 145
+        height: 99
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 557a414773de551d0800000000000000
-      internalID: -3362520724335712427
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: angler_eye_1
-      rect:
-        serializedVersion: 2
-        x: 281
-        y: 28
-        width: 153
-        height: 77
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b562256918745ef00800000000000000
-      internalID: 1145400302133978715
+      spriteID: dfad0816efbb79ca0800000000000000
+      internalID: -6010128476470715651
       vertices: []
       indices: 
       edges: []
@@ -163,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d395c16a8bf9b46e5b4f268204149573
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -172,9 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      angler_eye_0: -3362520724335712427
-      angler_eye_1: 1145400302133978715
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
