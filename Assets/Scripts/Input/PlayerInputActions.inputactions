@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenMouth",
+                    "type": "Button",
+                    "id": "fff58e15-044c-4e13-b8e4-8e5de0aa2d66",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -83,11 +92,22 @@
                 {
                     "name": "",
                     "id": "4c46425d-e708-4792-8824-99871ecf1f0a",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3fbc622-2058-48c8-a047-9040bb213abb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenMouth",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
