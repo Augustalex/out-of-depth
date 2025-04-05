@@ -1,0 +1,780 @@
+fileFormatVersion: 2
+guid: e440ccd593d82471d8ab7d1667612231
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3701311291314464172
+    second: angler_teeth_2_0
+  - first:
+      213: -8135983522742486906
+    second: angler_teeth_2_1
+  - first:
+      213: -4579525929334478559
+    second: angler_teeth_2_2
+  - first:
+      213: 6082487077870346441
+    second: angler_teeth_2_3
+  - first:
+      213: 5081394171202237193
+    second: angler_teeth_2_4
+  - first:
+      213: 6617280044958638942
+    second: angler_teeth_2_5
+  - first:
+      213: -2306898856871365214
+    second: angler_teeth_2_6
+  - first:
+      213: -5980917151624796002
+    second: angler_teeth_2_7
+  - first:
+      213: -4790009028565277532
+    second: angler_teeth_2_8
+  - first:
+      213: -7410350247074286178
+    second: angler_teeth_2_9
+  - first:
+      213: 8347969727617786584
+    second: angler_teeth_2_10
+  - first:
+      213: 4227455299060309232
+    second: angler_teeth_2_11
+  - first:
+      213: -8813675159322361731
+    second: angler_teeth_2_12
+  - first:
+      213: 3499870970671435497
+    second: angler_teeth_2_13
+  - first:
+      213: 6732074898512244715
+    second: angler_teeth_2_14
+  - first:
+      213: 2225412137349368435
+    second: angler_teeth_2_15
+  - first:
+      213: 1210871964925314695
+    second: angler_teeth_2_16
+  - first:
+      213: 6214314941185525267
+    second: angler_teeth_2_17
+  - first:
+      213: 4795543582759338794
+    second: angler_teeth_2_18
+  - first:
+      213: -3912341051621029033
+    second: angler_teeth_2_19
+  - first:
+      213: 4279696041867952971
+    second: angler_teeth_2_20
+  - first:
+      213: -7733610009670287814
+    second: angler_teeth_2_21
+  - first:
+      213: 1541898666235590573
+    second: angler_teeth_2_22
+  - first:
+      213: 166148671165153897
+    second: angler_teeth_2_23
+  - first:
+      213: -571748289510881738
+    second: angler_teeth_2_24
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: angler_teeth_2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 500
+        height: 500
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45a1f0eadfc42acc0800000000000000
+      internalID: -3701311291314464172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_1
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 280
+        width: 65
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 688b084a71e271f80800000000000000
+      internalID: -8135983522742486906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_2
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 271
+        width: 37
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129e35e3e614270c0800000000000000
+      internalID: -4579525929334478559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_3
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 284
+        width: 61
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c0ad5b55c5596450800000000000000
+      internalID: 6082487077870346441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_4
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 226
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 903ff3a831db48640800000000000000
+      internalID: 5081394171202237193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_5
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 232
+        width: 28
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e536a0b142d45db50800000000000000
+      internalID: 6617280044958638942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_6
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 243
+        width: 35
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a57d6f46bf3cffd0800000000000000
+      internalID: -2306898856871365214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_7
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 215
+        width: 11
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e98ec52f9838ffca0800000000000000
+      internalID: -5980917151624796002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_8
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 220
+        width: 13
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a4e375ca28768db0800000000000000
+      internalID: -4790009028565277532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_9
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 199
+        width: 21
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e95b8e546b5292990800000000000000
+      internalID: -7410350247074286178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_10
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 226
+        width: 27
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d26f52ec32f9d370800000000000000
+      internalID: 8347969727617786584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_11
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 180
+        width: 12
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fc155c4230faaa30800000000000000
+      internalID: 4227455299060309232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_12
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 183
+        width: 8
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7008e2b3298fa580800000000000000
+      internalID: -8813675159322361731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_13
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 189
+        width: 9
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ee829eca1a029030800000000000000
+      internalID: 3499870970671435497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_14
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 197
+        width: 8
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bef652fb3722d6d50800000000000000
+      internalID: 6732074898512244715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_15
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 188
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37a4d855c8042ee10800000000000000
+      internalID: 2225412137349368435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_16
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 207
+        width: 10
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7864ad9f2a1edc010800000000000000
+      internalID: 1210871964925314695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_17
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 196
+        width: 30
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31604cf938ead3650800000000000000
+      internalID: 6214314941185525267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_18
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 182
+        width: 10
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a23464b0b713d8240800000000000000
+      internalID: 4795543582759338794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_19
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 185
+        width: 24
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75b43f1ca8294b9c0800000000000000
+      internalID: -3912341051621029033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_20
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 174
+        width: 9
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b434f2210e8846b30800000000000000
+      internalID: 4279696041867952971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_21
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 172
+        width: 11
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3e723eaba2bca490800000000000000
+      internalID: -7733610009670287814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_22
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 185
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da7fe98eaace56510800000000000000
+      internalID: 1541898666235590573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_23
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 140
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 962c3bc06574e4200800000000000000
+      internalID: 166148671165153897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: angler_teeth_2_24
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 162
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63644ceb5fdb018f0800000000000000
+      internalID: -571748289510881738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 74c8272bf16104b7b8b26dda0bad33e0
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      angler_teeth_2_0: -3701311291314464172
+      angler_teeth_2_1: -8135983522742486906
+      angler_teeth_2_10: 8347969727617786584
+      angler_teeth_2_11: 4227455299060309232
+      angler_teeth_2_12: -8813675159322361731
+      angler_teeth_2_13: 3499870970671435497
+      angler_teeth_2_14: 6732074898512244715
+      angler_teeth_2_15: 2225412137349368435
+      angler_teeth_2_16: 1210871964925314695
+      angler_teeth_2_17: 6214314941185525267
+      angler_teeth_2_18: 4795543582759338794
+      angler_teeth_2_19: -3912341051621029033
+      angler_teeth_2_2: -4579525929334478559
+      angler_teeth_2_20: 4279696041867952971
+      angler_teeth_2_21: -7733610009670287814
+      angler_teeth_2_22: 1541898666235590573
+      angler_teeth_2_23: 166148671165153897
+      angler_teeth_2_24: -571748289510881738
+      angler_teeth_2_3: 6082487077870346441
+      angler_teeth_2_4: 5081394171202237193
+      angler_teeth_2_5: 6617280044958638942
+      angler_teeth_2_6: -2306898856871365214
+      angler_teeth_2_7: -5980917151624796002
+      angler_teeth_2_8: -4790009028565277532
+      angler_teeth_2_9: -7410350247074286178
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

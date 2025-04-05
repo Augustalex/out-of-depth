@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 446de94ca657d40cca84541936dbbaa4
+guid: 9b0480b380d05455ca9fc1887410be6d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3515020330116421904
-    second: angler_body_0
+      213: -2681702826141399461
+    second: angler_line_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: angler_body_0
+      name: angler_line_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 500
-        height: 500
+        x: 27
+        y: 268
+        width: 454
+        height: 31
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f6622512a3283fc0800000000000000
-      internalID: -3515020330116421904
+      spriteID: b564ea6ec7da8cad0800000000000000
+      internalID: -2681702826141399461
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7dd68029099e94fac9a4ca45226ee033
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      angler_body_0: -3515020330116421904
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
