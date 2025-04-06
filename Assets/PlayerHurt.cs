@@ -31,6 +31,7 @@ public class PlayerHurt : MonoBehaviour
     [SerializeField] private float hurtCooldown = 2.0f;
 
     // Internal State
+    private bool dead = false;
     private bool canBeHurt = true;
     private Coroutine disableCoroutine = null;
     private PlayerSoundController soundController;
@@ -148,16 +149,17 @@ public class PlayerHurt : MonoBehaviour
             {
                 endScreen.SetActive(true);
                 musicController.SwitchMode(MusicController.GameMode.Intro);
+
+                dead = true;
+                if (objectToDisable != null && objectToDisable.activeSelf)
+                {
+                    objectToDisable.SetActive(false);
+                }
+            }
+            else
+            {
+                disableCoroutine = StartCoroutine(DisableAndEnableCooldown());
             }
         }
-
-        // ===== ADD YOUR CUSTOM HURT CODE BELOW THIS LINE =====
-        // For example:
-        // - Play a hurt sound effect
-        // - Trigger a particle effect
-        // - Apply knockback force
-        // - Flash the player's sprite
-        // - Update UI elements
-        // ===== ADD YOUR CUSTOM HURT CODE ABOVE THIS LINE =====
     }
 }

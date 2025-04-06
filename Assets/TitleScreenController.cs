@@ -66,15 +66,15 @@ public class TitleScreenController : MonoBehaviour
 
     void Update()
     {
-        // Only check for input if the title screen is currently active
-        if (titleIsActive && Input.anyKeyDown) // Detects any key or mouse button press
-        {
-            Debug.Log("Input detected, starting game sequence manually.");
-            // Input received, so cancel the scheduled automatic start (if it was scheduled)
-            CancelInvoke(nameof(StartGameSequence));
-            // Trigger the game start sequence immediately
-            StartGameSequence();
-        }
+        // // Only check for input if the title screen is currently active
+        // if (titleIsActive && Input.anyKeyDown) // Detects any key or mouse button press
+        // {
+        //     Debug.Log("Input detected, starting game sequence manually.");
+        //     // Input received, so cancel the scheduled automatic start (if it was scheduled)
+        //     CancelInvoke(nameof(StartGameSequence));
+        //     // Trigger the game start sequence immediately
+        //     StartGameSequence();
+        // }
     }
 
     // This method handles the transition away from the title screen.

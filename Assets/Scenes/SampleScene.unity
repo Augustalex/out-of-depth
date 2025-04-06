@@ -2174,9 +2174,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 701449091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 124.99999, y: -100}
   m_SizeDelta: {x: 30.2, y: 57.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477445515
@@ -3957,7 +3957,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47019687121b469f84802c2ccef70ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightBulbs: []
+  lightBulbs:
+  - {fileID: 1722548932}
+  - {fileID: 477445515}
+  - {fileID: 1553359761}
 --- !u!114 &701449093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5258,9 +5261,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ee55b3bd41547eab599854fb983bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiLifeController: {fileID: 0}
-  endScreen: {fileID: 0}
-  musicController: {fileID: 0}
+  uiLifeController: {fileID: 701449092}
+  endScreen: {fileID: 1815519993}
+  musicController: {fileID: 966367225}
   enemyTags:
   - BlowFish
   objectToDisable: {fileID: 1024691482}
@@ -12679,7 +12682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1223623019
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18554,9 +18557,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 701449091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 208.33333, y: -100}
   m_SizeDelta: {x: 30.2, y: 57.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1553359761
@@ -19325,9 +19328,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 701449091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 41.666664, y: -100}
   m_SizeDelta: {x: 30.2, y: 57.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1722548932
@@ -19864,7 +19867,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1815519994
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20185,7 +20188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleScreenUIContainer: {fileID: 1027177538}
   playerObject: {fileID: 846229811}
-  inGameUI: {fileID: 0}
+  inGameUI: {fileID: 1223623018}
   delayBeforePlayerEnable: 2
   autoStartTime: 1
 --- !u!4 &1877939754

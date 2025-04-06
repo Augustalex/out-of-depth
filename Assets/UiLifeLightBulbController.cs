@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiLifeLightBulbController : MonoBehaviour
 {
@@ -6,15 +7,15 @@ public class UiLifeLightBulbController : MonoBehaviour
     public Sprite onSprite; // Sprite for when life is active
     public Sprite offSprite; // Sprite for when life is lost
 
-    private SpriteRenderer bulbRenderer;
+    private Image bulbRenderer;
 
     void Start()
     {
-        // Get the SpriteRenderer component
-        bulbRenderer = GetComponent<SpriteRenderer>();
+        // Get the Image component
+        bulbRenderer = GetComponent<Image>();
         if (bulbRenderer == null)
         {
-            Debug.LogError("No SpriteRenderer component found on " + gameObject.name);
+            Debug.LogError("No Image component found on " + gameObject.name);
         }
 
         // Set the default state to "on"
