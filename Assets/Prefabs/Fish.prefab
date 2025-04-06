@@ -750,10 +750,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxTiltAngle: 15
-  tiltSpeed: 10
+  tiltSmoothTime: 0.2
   spriteFacesRightInitially: 1
-  flipThreshold: 0.1
-  movementDeadZone: 0.05
+  flipVelocityThreshold: 0.5
+  movementVelocityThreshold: 0.2
   flipCooldown: 0.5
 --- !u!1 &5303116040050861044
 GameObject:
@@ -1065,21 +1065,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  acceleration: 5
+  deceleration: 8
   dashSpeed: 15
+  dashAcceleration: 15
   dashDuration: 0.2
   dashCooldown: 1
-  dashImpulse: 10
-  rotationSpeed: 5
-  rotationStabilitySpeed: 10
-  targetRotationAngle: 0
-  minVelocityForRotationCorrection: 0.1
-  maxTiltAngle: 15
-  velocityDeadZone: 0.2
-  visualSmoothingFactor: 0.8
-  fishSquisher: {fileID: 0}
+  stopThreshold: 0.1
   fishVisuals: {fileID: 0}
   playerSoundController: {fileID: 0}
-  flutterDrivers: []
+  fishSquisher: {fileID: 0}
   cameraController: {fileID: 0}
 --- !u!58 &5690493482341660329
 CircleCollider2D:
@@ -1175,25 +1170,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementVariation: 0.2
-  movementRadius: 11
-  boundaryForce: 2
-  eyeSight: 3
-  perceptionCheckInterval: 1
+  movementRadius: 10
+  boundaryForce: 1.5
+  randomDirectionChangeSpeed: 0.3
+  eyeSight: 7
+  perceptionCheckInterval: 0.6
   perceptionLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
-  scaredOfTags:
-  - BlowFish
-  scaredFleeForce: 3
+    m_Bits: 0
+  scaredOfTags: []
+  scaredFleeForce: 1.8
   attractedToTags: []
-  attractionForce: 1
-  followTag: PlayerFish
-  followForce: 1
-  followDistance: 3
-  avoidCollisionWithTags:
-  - Fish
-  collisionAvoidanceDistance: 0.5
-  collisionAvoidanceForce: 0.2
+  attractionForce: 0.8
+  followTag: 
+  followForce: 1.2
+  followDistance: 3.5
+  avoidCollisionWithTags: []
+  collisionAvoidanceDistance: 1.5
+  collisionAvoidanceForce: 2.5
   showDebugGizmos: 0
 --- !u!1 &6017094326816255575
 GameObject:

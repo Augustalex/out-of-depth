@@ -5,27 +5,27 @@ public class FishVisualController : MonoBehaviour
 {
     [Header("Tilting")]
     [Tooltip("Maximum angle in degrees the fish tilts up or down based on vertical velocity.")]
-    public float maxTiltAngle = 12f; // Slightly adjusted, tune as needed
-    [Tooltip("How quickly the fish smoothly rotates towards the target tilt angle (lower is slower/smoother).")]
-    public float tiltSmoothTime = 0.2f; // Changed to smooth time for SmoothDampAngle
+    public float maxTiltAngle = 8f; // Further Reduced for subtlety
+    [Tooltip("How quickly the fish smoothly rotates towards the target tilt angle (higher is slower/smoother).")]
+    public float tiltSmoothTime = 0.3f; // Increased for slower/gentler tilting
 
     [Header("Flipping")]
     [Tooltip("Check this if your sprite asset faces right by default.")]
     public bool spriteFacesRightInitially = true;
     [Tooltip("Minimum horizontal *velocity* required to trigger a potential flip.")]
-    public float flipVelocityThreshold = 0.5f; // Based on velocity now, increased threshold
+    public float flipVelocityThreshold = 0.4f; // Adjusted slightly
     [Tooltip("Minimum *velocity* magnitude required for the fish to be considered 'moving' for orientation purposes.")]
-    public float movementVelocityThreshold = 0.2f; // Increased
+    public float movementVelocityThreshold = 0.15f; // Adjusted slightly
     [Tooltip("Minimum time (seconds) to wait before allowing another flip.")]
-    public float flipCooldown = 0.4f; // Slightly increased
+    public float flipCooldown = 0.5f; // Slightly increased
 
-    // Private references and state
+    // --- Private fields remain the same ---
     private Transform spriteTransform;
     private float originalScaleX;
     private bool isCurrentlyFacingRight = true;
-    private Vector2 lastFacingDirection = Vector2.right; // Tracks direction, not input
+    private Vector2 lastFacingDirection = Vector2.right;
     private float lastFlipTime = -Mathf.Infinity;
-    private float currentTiltVelocity = 0f; // Used for SmoothDampAngle
+    private float currentTiltVelocityRef = 0f; // Renamed for SmoothDamp ref clarity
 
     void Awake()
     {
@@ -37,114 +37,94 @@ public class FishVisualController : MonoBehaviour
 
     /// <summary>
     /// Updates the fish sprite's orientation based on its current velocity.
+    /// Ensures fish returns to horizontal when vertical movement is low.
     /// </summary>
-    /// <param name="currentVelocity">The fish's current Rigidbody2D velocity.</param>
     public void UpdateVisuals(Vector2 currentVelocity)
     {
         float velocityMagnitude = currentVelocity.magnitude;
 
         // Determine the direction to use for visuals
         Vector2 visualDirection;
+
         if (velocityMagnitude > movementVelocityThreshold)
         {
-            // If moving significantly, use current velocity direction
+            // Moving: Use current velocity direction.
             visualDirection = currentVelocity.normalized;
-            // Update last facing direction only if horizontal velocity is significant
-            if (Mathf.Abs(currentVelocity.x) > flipVelocityThreshold * 0.5f) // Use a slightly lower threshold to update facing direction memory
+
+            // Update last *horizontal* facing direction memory if moving horizontally enough.
+            if (Mathf.Abs(currentVelocity.x) > flipVelocityThreshold * 0.5f)
             {
-                lastFacingDirection = currentVelocity.normalized;
+                // Store the horizontal component direction bias
+                lastFacingDirection.x = Mathf.Sign(currentVelocity.x);
             }
+            // Store the vertical component for tilting
+            lastFacingDirection.y = visualDirection.y; // Store normalized vertical component
         }
         else
         {
-            // If moving very slowly or stopped, maintain last known facing direction for flip, but level out tilt
-            visualDirection = new Vector2(lastFacingDirection.x, 0); // Use last horizontal, zero vertical for leveling
+            // Slow or Stopped: Maintain last horizontal facing direction, force vertical direction to zero for leveling.
+            visualDirection = new Vector2(lastFacingDirection.x, 0);
+            // Keep lastFacingDirection.y as it was, but use 0 for visualDirection.y
         }
 
-        // Handle flipping and tilting
-        HandleHorizontalFlip(visualDirection.x, currentVelocity.x); // Pass both ideal and actual horizontal velocity
-        HandleVerticalTilt(visualDirection.y);
+        // Handle flipping and tilting using the calculated visual direction
+        HandleHorizontalFlip(visualDirection.x, currentVelocity.x);
+        HandleVerticalTilt(visualDirection.y); // Pass the potentially zeroed vertical component
     }
 
 
-    /// <summary>
-    /// Handles flipping the sprite horizontally based on horizontal direction/velocity.
-    /// </summary>
-    /// <param name="horizontalDirection">Normalized horizontal direction derived from velocity or last known direction.</param>
-    /// <param name="horizontalVelocity">Actual current horizontal velocity.</param>
     private void HandleHorizontalFlip(float horizontalDirection, float horizontalVelocity)
     {
-        // Check cooldown
-        if (Time.time < lastFlipTime + flipCooldown)
-            return;
+        if (Time.time < lastFlipTime + flipCooldown) return;
 
-        // Check if absolute *actual* velocity is enough to warrant considering a flip
+        // Use absolute *actual* velocity for the flip threshold check
         if (Mathf.Abs(horizontalVelocity) > flipVelocityThreshold)
         {
-            // Determine desired facing direction based on the visual direction
-            bool shouldFaceRight = horizontalDirection > 0.01f; // Use small tolerance
+            bool shouldFaceRight = horizontalDirection > 0.01f;
             bool shouldFaceLeft = horizontalDirection < -0.01f;
 
-            // Only flip if the desired direction is clear and different from the current one
             if ((shouldFaceRight && !isCurrentlyFacingRight) || (shouldFaceLeft && isCurrentlyFacingRight))
             {
-                isCurrentlyFacingRight = !isCurrentlyFacingRight; // Flip the state
+                isCurrentlyFacingRight = !isCurrentlyFacingRight;
                 lastFlipTime = Time.time;
 
                 float targetScaleX = originalScaleX * (isCurrentlyFacingRight ? 1f : -1f);
-                if (!spriteFacesRightInitially)
-                {
-                    targetScaleX *= -1f;
-                }
+                if (!spriteFacesRightInitially) { targetScaleX *= -1f; }
 
-                // Apply the new scale
-                // Consider Lerping scale for smoother flip? For now, instant flip.
                 spriteTransform.localScale = new Vector3(targetScaleX, spriteTransform.localScale.y, spriteTransform.localScale.z);
             }
         }
-        // If velocity is below threshold, maintain current facing direction.
     }
 
-    /// <summary>
-    /// Handles tilting the sprite up or down based on vertical direction.
-    /// </summary>
+
     private void HandleVerticalTilt(float verticalDirection)
     {
-        // Calculate target tilt based on vertical direction component
-        // Clamp verticalDirection just in case magnitude was slightly > 1
-        float clampedVertical = Mathf.Clamp(verticalDirection, -1f, 1f);
-        float targetTiltZ = clampedVertical * maxTiltAngle;
+        // Calculate target tilt based on the vertical component of visualDirection.
+        // If visualDirection.y is 0 (because fish is slow/stopped), targetTiltZ will be 0.
+        float targetTiltZ = Mathf.Clamp(verticalDirection, -1f, 1f) * maxTiltAngle;
 
-        // If facing left, invert the target tilt angle for intuitive control
-        if (!isCurrentlyFacingRight)
-        {
-            targetTiltZ *= -1f;
-        }
+        if (!isCurrentlyFacingRight) { targetTiltZ *= -1f; } // Invert tilt if facing left
 
-        // Get current Z rotation (ensure it's handled correctly)
         float currentTiltZ = spriteTransform.localEulerAngles.z;
 
-        // Use SmoothDampAngle for smooth rotation towards the target tilt
-        // It correctly handles angle wrapping (e.g., from 359 to 1 degree)
+        // Smoothly damp towards the target tilt (which will be 0 if verticalDirection is 0)
         float smoothTiltZ = Mathf.SmoothDampAngle(currentTiltZ, targetTiltZ,
-                                                 ref currentTiltVelocity, tiltSmoothTime);
+                                                 ref currentTiltVelocityRef, tiltSmoothTime, Mathf.Infinity, Time.deltaTime); // Use Time.deltaTime here for frame-rate independence
 
-        // Apply the smoothed rotation
         spriteTransform.localRotation = Quaternion.Euler(
-            spriteTransform.localEulerAngles.x, // Keep original X rotation
-            spriteTransform.localEulerAngles.y, // Keep original Y rotation
+            spriteTransform.localEulerAngles.x,
+            spriteTransform.localEulerAngles.y,
             smoothTiltZ
         );
     }
 
+    // --- ResetVisuals remains the same ---
     public void ResetVisuals()
     {
-        // Reset tilt smoothly towards 0
         float currentTiltZ = spriteTransform.localEulerAngles.z;
-        float smoothTiltZ = Mathf.SmoothDampAngle(currentTiltZ, 0f, ref currentTiltVelocity, tiltSmoothTime * 0.5f); // Faster reset
+        float smoothTiltZ = Mathf.SmoothDampAngle(currentTiltZ, 0f, ref currentTiltVelocityRef, tiltSmoothTime * 0.5f); // Faster reset
         spriteTransform.localRotation = Quaternion.Euler(spriteTransform.localEulerAngles.x, spriteTransform.localEulerAngles.y, smoothTiltZ);
 
-        // Reset flip to initial direction instantly
         isCurrentlyFacingRight = spriteFacesRightInitially;
         float initialScaleX = originalScaleX * (isCurrentlyFacingRight ? 1f : -1f);
         if (!spriteFacesRightInitially) initialScaleX *= -1f;
