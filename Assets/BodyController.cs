@@ -9,6 +9,8 @@ public class BodyController : MonoBehaviour
     [Tooltip("The child GameObject with the 'mouth closed' sprite/visuals.")]
     public GameObject mouthClosedObject;
 
+    private bool isMouthOpen = false;
+
     private void Awake()
     {
         // Basic validation to ensure the references are set in the Inspector
@@ -31,6 +33,8 @@ public class BodyController : MonoBehaviour
     /// <param name="isOpen">True to show the open mouth, false to show the closed mouth.</param>
     public void SetMouthState(bool isOpen)
     {
+        isMouthOpen = isOpen;
+
         if (mouthOpenObject != null)
         {
             mouthOpenObject.SetActive(isOpen);
@@ -40,7 +44,6 @@ public class BodyController : MonoBehaviour
             Debug.LogError("BodyController: Tried to open mouth, but 'Mouth Open Object' is not assigned!", this);
         }
 
-
         if (mouthClosedObject != null)
         {
             mouthClosedObject.SetActive(!isOpen); // Activate closed mouth if isOpen is false
@@ -49,5 +52,14 @@ public class BodyController : MonoBehaviour
         {
             Debug.LogError("BodyController: Tried to close mouth, but 'Mouth Closed Object' is not assigned!", this);
         }
+    }
+
+    /// <summary>
+    /// Returns the current mouth state
+    /// </summary>
+    /// <returns>True if mouth is open, false if closed</returns>
+    public bool IsMouthOpen()
+    {
+        return isMouthOpen;
     }
 }
