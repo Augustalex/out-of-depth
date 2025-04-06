@@ -40,7 +40,7 @@ public class FishEatenEffectReceiver : MonoBehaviour
         if (hunger <= 0)
         {
             playerHurt.OnPlayerHurt();
-            hunger = 0.1f;
+            hunger = 0.2f;
         }
 
         hunger = Mathf.Clamp(hunger, 0f, 1f); // Ensure hunger doesn't exceed 1
