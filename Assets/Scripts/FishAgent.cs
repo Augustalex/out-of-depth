@@ -251,17 +251,72 @@ public class FishAgent : MonoBehaviour
     }
 
     void UpdateRandomMovementInfluence() { randomMovementInfluence = Random.insideUnitCircle * movementVariation; }
+
     void OnDrawGizmos()
     {
         if (!showDebugGizmos) return;
-        Gizmos.color = Color.yellow; Gizmos.DrawWireSphere(startPosition, movementRadius);
-        Gizmos.color = Color.white; Gizmos.DrawWireSphere(transform.position, eyeSight);
-        Gizmos.color = Color.red; Gizmos.DrawWireSphere(transform.position, collisionAvoidanceDistance);
+
+        // Draw movement radius
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(startPosition, movementRadius);
+
+        // Draw eyesight range
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, eyeSight);
+
+        // Draw collision avoidance range
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, collisionAvoidanceDistance);
+
         if (!Application.isPlaying) return;
-        Gizmos.color = Color.blue; Gizmos.DrawRay(transform.position, CurrentWanderDirection * 1.2f); // Draw wander direction
+
+        // Draw wander direction
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position, CurrentWanderDirection * 1.2f);
+
+        // Draw primary goal direction
         Vector2 primaryDir = CalculatePrimaryDesiredDirection();
-        if (primaryDir.sqrMagnitude > 0.01f) { Gizmos.color = Color.cyan; Gizmos.DrawRay(transform.position, primaryDir * 1.5f); } // Draw primary goal direction
-        if (fishController != null) { Gizmos.color = Color.green; Gizmos.DrawRay(transform.position, fishController.GetCurrentVelocity().normalized * 1.5f); } // Draw current velocity
-        Vector2 avoidance = CalculateCollisionAvoidance(); if (avoidance.magnitude > 0.01f) { Gizmos.color = Color.magenta; Gizmos.DrawRay(transform.position, avoidance.normalized * collisionAvoidanceForce * 0.5f); } // Draw avoidance influence
+        if (primaryDir.sqrMagnitude > 0.01f)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(transform.position, primaryDir * 1.5f);
+        }
+
+        // Draw current velocity
+        if (fishController != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, fishController.GetCurrentVelocity().normalized * 1.5f);
+        }
+
+        // Draw avoidance influence
+        Vector2 avoidance = CalculateCollisionAvoidance();
+        if (avoidance.magnitude > 0.01f)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(transform.position, avoidance.normalized * collisionAvoidanceForce * 0.5f);
+        }
+
+        // Visualize current mode
+        if (currentThreats.Count > 0)
+        {
+            Gizmos.color = Color.red; // Fleeing mode
+            Gizmos.DrawSphere(transform.position + Vector3.up * 0.5f, 0.2f);
+        }
+        else if (currentFollowTarget != null)
+        {
+            Gizmos.color = Color.green; // Following mode
+            Gizmos.DrawSphere(transform.position + Vector3.up * 0.5f, 0.2f);
+        }
+        else if (currentAttractions.Count > 0)
+        {
+            Gizmos.color = Color.yellow; // Attracted mode
+            Gizmos.DrawSphere(transform.position + Vector3.up * 0.5f, 0.2f);
+        }
+        else
+        {
+            Gizmos.color = Color.gray; // Idle mode
+            Gizmos.DrawSphere(transform.position + Vector3.up * 0.5f, 0.2f);
+        }
     }
 }
