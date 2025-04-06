@@ -17,6 +17,7 @@ public class Edible : MonoBehaviour
     /// </summary>
     public void GetEaten()
     {
+        Debug.Log($"[{nameof(Edible)}] {gameObject.name} has been eaten!");
         // Trigger the onEaten event
         onEaten?.Invoke();
 

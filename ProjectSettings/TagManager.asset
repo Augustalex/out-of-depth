@@ -50,6 +50,9 @@ TagManager:
   - name: Near
     uniqueID: 159472711
     locked: 0
+  - name: FX
+    uniqueID: 3985394909
+    locked: 0
   - name: Characters
     uniqueID: 831792809
     locked: 0

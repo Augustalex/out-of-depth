@@ -133,10 +133,11 @@ public class PlayerController : MonoBehaviour
         Vector2 mouthPosition = (Vector2)mouthCollider.transform.position + mouthCollider.offset;
 
         // Perform circle overlap check for edible objects (2D physics)
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(mouthPosition, 10f);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(mouthPosition, mouthCollider.radius);
 
         foreach (Collider2D collider in colliders)
         {
+            Debug.Log($"Checking collider: {collider.gameObject.name}");
             // Check if the object has an Edible component
             Edible edible = collider.GetComponent<Edible>();
             if (edible != null)
