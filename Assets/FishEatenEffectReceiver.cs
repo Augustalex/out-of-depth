@@ -35,7 +35,7 @@ public class FishEatenEffectReceiver : MonoBehaviour
 
     void Update()
     {
-        hunger -= Time.deltaTime * 0.01f;
+        hunger -= Time.deltaTime * 0.05f;
 
         if (hunger <= 0)
         {
