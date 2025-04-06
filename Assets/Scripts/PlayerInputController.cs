@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(FishController))]
+[RequireComponent(typeof(PlayerController))]
 public class PlayerInputController : MonoBehaviour
 {
     // References
-    private FishController fishController;
+    private PlayerController playerController;
     private PlayerInput playerInput;
 
     // Input state
@@ -19,7 +19,7 @@ public class PlayerInputController : MonoBehaviour
     private void Awake()
     {
         // Get references
-        fishController = GetComponent<FishController>();
+        playerController = GetComponent<PlayerController>();
         playerInput = GetComponent<PlayerInput>();
 
         // Set up input actions
@@ -68,16 +68,16 @@ public class PlayerInputController : MonoBehaviour
         }
 
         // Apply movement input to the fish controller
-        fishController.SetMoveInput(moveInput);
+        playerController.SetMoveInput(moveInput);
     }
 
     private void OnDashPerformed(InputAction.CallbackContext context)
     {
-        fishController.TryDash();
+        playerController.TryDash();
     }
 
     private void OnDashCanceled(InputAction.CallbackContext context)
     {
-        fishController.ReleaseDash();
+        playerController.ReleaseDash();
     }
 }

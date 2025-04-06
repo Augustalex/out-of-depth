@@ -849,6 +849,7 @@ GameObject:
   - component: {fileID: 9218446644594345741}
   - component: {fileID: 7103268820930557215}
   - component: {fileID: 204979691788536550}
+  - component: {fileID: 7961790622420766411}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Fish
@@ -1064,22 +1065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce41b8de125d4a168521c836402bcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  acceleration: 3
-  deceleration: 5
-  idleWanderSpeed: 0.75
-  dashSpeed: 6
-  dashAcceleration: 10
-  dashDuration: 0.35
-  dashCooldown: 2.5
-  physicsRotationCorrectionTorque: 5
-  physicsRotationCorrectionThreshold: 2
-  maxCorrectionTorque: 10
-  stopThreshold: 0.05
   fishVisuals: {fileID: 1910560555213740970}
   playerSoundController: {fileID: 7488052155300138295}
-  fishSquisher: {fileID: 2445442782670804299}
-  cameraController: {fileID: 0}
 --- !u!58 &5690493482341660329
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1173,8 +1160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fc048ddca6b423f82ebb231fe0ca9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementVariation: 0.5
-  randomDirectionChangeSpeed: 0.5
+  targetPositionDistance: 3
+  decisionUpdateInterval: 0.2
   perceptionCheckInterval: 0.6
   perceptionLayers:
     serializedVersion: 2
@@ -1182,16 +1169,41 @@ MonoBehaviour:
   scaredOfTags:
   - BlowFish
   eyeSight: 11
-  scaredFleeForce: 1.8
+  fleeSpeedMultiplier: 1.5
   attractedToTags:
   - PlayerFishMouth
   attractionRange: 11
-  attractionForce: 5
+  attractionSpeedMultiplier: 1.2
   avoidCollisionWithTags:
   - Fish
   collisionAvoidanceDistance: 1.5
-  collisionAvoidanceForce: 2.5
+  collisionAvoidanceOffset: 1
+  dashWhenFleeing: 1
+  minDistanceToDash: 3
   showDebugGizmos: 0
+--- !u!114 &7961790622420766411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a43eb55f13d1441189177738dd14fb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalSpeed: 2
+  idleSpeed: 0.75
+  dashSpeed: 6
+  acceleration: 3
+  deceleration: 5
+  reachTargetThreshold: 0.2
+  dashDuration: 0.35
+  dashCooldown: 2.5
+  physicsRotationCorrectionTorque: 5
+  physicsRotationCorrectionThreshold: 2
+  maxCorrectionTorque: 10
 --- !u!1 &6017094326816255575
 GameObject:
   m_ObjectHideFlags: 0
