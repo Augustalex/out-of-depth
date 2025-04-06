@@ -11,6 +11,7 @@ public class BlowFishController : MonoBehaviour
 
     private bool isSmallState = true;
     private BodyController smallStateBodyController;
+    private BlowFishSoundController soundController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,6 +32,12 @@ public class BlowFishController : MonoBehaviour
 
         // Initialize the state to small with mouth closed
         SetSmallState();
+
+        soundController = GetComponent<BlowFishSoundController>();
+        if (soundController == null)
+        {
+            Debug.LogWarning("BlowFishSoundController not found!", this);
+        }
     }
 
     // Update is called once per frame
@@ -49,6 +56,11 @@ public class BlowFishController : MonoBehaviour
             smallStateObject.SetActive(true);
             bigStateObject.SetActive(false);
             isSmallState = true;
+
+            if (soundController != null)
+            {
+                soundController.PlayCalmSound();
+            }
         }
         else
         {
@@ -66,6 +78,11 @@ public class BlowFishController : MonoBehaviour
             smallStateObject.SetActive(false);
             bigStateObject.SetActive(true);
             isSmallState = false;
+
+            if (soundController != null)
+            {
+                soundController.PlayPuffSound();
+            }
         }
         else
         {
@@ -101,6 +118,10 @@ public class BlowFishController : MonoBehaviour
     public void OpenMouth()
     {
         SetSmallStateMouth(true);
+        if (soundController != null)
+        {
+            soundController.PlayIdleSound();
+        }
     }
 
     /// <summary>

@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-// Ensures there are at least two AudioSource components on this GameObject
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(AudioSource))]
+// Ensures there are at least THREE AudioSource components on this GameObject
+// Two for music crossfading, one for one-shot sounds
+[RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
 public class MusicController : MonoBehaviour
 {
     // --- Enums ---
@@ -22,6 +22,11 @@ public class MusicController : MonoBehaviour
     public AudioClip normalMusic;
     public AudioClip dangerMusic;
 
+    [Header("One-Shot Sounds")]
+    public AudioClip startSound; // Sound to play when exiting intro
+    [Range(0f, 1f)]
+    public float startSoundVolume = 0.8f; // Volume for the start sound
+
     [Header("Core Settings")]
     [Range(0.1f, 10.0f)]
     public float crossfadeDuration = 2.0f; // Duration of the crossfade in seconds
@@ -36,13 +41,15 @@ public class MusicController : MonoBehaviour
 
     // --- Private Fields ---
 
-    private AudioSource audioSource1;
-    private AudioSource audioSource2;
-    private AudioSource activeAudioSource; // The source currently playing or fading in
+    private AudioSource musicAudioSource1;    // Renamed for clarity
+    private AudioSource musicAudioSource2;    // Renamed for clarity
+    private AudioSource oneShotAudioSource;   // Dedicated source for one-shots
+    private AudioSource activeMusicAudioSource; // Renamed for clarity
+
     private GameMode currentMode;
     private Coroutine fadeCoroutine;
     private float enemyCheckTimer = 0f;
-    private bool isEnemyNearby = false; // Store the last known state
+    private bool isEnemyNearby = false;
 
     // --- Unity Methods ---
 
@@ -50,21 +57,36 @@ public class MusicController : MonoBehaviour
     {
         // Get the AudioSource components
         AudioSource[] sources = GetComponents<AudioSource>();
-        audioSource1 = sources[0];
-        audioSource2 = sources[1];
+        if (sources.Length < 3)
+        {
+            // This should technically not happen due to [RequireComponent]
+            Debug.LogError("MusicController requires exactly three AudioSource components.", this);
+            return;
+        }
+        musicAudioSource1 = sources[0];
+        musicAudioSource2 = sources[1];
+        oneShotAudioSource = sources[2]; // Assign the third source
 
-        // Configure AudioSources
-        ConfigureAudioSource(audioSource1);
-        ConfigureAudioSource(audioSource2);
+        // Configure Music AudioSources
+        ConfigureMusicAudioSource(musicAudioSource1);
+        ConfigureMusicAudioSource(musicAudioSource2);
 
-        // Ensure only one source is initially active
-        audioSource1.volume = 0f;
-        audioSource2.volume = 0f;
+        // Configure OneShot AudioSource
+        ConfigureOneShotAudioSource(oneShotAudioSource);
+
+        // Ensure music sources start silent
+        musicAudioSource1.volume = 0f;
+        musicAudioSource2.volume = 0f;
 
         // Initial check for player assignment
         if (playerTransform == null)
         {
-            Debug.LogWarning("MusicController: Player Transform is not assigned in the Inspector. Proximity detection will not work.", this);
+            Debug.LogWarning("MusicController: Player Transform is not assigned. Proximity detection inactive.", this);
+        }
+        // Initial check for start sound assignment
+        if (startSound == null)
+        {
+            Debug.LogWarning("MusicController: Start Sound is not assigned. No sound will play on intro exit.", this);
         }
     }
 
@@ -76,14 +98,14 @@ public class MusicController : MonoBehaviour
 
         if (startingClip != null)
         {
-            activeAudioSource = audioSource1; // Start with source 1
-            activeAudioSource.clip = startingClip;
-            activeAudioSource.volume = 1f; // Start at full volume
-            activeAudioSource.Play();
+            activeMusicAudioSource = musicAudioSource1; // Start with source 1
+            activeMusicAudioSource.clip = startingClip;
+            activeMusicAudioSource.volume = 1f; // Start at full volume
+            activeMusicAudioSource.Play();
         }
         else
         {
-            Debug.LogWarning($"MusicController: No audio clip assigned for the starting mode '{startMode}'.", this);
+            Debug.LogWarning($"MusicController: No audio clip assigned for starting mode '{startMode}'.", this);
         }
 
         // Perform an initial enemy check if not starting in Intro mode
@@ -96,13 +118,12 @@ public class MusicController : MonoBehaviour
     void Update()
     {
         // --- Proximity Check Logic ---
-        // Only run proximity checks if NOT in Intro mode and player is assigned
         if (currentMode != GameMode.Intro && playerTransform != null)
         {
             enemyCheckTimer += Time.deltaTime;
             if (enemyCheckTimer >= enemyCheckInterval)
             {
-                enemyCheckTimer = 0f; // Reset timer
+                enemyCheckTimer = 0f;
                 CheckProximityAndSwitch();
             }
         }
@@ -111,14 +132,21 @@ public class MusicController : MonoBehaviour
     // --- Public Methods ---
 
     /// <summary>
-    /// Call this method to explicitly exit the Intro mode and transition to Normal mode.
+    /// Call this method to explicitly exit the Intro mode, play the start sound,
+    /// and transition to Normal mode music.
     /// </summary>
     public void EndIntroMode()
     {
         if (currentMode == GameMode.Intro)
         {
-            Debug.Log("MusicController: Ending Intro Mode, switching to Normal.");
+            Debug.Log("MusicController: Ending Intro Mode.");
+
+            // Play the one-shot start sound
+            PlayStartSound();
+
+            // Switch music to Normal mode
             SwitchMode(GameMode.Normal);
+
             // Optional: Immediately check proximity after switching from intro
             if (playerTransform != null)
             {
@@ -127,135 +155,146 @@ public class MusicController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("MusicController: EndIntroMode called, but already out of Intro mode.", this);
+            Debug.LogWarning("MusicController: EndIntroMode called, but not in Intro mode.", this);
         }
     }
 
     /// <summary>
     /// Switches the background music to the specified mode with a crossfade.
-    /// Can be called externally, but proximity logic might override Normal/Danger states later.
     /// </summary>
-    /// <param name="newMode">The GameMode to switch to.</param>
     public void SwitchMode(GameMode newMode)
     {
-        // Prevent switching to the same mode or starting a fade if already fading to the target mode
-        if (newMode == currentMode && (fadeCoroutine == null || GetClipForMode(newMode) == activeAudioSource?.clip))
+        // Prevent switching to the same mode or starting unnecessary fades
+        if (newMode == currentMode && (fadeCoroutine == null || GetClipForMode(newMode) == activeMusicAudioSource?.clip))
         {
-            // If already fading, let it finish unless the target clip is different somehow
-            // Allow re-triggering if target mode is same but current active clip is wrong (edge case)
-            if (fadeCoroutine == null && GetClipForMode(newMode) != activeAudioSource?.clip && activeAudioSource != null)
+            if (fadeCoroutine == null && GetClipForMode(newMode) != activeMusicAudioSource?.clip && activeMusicAudioSource != null)
             {
                 Debug.Log($"MusicController: Re-syncing clip for mode '{newMode}'.");
-                // Re-trigger fade to ensure correct clip is playing even if mode enum is correct
             }
             else
             {
-                // Debug.Log($"MusicController: Already in mode '{newMode}' or fading to it. No change needed.");
                 return; // Already in the target mode or fading correctly
             }
         }
 
-
         AudioClip newClip = GetClipForMode(newMode);
-
         if (newClip == null)
         {
-            Debug.LogWarning($"MusicController: No audio clip assigned for mode '{newMode}'. Cannot switch.", this);
+            Debug.LogWarning($"MusicController: No audio clip for mode '{newMode}'. Cannot switch.", this);
             return;
         }
 
-        // Stop any existing fade coroutine before starting a new one
         if (fadeCoroutine != null)
         {
             StopCoroutine(fadeCoroutine);
-            // Reset volumes potentially mid-fade before starting new one
-            ResetVolumesBeforeFade();
+            ResetMusicVolumesBeforeFade();
         }
 
-        Debug.Log($"MusicController: Switching mode from '{currentMode}' to '{newMode}'.");
+        Debug.Log($"MusicController: Switching music from '{currentMode}' to '{newMode}'.");
         GameMode oldMode = currentMode;
-        currentMode = newMode; // Update the mode immediately
+        currentMode = newMode;
         fadeCoroutine = StartCoroutine(CrossfadeMusic(newClip, oldMode));
     }
 
     // --- Private Methods ---
 
     /// <summary>
-    /// Resets volumes after stopping a fade abruptly to prepare for a new one.
-    /// The 'active' source might not be at full volume if interrupted.
+    /// Plays the assigned startSound using the oneShotAudioSource.
     /// </summary>
-    private void ResetVolumesBeforeFade()
+    private void PlayStartSound()
     {
-        // Try to reasonably set volumes based on which one *was* the active source
-        // This prevents starting a new fade from weird intermediate volumes
-        if (activeAudioSource == audioSource1)
+        if (startSound != null && oneShotAudioSource != null)
         {
-            audioSource1.volume = 1f; // Assume this was the one meant to be loud
-            audioSource2.volume = 0f;
+            oneShotAudioSource.PlayOneShot(startSound, startSoundVolume);
+            Debug.Log($"MusicController: Playing start sound '{startSound.name}'.");
         }
-        else if (activeAudioSource == audioSource2)
+        else if (startSound == null)
         {
-            audioSource2.volume = 1f;
-            audioSource1.volume = 0f;
+            Debug.LogWarning("MusicController: Cannot play start sound - AudioClip not assigned.", this);
         }
-        // If activeAudioSource is null (very early state), maybe do nothing or set both to 0
-        else
+        else // oneShotAudioSource == null
         {
-            audioSource1.volume = 0f;
-            audioSource2.volume = 0f;
+            Debug.LogError("MusicController: Cannot play start sound - OneShot AudioSource is missing!", this);
         }
     }
 
     /// <summary>
-    /// Checks for nearby enemies using Physics.CheckSphere and triggers mode switches
-    /// between Normal and Danger if necessary.
+    /// Configures common settings for an AudioSource used for looping background music.
     /// </summary>
-    private void CheckProximityAndSwitch()
-    {
-        if (playerTransform == null) return; // Should not happen due to checks in Update/Start, but safe guard
-
-        // Perform the physics check
-        bool enemyDetected = Physics.CheckSphere(
-            playerTransform.position,
-            detectionRange,
-            enemyLayerMask, // Use the specified layer mask
-            QueryTriggerInteraction.Ignore // Or .Collide if triggers should count as enemies
-        );
-
-        // --- State Change Logic ---
-        if (enemyDetected && currentMode == GameMode.Normal)
-        {
-            // Enemy nearby, and we are in Normal mode -> Switch to Danger
-            Debug.Log("MusicController: Enemy detected nearby. Switching to Danger mode.");
-            SwitchMode(GameMode.Danger);
-            isEnemyNearby = true;
-        }
-        else if (!enemyDetected && currentMode == GameMode.Danger)
-        {
-            // No enemy nearby, and we are in Danger mode -> Switch back to Normal
-            Debug.Log("MusicController: No enemies nearby. Switching back to Normal mode.");
-            SwitchMode(GameMode.Normal);
-            isEnemyNearby = false;
-        }
-        else if (enemyDetected != isEnemyNearby)
-        {
-            // Update internal state even if mode didn't change (e.g., enemy appeared while already in Danger)
-            isEnemyNearby = enemyDetected;
-        }
-    }
-
-
-    /// <summary>
-    /// Configures common settings for an AudioSource used by this controller.
-    /// </summary>
-    private void ConfigureAudioSource(AudioSource source)
+    private void ConfigureMusicAudioSource(AudioSource source)
     {
         if (source != null)
         {
             source.loop = true;
             source.playOnAwake = false;
-            // You might want spatialBlend = 0f for background music
-            source.spatialBlend = 0f;
+            source.spatialBlend = 0f; // Background music usually not spatialized
+            source.volume = 0f;       // Start silent
+        }
+    }
+
+    /// <summary>
+    /// Configures common settings for the AudioSource used for one-shot sounds.
+    /// </summary>
+    private void ConfigureOneShotAudioSource(AudioSource source)
+    {
+        if (source != null)
+        {
+            source.loop = false;        // One-shot sounds don't loop
+            source.playOnAwake = false;
+            source.spatialBlend = 0f; // Typically UI/non-diegetic sounds are 2D
+            source.volume = 1f;       // Volume controlled per-clip via PlayOneShot
+            source.priority = 128;    // Default priority, adjust if needed
+        }
+    }
+
+    /// <summary>
+    /// Resets music source volumes after stopping a fade abruptly.
+    /// </summary>
+    private void ResetMusicVolumesBeforeFade()
+    {
+        if (activeMusicAudioSource == musicAudioSource1)
+        {
+            musicAudioSource1.volume = 1f;
+            musicAudioSource2.volume = 0f;
+        }
+        else if (activeMusicAudioSource == musicAudioSource2)
+        {
+            musicAudioSource2.volume = 1f;
+            musicAudioSource1.volume = 0f;
+        }
+        else
+        {
+            musicAudioSource1.volume = 0f;
+            musicAudioSource2.volume = 0f;
+        }
+    }
+
+    /// <summary>
+    /// Checks for nearby enemies and triggers mode switches between Normal and Danger.
+    /// </summary>
+    private void CheckProximityAndSwitch()
+    {
+        if (playerTransform == null) return;
+
+        bool enemyDetected = Physics.CheckSphere(
+            playerTransform.position, detectionRange, enemyLayerMask, QueryTriggerInteraction.Ignore
+        );
+
+        if (enemyDetected && currentMode == GameMode.Normal)
+        {
+            // Debug.Log("MusicController: Enemy detected nearby. Switching to Danger mode.");
+            SwitchMode(GameMode.Danger);
+            isEnemyNearby = true;
+        }
+        else if (!enemyDetected && currentMode == GameMode.Danger)
+        {
+            // Debug.Log("MusicController: No enemies nearby. Switching back to Normal mode.");
+            SwitchMode(GameMode.Normal);
+            isEnemyNearby = false;
+        }
+        else if (enemyDetected != isEnemyNearby)
+        {
+            isEnemyNearby = enemyDetected;
         }
     }
 
@@ -266,12 +305,9 @@ public class MusicController : MonoBehaviour
     {
         switch (mode)
         {
-            case GameMode.Intro:
-                return introMusic;
-            case GameMode.Normal:
-                return normalMusic;
-            case GameMode.Danger:
-                return dangerMusic;
+            case GameMode.Intro: return introMusic;
+            case GameMode.Normal: return normalMusic;
+            case GameMode.Danger: return dangerMusic;
             default:
                 Debug.LogError($"MusicController: Unknown GameMode '{mode}'.", this);
                 return null;
@@ -279,61 +315,46 @@ public class MusicController : MonoBehaviour
     }
 
     /// <summary>
-    /// Coroutine to handle the crossfading between two audio sources.
+    /// Coroutine to handle the crossfading between two music audio sources.
     /// </summary>
-    /// <param name="newClip">The AudioClip to fade in.</param>
-    /// <param name="previousMode">The mode we are fading FROM.</param>
     private IEnumerator CrossfadeMusic(AudioClip newClip, GameMode previousMode)
     {
-        AudioSource sourceToFadeOut = activeAudioSource;
-        AudioSource sourceToFadeIn = (activeAudioSource == audioSource1) ? audioSource2 : audioSource1;
+        AudioSource sourceToFadeOut = activeMusicAudioSource;
+        AudioSource sourceToFadeIn = (activeMusicAudioSource == musicAudioSource1) ? musicAudioSource2 : musicAudioSource1;
 
-        // If no source was active yet (e.g., very start or after error), pick one
         if (sourceToFadeOut == null)
         {
-            sourceToFadeOut = audioSource2; // Assign arbitrarily, it will have 0 volume
-            sourceToFadeIn = audioSource1;
-            activeAudioSource = sourceToFadeIn; // Pre-assign the target as active
+            sourceToFadeOut = musicAudioSource2;
+            sourceToFadeIn = musicAudioSource1;
+            // Don't pre-assign activeMusicAudioSource here, wait until fade completes
         }
 
-
-        // Setup the inactive source to play the new clip
         sourceToFadeIn.clip = newClip;
         sourceToFadeIn.volume = 0f;
         sourceToFadeIn.Play();
 
         float initialFadeOutVolume = (sourceToFadeOut != null) ? sourceToFadeOut.volume : 0f;
-        // If the sourceToFadeOut was already fading out, its volume might not be 1f
-        // We capture its current volume to fade FROM that point.
-
         float timer = 0f;
 
         while (timer < crossfadeDuration)
         {
-            float progress = timer / crossfadeDuration;
-            progress = Mathf.Clamp01(progress); // Ensure progress stays between 0 and 1
-
+            float progress = Mathf.Clamp01(timer / crossfadeDuration);
             if (sourceToFadeOut != null)
                 sourceToFadeOut.volume = Mathf.Lerp(initialFadeOutVolume, 0f, progress);
-
             sourceToFadeIn.volume = Mathf.Lerp(0f, 1f, progress);
-
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // Ensure final states
         if (sourceToFadeOut != null)
         {
             sourceToFadeOut.volume = 0f;
             sourceToFadeOut.Stop();
-            sourceToFadeOut.clip = null; // Optional cleanup
+            sourceToFadeOut.clip = null;
         }
         sourceToFadeIn.volume = 1f;
 
-        activeAudioSource = sourceToFadeIn; // Update the truly active source
-
+        activeMusicAudioSource = sourceToFadeIn; // Update the truly active music source
         fadeCoroutine = null;
-        // Debug.Log("MusicController: Crossfade complete."); // Less verbose logging
     }
 }

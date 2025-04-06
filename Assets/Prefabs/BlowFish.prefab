@@ -2838,6 +2838,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61922f2c61754b7fb1512abbc22f4bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleSounds: []
+  puffSounds:
+  - {fileID: 8300000, guid: cf7bafb1d524e471c85777daa9d33d96, type: 3}
+  calmSounds:
+  - {fileID: 8300000, guid: f9a92949697d84bccb3a628302f96617, type: 3}
+  idleVolume: 1
+  puffVolume: 1
+  calmVolume: 1
 --- !u!114 &2843105142357194839
 MonoBehaviour:
   m_ObjectHideFlags: 0
