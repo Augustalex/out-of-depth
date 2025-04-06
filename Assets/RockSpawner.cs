@@ -17,11 +17,23 @@ public class RockSpawner : MonoBehaviour
     [Tooltip("Prefabs for rocks in the background layer.")]
     [SerializeField] private GameObject[] backgroundRockPrefabs;
 
-    [Header("Spawning Settings")]
-    [Tooltip("Minimum horizontal distance between spawned rocks (center to center).")]
-    [SerializeField] private float minDistance = 1.0f;
-    [Tooltip("Maximum horizontal distance between spawned rocks (center to center).")]
-    [SerializeField] private float maxDistance = 5.0f;
+    [Header("Environment Layer Spacing")]
+    [Tooltip("Minimum horizontal distance between environment rocks.")]
+    [SerializeField] private float environmentMinDistance = 1.0f;
+    [Tooltip("Maximum horizontal distance between environment rocks.")]
+    [SerializeField] private float environmentMaxDistance = 5.0f;
+
+    [Header("Foreground Layer Spacing")]
+    [Tooltip("Minimum horizontal distance between foreground rocks.")]
+    [SerializeField] private float foregroundMinDistance = 0.8f;
+    [Tooltip("Maximum horizontal distance between foreground rocks.")]
+    [SerializeField] private float foregroundMaxDistance = 4.0f;
+
+    [Header("Background Layer Spacing")]
+    [Tooltip("Minimum horizontal distance between background rocks.")]
+    [SerializeField] private float backgroundMinDistance = 1.2f;
+    [Tooltip("Maximum horizontal distance between background rocks.")]
+    [SerializeField] private float backgroundMaxDistance = 6.0f;
 
     [Header("Layer Depths (Z-Position)")]
     [SerializeField] private float environmentZ = 0f;
@@ -42,13 +54,13 @@ public class RockSpawner : MonoBehaviour
             rockParentTransform = new GameObject("Spawned Rocks").transform;
         }
 
-        // Spawn each layer of rocks
-        SpawnRocksLayer(environmentRockPrefabs, environmentZ, "Environment");
-        SpawnRocksLayer(foregroundRockPrefabs, foregroundZ, "Foreground");
-        SpawnRocksLayer(backgroundRockPrefabs, backgroundZ, "Background");
+        // Spawn each layer of rocks with their specific spacing values
+        SpawnRocksLayer(environmentRockPrefabs, environmentZ, "Environment", environmentMinDistance, environmentMaxDistance);
+        SpawnRocksLayer(foregroundRockPrefabs, foregroundZ, "Foreground", foregroundMinDistance, foregroundMaxDistance);
+        SpawnRocksLayer(backgroundRockPrefabs, backgroundZ, "Background", backgroundMinDistance, backgroundMaxDistance);
     }
 
-    void SpawnRocksLayer(GameObject[] rockPrefabs, float layerZ, string layerName)
+    void SpawnRocksLayer(GameObject[] rockPrefabs, float layerZ, string layerName, float minDistance, float maxDistance)
     {
         if (rockPrefabs == null || rockPrefabs.Length == 0)
         {
@@ -64,7 +76,6 @@ public class RockSpawner : MonoBehaviour
         // Create a child object for this layer for better organization
         Transform layerParent = new GameObject($"{layerName}Rocks").transform;
         layerParent.SetParent(rockParentTransform);
-
 
         while (currentX < endX)
         {
@@ -123,7 +134,6 @@ public class RockSpawner : MonoBehaviour
             // Let's stick to the simpler method first (advancing currentX directly) unless spacing looks bad.
             // Refining Option B: Place next rock's *center* relative to current rock's *center*.
             currentX = spawnedRock.transform.position.x + Random.Range(minDistance, maxDistance);
-
 
             // Make sure the *next* rock's potential *left edge* doesn't go past the end line.
             // This is a simplification; a more precise check would involve the next rock's width.
