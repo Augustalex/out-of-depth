@@ -642,7 +642,7 @@ RectTransform:
   m_GameObject: {fileID: 126908261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1780086133}
@@ -5079,6 +5079,7 @@ GameObject:
   - component: {fileID: 846229822}
   - component: {fileID: 846229824}
   - component: {fileID: 846229823}
+  - component: {fileID: 846229825}
   m_Layer: 0
   m_Name: Player
   m_TagString: PlayerFish
@@ -5889,6 +5890,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 846229814}
   eater: {fileID: 846229823}
+--- !u!114 &846229825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846229811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d704982ceed1b42799837810a7f2a5f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hunger: 0.8
+  eater: {fileID: 846229823}
+  uiHungerController: {fileID: 1780086134}
+  playerHurt: {fileID: 846229820}
 --- !u!1 &871407472
 GameObject:
   m_ObjectHideFlags: 0
@@ -19913,6 +19930,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1780086133}
+  - component: {fileID: 1780086134}
   m_Layer: 5
   m_Name: Hunger
   m_TagString: Untagged
@@ -19941,6 +19959,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1780086134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780086132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c725975aa077d423c9ed3872d6160c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullFishImage: {fileID: 1978321490}
+  testHungerValue: 1
 --- !u!1 &1789850012
 GameObject:
   m_ObjectHideFlags: 0
@@ -20759,7 +20791,7 @@ RectTransform:
   m_GameObject: {fileID: 1978321488}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1780086133}
@@ -20794,7 +20826,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.521
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

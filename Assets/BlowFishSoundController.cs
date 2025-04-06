@@ -40,7 +40,7 @@ public class BlowFishSoundController : MonoBehaviour
     {
         if (idleSounds == null || idleSounds.Count == 0)
         {
-            Debug.LogWarning("BlowFishSoundController: No idle sounds assigned.", this);
+            // Debug.LogWarning("BlowFishSoundController: No idle sounds assigned.", this);
             return;
         }
 

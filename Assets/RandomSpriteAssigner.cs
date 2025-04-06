@@ -196,6 +196,6 @@ public class RandomSpriteAssigner : MonoBehaviour
         }
 
         // Optional: Log the final action
-        Debug.Log($"[{gameObject.name}] Assigned random sprite '{selectedSprite.name}' to main renderer, {additionalRenderers?.Count ?? 0} additional renderer(s), and {masks?.Count ?? 0} mask(s).", this);
+        // Debug.Log($"[{gameObject.name}] Assigned random sprite '{selectedSprite.name}' to main renderer, {additionalRenderers?.Count ?? 0} additional renderer(s), and {masks?.Count ?? 0} mask(s).", this);
     }
 }
