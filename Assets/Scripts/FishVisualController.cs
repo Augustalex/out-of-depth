@@ -1,8 +1,14 @@
 // FishVisualController.cs:
+using System;
 using UnityEngine;
 
 public class FishVisualController : MonoBehaviour
 {
+    [Header("General")]
+    [Tooltip("Should the fish flip when moving left/right?")]
+    [SerializeField]
+    public Boolean flipEnabled = true;
+
     [Header("Tilting")]
     [Tooltip("Maximum angle in degrees the fish tilts up or down based on vertical velocity.")]
     public float maxTiltAngle = 8f; // Further Reduced for subtlety
@@ -75,6 +81,8 @@ public class FishVisualController : MonoBehaviour
 
     private void HandleHorizontalFlip(float horizontalDirection, float horizontalVelocity)
     {
+        if (!flipEnabled) return; // Early exit if flipping is disabled
+
         if (Time.time < lastFlipTime + flipCooldown) return;
 
         // Use absolute *actual* velocity for the flip threshold check

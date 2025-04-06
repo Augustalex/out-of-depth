@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4077630479002015603}
   - component: {fileID: 1371956769182168414}
   - component: {fileID: 6649062023007890043}
+  - component: {fileID: 3016124978043801918}
   m_Layer: 0
   m_Name: Rock_1
   m_TagString: Untagged
@@ -153,3 +154,24 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -5.5}
   m_Size: {x: 15.44, y: 7.1}
   m_Direction: 1
+--- !u!114 &3016124978043801918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8654100890074495891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6499a95f137c4678b00a402a3cc2960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableSprites:
+  - {fileID: -7604158010699264441, guid: 68b3984bb66d94ca0a6a4280fb0ed89f, type: 3}
+  - {fileID: 5185147230760155699, guid: 839bf06ac4a20414f84aec97c82cf3c2, type: 3}
+  - {fileID: -8570887348673937342, guid: 15a2b18d73ce5446db757fbcec1c0506, type: 3}
+  - {fileID: 6361451621396632622, guid: 2fb2e9c3f11ce472da0f4b8bd42dfdd8, type: 3}
+  - {fileID: -3609339279554626700, guid: bc5ac9905ae5d4608ae59e93dd822811, type: 3}
+  - {fileID: 21300000, guid: b9effa35f29764597957d8f96b76c897, type: 3}
+  additionalRenderers: []
+  masks: []
