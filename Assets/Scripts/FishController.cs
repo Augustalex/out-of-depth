@@ -99,7 +99,7 @@ public class FishController : MonoBehaviour
         if (fishVisuals != null)
         {
             // Get current velocity and apply deadzone for stability
-            Vector2 currentVelocity = rb.velocity;
+            Vector2 currentVelocity = rb.linearVelocity;
 
             // Apply velocity deadzone for more stability
             if (currentVelocity.magnitude < velocityDeadZone)
@@ -228,7 +228,7 @@ public class FishController : MonoBehaviour
             else
             {
                 // When no input, gradually slow down rather than stopping instantly
-                targetVelocity = rb.velocity * 0.95f; // 5% velocity reduction per physics frame
+                targetVelocity = rb.linearVelocity * 0.95f; // 5% velocity reduction per physics frame
 
                 // If we're going very slow, just stop completely (prevents drift)
                 if (targetVelocity.magnitude < velocityDeadZone * 0.5f)

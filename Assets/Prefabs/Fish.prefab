@@ -753,6 +753,8 @@ MonoBehaviour:
   tiltSpeed: 10
   spriteFacesRightInitially: 1
   flipThreshold: 0.1
+  movementDeadZone: 0.05
+  flipCooldown: 0.5
 --- !u!1 &5303116040050861044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1067,9 +1069,13 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 1
   dashImpulse: 10
+  rotationSpeed: 5
   rotationStabilitySpeed: 10
   targetRotationAngle: 0
   minVelocityForRotationCorrection: 0.1
+  maxTiltAngle: 15
+  velocityDeadZone: 0.2
+  visualSmoothingFactor: 0.8
   fishSquisher: {fileID: 0}
   fishVisuals: {fileID: 0}
   playerSoundController: {fileID: 0}
@@ -1168,12 +1174,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fc048ddca6b423f82ebb231fe0ca9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  movementVariation: 0.5
-  rotationSpeed: 5
-  movementRadius: 10
-  boundaryForce: 5
-  eyeSight: 8
+  movementVariation: 0.2
+  movementRadius: 11
+  boundaryForce: 2
+  eyeSight: 3
   perceptionCheckInterval: 1
   perceptionLayers:
     serializedVersion: 2
@@ -1182,14 +1186,14 @@ MonoBehaviour:
   - BlowFish
   scaredFleeForce: 3
   attractedToTags: []
-  attractionForce: 1.5
+  attractionForce: 1
   followTag: PlayerFish
-  followForce: 2
+  followForce: 1
   followDistance: 3
   avoidCollisionWithTags:
   - Fish
-  collisionAvoidanceDistance: 2
-  collisionAvoidanceForce: 2
+  collisionAvoidanceDistance: 0.5
+  collisionAvoidanceForce: 0.2
   showDebugGizmos: 0
 --- !u!1 &6017094326816255575
 GameObject:
