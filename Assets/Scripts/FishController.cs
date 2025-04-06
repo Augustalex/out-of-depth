@@ -38,16 +38,12 @@ public class FishController : MonoBehaviour
     public FishVisualController fishVisuals;
     public PlayerSoundController playerSoundController;
     public FishSquisher fishSquisher;
-    [SerializeField] private PlayerCameraController cameraController;
 
     // --- Private State Variables ---
     private Vector2 moveInput;
     private Vector2 currentVelocityRef;
     private bool isDashing = false;
     private float dashEndTime;
-    private float lastDashTime = -Mathf.Infinity;
-    private bool isAIControlled = false;
-
 
     void Awake()
     {
@@ -83,7 +79,6 @@ public class FishController : MonoBehaviour
     {
         if (isDashing && Time.time >= dashEndTime) { isDashing = false; }
         if (fishVisuals != null) { fishVisuals.UpdateVisuals(rb.linearVelocity); }
-        if (cameraController != null) { /* cameraController.SetTargetVelocity(rb.velocity.magnitude); */ }
     }
 
     void FixedUpdate()

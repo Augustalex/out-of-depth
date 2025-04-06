@@ -1076,9 +1076,9 @@ MonoBehaviour:
   physicsRotationCorrectionThreshold: 2
   maxCorrectionTorque: 10
   stopThreshold: 0.05
-  fishVisuals: {fileID: 0}
-  playerSoundController: {fileID: 0}
-  fishSquisher: {fileID: 0}
+  fishVisuals: {fileID: 1910560555213740970}
+  playerSoundController: {fileID: 7488052155300138295}
+  fishSquisher: {fileID: 2445442782670804299}
   cameraController: {fileID: 0}
 --- !u!58 &5690493482341660329
 CircleCollider2D:
@@ -1173,24 +1173,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fc048ddca6b423f82ebb231fe0ca9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementVariation: 0.2
-  movementRadius: 10
-  boundaryForce: 1.5
-  randomDirectionChangeSpeed: 0.3
-  eyeSight: 11
+  movementVariation: 0.5
+  randomDirectionChangeSpeed: 0.5
   perceptionCheckInterval: 0.6
   perceptionLayers:
     serializedVersion: 2
     m_Bits: 4294967295
   scaredOfTags:
   - BlowFish
+  eyeSight: 11
   scaredFleeForce: 1.8
   attractedToTags:
   - PlayerFishMouth
-  attractionForce: 2
-  followTag: PlayerFish
-  followForce: 1.2
-  followDistance: 3.5
+  attractionRange: 11
+  attractionForce: 5
   avoidCollisionWithTags:
   - Fish
   collisionAvoidanceDistance: 1.5
