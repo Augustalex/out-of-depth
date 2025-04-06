@@ -43,7 +43,7 @@ public class FishEatenEffectReceiver : MonoBehaviour
             hunger = 0.1f;
         }
 
-        hunger = Mathf.Clamp(hunger, 0, 1); // Ensure hunger doesn't exceed 1
+        hunger = Mathf.Clamp(hunger, 0f, 1f); // Ensure hunger doesn't exceed 1
 
         //Slowly over time decrease the hunger   
         if (uiHungerController != null)
@@ -69,7 +69,7 @@ public class FishEatenEffectReceiver : MonoBehaviour
             if (uiHungerController != null)
             {
                 hunger += 0.1f;
-                hunger = Mathf.Clamp(hunger, 0, 1); // Ensure hunger doesn't exceed 1
+                hunger = Mathf.Clamp(hunger, 0f, 1f); // Ensure hunger doesn't exceed 1
                 uiHungerController.UpdateHungerFromStats(hunger);
                 Debug.Log("Fish consumed! Hunger increased!");
             }
