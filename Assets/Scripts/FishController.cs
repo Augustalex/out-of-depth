@@ -7,26 +7,33 @@ using UnityEngine;
 public class FishController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;
-    public float dashSpeed = 15f;
-    public float dashDuration = 0.2f;
-    public float dashCooldown = 1f;
-    public float dashImpulse = 10f;
+    public float moveSpeed = 3.5f; // Reduced from 5f for calmer movement
+    public float dashSpeed = 10f; // Reduced from 15f
+    public float dashDuration = 0.3f; // Increased from 0.2f for more deliberate dashes
+    public float dashCooldown = 1.5f; // Increased from 1f
+    public float dashImpulse = 8f; // Reduced from 10f
 
     [Header("Rotation Settings")]
     [Tooltip("How quickly the fish rotates to face movement direction")]
-    public float rotationSpeed = 5f;
+    public float rotationSpeed = 3f; // Reduced from 5f
     [Tooltip("How quickly the player returns to intended rotation")]
-    public float rotationStabilitySpeed = 10f;
+    public float rotationStabilitySpeed = 5f; // Reduced from 10f
     [Tooltip("The intended rotation angle in degrees (Z-axis)")]
     public float targetRotationAngle = 0f;
     [Tooltip("Minimum velocity required to apply rotation correction")]
-    public float minVelocityForRotationCorrection = 0.1f;
+    public float minVelocityForRotationCorrection = 0.3f; // Increased from 0.1f
     [Tooltip("Maximum tilt angle when moving up or down")]
-    public float maxTiltAngle = 15f;
+    public float maxTiltAngle = 10f; // Reduced from 15f
+
+    [Header("Stability Settings")]
+    [Tooltip("Value below which velocities are considered zero for stability")]
+    public float velocityDeadZone = 0.2f; // New stability setting
+    [Tooltip("How strongly velocity is smoothed for visual updates")]
+    public float visualSmoothingFactor = 0.8f; // New stability setting
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private Vector2 smoothedVelocity = Vector2.zero; // For smoothing out visual updates
     private bool isDashing = false;
     private float dashEndTime;
     private float lastDashTime = -Mathf.Infinity;
@@ -91,7 +98,42 @@ public class FishController : MonoBehaviour
         // Update visuals based on movement input
         if (fishVisuals != null)
         {
-            fishVisuals.UpdateVisuals(moveInput);
+            // Get current velocity and apply deadzone for stability
+            Vector2 currentVelocity = rb.velocity;
+
+            // Apply velocity deadzone for more stability
+            if (currentVelocity.magnitude < velocityDeadZone)
+            {
+                currentVelocity = Vector2.zero;
+            }
+
+            // If we have zero velocity, just use raw input for visuals
+            if (currentVelocity.magnitude < 0.001f)
+            {
+                fishVisuals.UpdateVisuals(input);
+                return;
+            }
+
+            // Smooth out velocity changes to prevent erratic visual updates
+            smoothedVelocity = Vector2.Lerp(smoothedVelocity, currentVelocity, Time.deltaTime * (1.0f - visualSmoothingFactor));
+
+            // Normalize direction vectors
+            Vector2 velocityDirection = smoothedVelocity.normalized;
+
+            // More weight to velocity at higher speeds, but input has priority at low speeds
+            float velocityWeight = Mathf.Clamp01(smoothedVelocity.magnitude / moveSpeed);
+
+            // When not actively moving (input close to zero), reduce influence even more
+            if (input.magnitude < 0.1f)
+            {
+                velocityWeight *= 0.5f;
+            }
+
+            // Blend input with smoothed velocity direction for visual updates
+            Vector2 blendedInput = Vector2.Lerp(input, velocityDirection, velocityWeight * 0.7f);
+
+            // Apply to visuals
+            fishVisuals.UpdateVisuals(blendedInput);
         }
     }
 
@@ -157,8 +199,9 @@ public class FishController : MonoBehaviour
 
     private void ApplyMovement()
     {
-        Vector2 currentMoveDirection = moveInput.normalized;
-        Vector2 targetVelocity;
+        // Calculate normalized move direction, with zero protection
+        Vector2 currentMoveDirection = moveInput.magnitude > 0.01f ? moveInput.normalized : Vector2.zero;
+        Vector2 targetVelocity = Vector2.zero;
 
         if (isDashing)
         {
@@ -177,7 +220,22 @@ public class FishController : MonoBehaviour
         }
         else
         {
-            targetVelocity = currentMoveDirection * moveSpeed;
+            // Only apply movement if input direction is significant
+            if (currentMoveDirection.magnitude > 0.01f)
+            {
+                targetVelocity = currentMoveDirection * moveSpeed;
+            }
+            else
+            {
+                // When no input, gradually slow down rather than stopping instantly
+                targetVelocity = rb.velocity * 0.95f; // 5% velocity reduction per physics frame
+
+                // If we're going very slow, just stop completely (prevents drift)
+                if (targetVelocity.magnitude < velocityDeadZone * 0.5f)
+                {
+                    targetVelocity = Vector2.zero;
+                }
+            }
         }
 
         rb.linearVelocity = targetVelocity;
