@@ -13,20 +13,24 @@ public class FishController : MonoBehaviour
     public float dashCooldown = 1f;
     public float dashImpulse = 10f;
 
-    [Header("Rotation Stability")]
+    [Header("Rotation Settings")]
+    [Tooltip("How quickly the fish rotates to face movement direction")]
+    public float rotationSpeed = 5f;
     [Tooltip("How quickly the player returns to intended rotation")]
     public float rotationStabilitySpeed = 10f;
     [Tooltip("The intended rotation angle in degrees (Z-axis)")]
     public float targetRotationAngle = 0f;
     [Tooltip("Minimum velocity required to apply rotation correction")]
     public float minVelocityForRotationCorrection = 0.1f;
+    [Tooltip("Maximum tilt angle when moving up or down")]
+    public float maxTiltAngle = 15f;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private bool isDashing = false;
     private float dashEndTime;
     private float lastDashTime = -Mathf.Infinity;
-    private bool isDashButtonHeld = false; // New variable to track if dash button is being held
+    private bool isDashButtonHeld = false;
 
     [Header("Visuals & Effects References")]
     public FishSquisher fishSquisher;
@@ -41,6 +45,9 @@ public class FishController : MonoBehaviour
     [SerializeField] private PlayerCameraController cameraController;
 
     private FishData fishData;
+
+    // Flag to identify if this is controlled by an AI
+    private bool isAIControlled = false;
 
     private void Awake()
     {
@@ -65,18 +72,35 @@ public class FishController : MonoBehaviour
         }
 
         // --- Error Checks ---
-        if (fishVisuals == null) Debug.LogWarning("PlayerController: FishVisualController reference not found.", this);
-        if (fishSquisher == null) Debug.LogWarning("PlayerController: FishSquisher reference not found.", this);
-        if (playerSoundController == null) Debug.LogWarning("PlayerController: PlayerSoundController reference not found. Dash sounds will not play.", this);
-        if (cameraController == null) Debug.LogWarning("PlayerController: PlayerCameraController reference not found. Velocity-based camera zoom will not work.", this);
-        if (fishData == null) Debug.LogWarning("PlayerController: FishData reference not found. Initial scale will not be applied.", this);
+        if (fishVisuals == null) Debug.LogWarning("FishController: FishVisualController reference not found.", this);
+        if (fishSquisher == null) Debug.LogWarning("FishController: FishSquisher reference not found.", this);
+        if (playerSoundController == null) Debug.LogWarning("FishController: PlayerSoundController reference not found. Dash sounds will not play.", this);
+        if (cameraController == null) Debug.LogWarning("FishController: PlayerCameraController reference not found. Velocity-based camera zoom will not work.", this);
+        if (fishData == null) Debug.LogWarning("FishController: FishData reference not found. Initial scale will not be applied.", this);
     }
 
-    // --- Public API methods for PlayerInputManager ---
+    // --- Public API methods for PlayerInputManager or AI systems ---
 
+    /// <summary>
+    /// Sets the direction the fish should move. Normalized internally.
+    /// </summary>
     public void SetMoveInput(Vector2 input)
     {
         moveInput = input;
+
+        // Update visuals based on movement input
+        if (fishVisuals != null)
+        {
+            fishVisuals.UpdateVisuals(moveInput);
+        }
+    }
+
+    /// <summary>
+    /// Marks this controller as AI-controlled
+    /// </summary>
+    public void SetAIControlled(bool isAI)
+    {
+        isAIControlled = isAI;
     }
 
     public void ResetState()
@@ -104,7 +128,6 @@ public class FishController : MonoBehaviour
         }
     }
 
-    // New method to handle releasing the dash button
     public void ReleaseDash()
     {
         isDashButtonHeld = false;
@@ -112,11 +135,6 @@ public class FishController : MonoBehaviour
 
     private void Update()
     {
-        if (fishVisuals != null)
-        {
-            fishVisuals.UpdateVisuals(moveInput);
-        }
-
         // End dash if max duration is reached
         if (isDashing && Time.time >= dashEndTime)
         {
@@ -124,14 +142,21 @@ public class FishController : MonoBehaviour
             isDashButtonHeld = false;
         }
 
+        // Update flutter drivers with velocity magnitude
         foreach (var driver in flutterDrivers)
         {
             driver.SetVelocity(rb.linearVelocity.magnitude);
         }
+    }
 
-        // The camera controller now directly accesses the Rigidbody2D
-        // No need to update it with velocity information
+    private void FixedUpdate()
+    {
+        ApplyMovement();
+        ApplyRotationStability();
+    }
 
+    private void ApplyMovement()
+    {
         Vector2 currentMoveDirection = moveInput.normalized;
         Vector2 targetVelocity;
 
@@ -156,6 +181,13 @@ public class FishController : MonoBehaviour
         }
 
         rb.linearVelocity = targetVelocity;
+    }
+
+    private void ApplyRotationStability()
+    {
+        // For AI-controlled fish, let the tilt be controlled by movement (FishVisualController handles this)
+        if (isAIControlled)
+            return;
 
         // Apply rotation stability when player is moving
         if (rb.linearVelocity.magnitude > minVelocityForRotationCorrection)

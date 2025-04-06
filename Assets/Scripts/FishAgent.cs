@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(FishController))]
 public class FishAgent : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [Tooltip("Base speed for the fish movement")]
-    public float moveSpeed = 3f;
     [Tooltip("Maximum strength of random movement variations")]
     public float movementVariation = 0.5f;
-    [Tooltip("How quickly the fish rotates to face movement direction")]
-    public float rotationSpeed = 5f;
     [Tooltip("Fish tries to stay within this distance from its spawn point")]
     public float movementRadius = 10f;
     [Tooltip("Strength of the desire to stay within movement radius")]
@@ -55,7 +51,7 @@ public class FishAgent : MonoBehaviour
     public bool showDebugGizmos = false;
 
     // Component references
-    private Rigidbody2D rb;
+    private FishController fishController;
     private Vector3 startPosition;
 
     // State tracking
@@ -72,12 +68,15 @@ public class FishAgent : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        fishController = GetComponent<FishController>();
         startPosition = transform.position;
 
         // Initialize with a random movement direction
         currentMovementDirection = Random.insideUnitCircle.normalized;
         UpdateRandomMovementInfluence();
+
+        // Tell the FishController this is AI-controlled
+        fishController.SetAIControlled(true);
     }
 
     private void Start()
@@ -100,26 +99,12 @@ public class FishAgent : MonoBehaviour
             UpdateRandomMovementInfluence();
             nextRandomMovementTime = Time.time + Random.Range(1f, 3f);
         }
-    }
 
-    private void FixedUpdate()
-    {
         // Calculate all movement influences
         Vector2 movement = CalculateMovement();
 
-        // Apply movement to rigidbody
-        rb.linearVelocity = movement * moveSpeed;
-
-        // Rotate to face movement direction if we're moving
-        if (movement.magnitude > 0.1f)
-        {
-            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg - 90f;
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.Euler(0, 0, angle),
-                rotationSpeed * Time.deltaTime
-            );
-        }
+        // Apply movement direction to the fish controller
+        fishController.SetMoveInput(movement);
     }
 
     private Vector2 CalculateMovement()
@@ -343,6 +328,7 @@ public class FishAgent : MonoBehaviour
 
         // Draw movement direction
         Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, rb != null ? rb.linearVelocity.normalized * 2 : Vector2.zero);
+        Vector2 currentMovement = CalculateMovement();
+        Gizmos.DrawRay(transform.position, currentMovement * 2);
     }
 }
