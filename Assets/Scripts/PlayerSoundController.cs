@@ -13,6 +13,9 @@ public class PlayerSoundController : MonoBehaviour
     [SerializeField] // Expose in Inspector but keep private
     private List<AudioClip> eatSounds = new List<AudioClip>(); // List to hold eat sounds
 
+    [SerializeField] // Expose in Inspector but keep private
+    private List<AudioClip> hurtSounds = new List<AudioClip>(); // List to hold hurt sounds
+
     [Header("Configuration")]
     [Range(0f, 1f)] // Add a slider for volume in the Inspector
     [SerializeField]
@@ -21,6 +24,10 @@ public class PlayerSoundController : MonoBehaviour
     [Range(0f, 1f)] // Add a slider for volume in the Inspector
     [SerializeField]
     private float eatVolume = 1.0f;
+
+    [Range(0f, 1f)] // Add a slider for volume in the Inspector
+    [SerializeField]
+    private float hurtVolume = 1.0f;
 
     // Reference to the required AudioSource component
     private AudioSource audioSource;
@@ -110,7 +117,41 @@ public class PlayerSoundController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Plays a random hurt sound from the list.
+    /// </summary>
+    public void PlayHurtSound()
+    {
+        // Check if there are any hurt sounds assigned in the list
+        if (hurtSounds == null || hurtSounds.Count == 0)
+        {
+            Debug.LogWarning("PlayerSoundController: No hurt sounds assigned in the list.", this);
+            return; // Exit if no sounds are available
+        }
+
+        // Check if the AudioSource component is ready
+        if (audioSource == null)
+        {
+            Debug.LogError("PlayerSoundController: AudioSource component not found!", this);
+            return; // Exit if AudioSource is missing (shouldn't happen due to [RequireComponent])
+        }
+
+        // Select a random AudioClip from the list
+        int randomIndex = Random.Range(0, hurtSounds.Count);
+        AudioClip clipToPlay = hurtSounds[randomIndex];
+
+        // Check if the selected clip is actually valid
+        if (clipToPlay != null)
+        {
+            // Play the selected sound effect once, using the specified volume
+            audioSource.PlayOneShot(clipToPlay, hurtVolume);
+        }
+        else
+        {
+            Debug.LogWarning($"PlayerSoundController: AudioClip at index {randomIndex} is null.", this);
+        }
+    }
+
     // --- Example: Add more sound methods later ---
-    // public void PlayHurtSound() { /* ... */ }
     // public void PlaySwimSound() { /* ... */ }
 }

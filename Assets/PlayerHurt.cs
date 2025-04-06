@@ -25,6 +25,17 @@ public class PlayerHurt : MonoBehaviour
     // Internal State
     private bool canBeHurt = true;
     private Coroutine disableCoroutine = null;
+    private PlayerSoundController soundController;
+
+    private void Awake()
+    {
+        // Get the sound controller component from the same GameObject
+        soundController = GetComponent<PlayerSoundController>();
+        if (soundController == null)
+        {
+            Debug.LogWarning("PlayerSoundController component not found on the same GameObject. Hurt sounds won't play.");
+        }
+    }
 
     // Called when this collider/rigidbody makes contact with another collider/rigidbody
     private void OnCollisionEnter2D(Collision2D collision)
@@ -97,6 +108,12 @@ public class PlayerHurt : MonoBehaviour
     public void OnPlayerHurt()
     {
         Debug.Log("OnPlayerHurt() called - Add custom logic here!");
+
+        // Play the hurt sound if the sound controller is available
+        if (soundController != null)
+        {
+            soundController.PlayHurtSound();
+        }
 
         // ===== ADD YOUR CUSTOM HURT CODE BELOW THIS LINE =====
         // For example:
