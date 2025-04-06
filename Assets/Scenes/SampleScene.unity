@@ -4599,6 +4599,7 @@ GameObject:
   - component: {fileID: 846229816}
   - component: {fileID: 846229813}
   - component: {fileID: 846229817}
+  - component: {fileID: 846229820}
   m_Layer: 0
   m_Name: Player
   m_TagString: PlayerFish
@@ -4835,6 +4836,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 846229814}
   cameraController: {fileID: 846229818}
+--- !u!114 &846229820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846229811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ee55b3bd41547eab599854fb983bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 2
+  enemyTags:
+  - BlowFish
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  objectToDisable: {fileID: 1024691482}
+  componentToDisable: {fileID: 0}
+  disableDuration: 1
+  hurtCooldown: 2
 --- !u!1 &871407472
 GameObject:
   m_ObjectHideFlags: 0
@@ -5504,18 +5527,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1bd395a5aa2483fa051414667605f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  introMusic: {fileID: 8300000, guid: 3ce4d9d12c36b4507b4d4462352e0d07, type: 3}
+  introMusic: {fileID: 8300000, guid: df00de399a6204e849f146a10aaaf98c, type: 3}
   normalMusic: {fileID: 8300000, guid: 90692d6c9082d4eea946453683009993, type: 3}
   dangerMusic: {fileID: 8300000, guid: 3ce4d9d12c36b4507b4d4462352e0d07, type: 3}
   startSound: {fileID: 8300000, guid: 2b12e2569c6d84d2eb32629cfb597414, type: 3}
   startSoundVolume: 0.8
   crossfadeDuration: 2
   startMode: 0
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 846229815}
   enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  detectionRange: 15
+    m_Bits: 4294967295
+  detectionRange: 30
   enemyCheckInterval: 0.25
 --- !u!4 &966367226
 Transform:
