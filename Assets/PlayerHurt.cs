@@ -18,6 +18,10 @@ public class PlayerHurt : MonoBehaviour
     [Tooltip("How long the reference stays disabled (in seconds).")]
     [SerializeField] private float disableDuration = 1.0f;
 
+    [Header("Knockback")]
+    [Tooltip("The force applied to push the player away when hurt.")]
+    [SerializeField] private float knockbackForce = 5.0f;
+
     [Header("Cooldown")]
     [Tooltip("How long the player is invincible after getting hurt (in seconds).")]
     [SerializeField] private float hurtCooldown = 2.0f;
@@ -26,6 +30,7 @@ public class PlayerHurt : MonoBehaviour
     private bool canBeHurt = true;
     private Coroutine disableCoroutine = null;
     private PlayerSoundController soundController;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
@@ -34,6 +39,13 @@ public class PlayerHurt : MonoBehaviour
         if (soundController == null)
         {
             Debug.LogWarning("PlayerSoundController component not found on the same GameObject. Hurt sounds won't play.");
+        }
+
+        // Get the Rigidbody2D component for applying knockback
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            Debug.LogWarning("Rigidbody2D component not found on the same GameObject. Knockback won't be applied.");
         }
     }
 
@@ -46,6 +58,16 @@ public class PlayerHurt : MonoBehaviour
         // Check if colliding object has an enemy tag
         if (enemyTags.Contains(collision.gameObject.tag))
         {
+            // Calculate knockback direction (away from enemy)
+            Vector2 knockbackDirection = transform.position - collision.transform.position;
+            knockbackDirection.Normalize();
+
+            // Apply knockback force
+            if (rb != null)
+            {
+                rb.velocity = knockbackDirection * knockbackForce;
+            }
+
             TriggerHurtSequence();
         }
     }
