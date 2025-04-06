@@ -4694,6 +4694,8 @@ GameObject:
   - component: {fileID: 846229820}
   - component: {fileID: 846229821}
   - component: {fileID: 846229822}
+  - component: {fileID: 846229824}
+  - component: {fileID: 846229823}
   m_Layer: 0
   m_Name: Player
   m_TagString: PlayerFish
@@ -5465,6 +5467,31 @@ ParticleSystemForceField:
         m_RotationOrder: 4
     m_MultiplyDragByParticleSize: 1
     m_MultiplyDragByParticleVelocity: 1
+--- !u!114 &846229823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846229811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3e023715481d465c97a0a8a0d2dcf8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouthCollider: {fileID: 80805284}
+--- !u!114 &846229824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846229811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75de146b47a8e4181a4dbff0e6ce6ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &871407472
 GameObject:
   m_ObjectHideFlags: 0

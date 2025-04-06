@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Eater))] // Add requirement for Eater component
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -48,12 +49,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     public CircleCollider2D mouthCollider;
 
+    // Reference to the Eater component
+    private Eater eater;
+
     // Track the current mouth state
     private bool isMouthOpen = false;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        eater = GetComponent<Eater>(); // Get the Eater component
 
         // --- Auto-find references if not set in Inspector ---
         if (fishVisuals == null) fishVisuals = GetComponentInChildren<FishVisualController>() ?? GetComponentInParent<FishVisualController>() ?? GetComponent<FishVisualController>();
@@ -112,8 +117,11 @@ public class PlayerController : MonoBehaviour
                     playerSoundController.PlayEatSound();
                 }
 
-                // Check for edible objects when mouth closes
-                CheckForEdibleObjects();
+                // Check for edible objects when mouth closes using Eater component
+                if (eater != null)
+                {
+                    eater.CheckForEdibleObjects();
+                }
             }
 
             isMouthOpen = isOpen;
@@ -121,29 +129,6 @@ public class PlayerController : MonoBehaviour
         else if (isOpen) // Only log warning when trying to open mouth
         {
             Debug.LogWarning("Tried to change mouth state, but BodyController reference is missing!", this);
-        }
-    }
-
-    // New method to check for and consume edible objects
-    private void CheckForEdibleObjects()
-    {
-        if (mouthCollider == null) return;
-
-        // Get the world position of the mouth collider
-        Vector2 mouthPosition = (Vector2)mouthCollider.transform.position + mouthCollider.offset;
-
-        // Perform circle overlap check for edible objects (2D physics)
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(mouthPosition, mouthCollider.radius);
-
-        foreach (Collider2D collider in colliders)
-        {
-            Debug.Log($"Checking collider: {collider.gameObject.name}");
-            // Check if the object has an Edible component
-            Edible edible = collider.GetComponent<Edible>();
-            if (edible != null)
-            {
-                edible.GetEaten();
-            }
         }
     }
 
