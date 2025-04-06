@@ -142,4 +142,20 @@ public class BlowFishController : MonoBehaviour
 
         return smallStateBodyController.IsMouthOpen();
     }
+
+    /// <summary>
+    /// Triggers the attack squish animation on the FishSquisher component
+    /// </summary>
+    public void TriggerAttackSquish()
+    {
+        FishSquisher fishSquisher = GetComponentInChildren<FishSquisher>();
+        if (fishSquisher != null)
+        {
+            fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Attack);
+        }
+        else
+        {
+            Debug.LogWarning("FishSquisher component not found!", this);
+        }
+    }
 }

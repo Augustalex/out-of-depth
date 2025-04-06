@@ -107,6 +107,7 @@ public class BlowFishAgent : MonoBehaviour
             if (blowFishController.IsSmallState())
             {
                 blowFishController.SetBigState();
+                blowFishController.TriggerAttackSquish(); // Trigger attack squish when expanding
             }
         }
         else
@@ -119,6 +120,7 @@ public class BlowFishAgent : MonoBehaviour
                 // Change to small state after cooldown
                 if (shrinkTimer >= shrinkCooldown)
                 {
+                    blowFishController.TriggerAttackSquish(); // Trigger attack squish before shrinking
                     blowFishController.SetSmallState();
                     // Reset to ensure mouth is closed when going back to small state
                     blowFishController.CloseMouth();
