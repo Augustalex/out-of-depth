@@ -50,6 +50,9 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Reference to the BodyController managing mouth open/close visuals.")]
     public BodyController bodyController;
 
+    [Tooltip("Reference to the EyeLidController managing eye states.")]
+    public EyeLidController eyeLidController;
+
     [Header("Flutter drivers")]
     [SerializeField]
     private List<FlutterDriver> flutterDrivers = new List<FlutterDriver>();
@@ -87,6 +90,13 @@ public class PlayerController : MonoBehaviour
                 bodyController = GetComponentInParent<BodyController>();
         }
 
+        if (eyeLidController == null)
+        {
+            eyeLidController = GetComponentInChildren<EyeLidController>(); // Often on a child object
+            if (eyeLidController == null) // Or maybe on the same object?
+                eyeLidController = GetComponent<EyeLidController>();
+        }
+
         // Find camera controller if not set
         if (cameraController == null)
         {
@@ -101,6 +111,9 @@ public class PlayerController : MonoBehaviour
 
         if (bodyController == null)
             Debug.LogWarning("PlayerController: BodyController reference not found. Mouth control will not work.", this);
+
+        if (eyeLidController == null)
+            Debug.LogWarning("PlayerController: EyeLidController reference not found. Eye state control will not work.", this);
     }
 
     // --- Public API methods for PlayerInputManager ---
@@ -157,6 +170,12 @@ public class PlayerController : MonoBehaviour
             bodyController.SetMouthState(false); // Close mouth
             isMouthOpen = false;
         }
+
+        // Ensure eye state is reset
+        if (eyeLidController != null)
+        {
+            eyeLidController.SetEyeState(EyeLidController.EyeState.Normal);
+        }
     }
 
     public void TryDash()
@@ -170,6 +189,12 @@ public class PlayerController : MonoBehaviour
 
             if (fishSquisher != null) fishSquisher.TriggerSquish(FishSquisher.SquishActionType.Dash);
             if (playerSoundController != null) playerSoundController.PlayDashSound();
+
+            // Set eyes to open state when dashing
+            if (eyeLidController != null)
+            {
+                eyeLidController.SetEyeState(EyeLidController.EyeState.Open);
+            }
 
             // Initial impulse to start the sprint
             Vector2 dashDirection = moveInput.normalized;
@@ -195,6 +220,25 @@ public class PlayerController : MonoBehaviour
         {
             isDashing = false;
             isDashButtonHeld = false;
+
+            // Set eyes back to normal if we're not boosting
+            if (eyeLidController != null && !isBoostActive)
+            {
+                eyeLidController.SetEyeState(EyeLidController.EyeState.Normal);
+            }
+        }
+
+        // Update eye state based on current player state
+        if (eyeLidController != null)
+        {
+            if (isDashing || isBoostActive)
+            {
+                eyeLidController.SetEyeState(EyeLidController.EyeState.Open);
+            }
+            else
+            {
+                eyeLidController.SetEyeState(EyeLidController.EyeState.Normal);
+            }
         }
 
         foreach (var driver in flutterDrivers)
@@ -216,6 +260,12 @@ public class PlayerController : MonoBehaviour
             {
                 Destroy(activeBoostEffect);
                 activeBoostEffect = null;
+            }
+
+            // Set eyes back to normal if we're not dashing
+            if (eyeLidController != null && !isDashing)
+            {
+                eyeLidController.SetEyeState(EyeLidController.EyeState.Normal);
             }
 
             Debug.Log("Speed boost ended!");
@@ -288,6 +338,12 @@ public class PlayerController : MonoBehaviour
         if (boostEffectPrefab != null && activeBoostEffect == null)
         {
             activeBoostEffect = Instantiate(boostEffectPrefab, transform);
+        }
+
+        // Open eyes during boost
+        if (eyeLidController != null)
+        {
+            eyeLidController.SetEyeState(EyeLidController.EyeState.Open);
         }
 
         // Optional: Add sound effect
