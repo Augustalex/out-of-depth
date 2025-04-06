@@ -11,6 +11,9 @@ public class TitleScreenController : MonoBehaviour
     [Tooltip("The main Player GameObject")]
     public GameObject playerObject; // Assign your Player GameObject
 
+    [Tooltip("The in-game UI GameObject")]
+    public GameObject inGameUI; // Assign your Player GameObject
+
     [Header("Timing Settings")]
     [Tooltip("Delay in seconds after hiding UI before enabling the player")]
     public float delayBeforePlayerEnable = 2.0f; // Set your desired delay
@@ -30,6 +33,15 @@ public class TitleScreenController : MonoBehaviour
         else
         {
             Debug.LogError("Player Object not assigned in the TitleScreenController!");
+        }
+
+        if (inGameUI != null)
+        {
+            inGameUI.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("In-Game UI not assigned in the TitleScreenController!");
         }
 
         // Ensure the Title Screen UI is initially enabled
@@ -110,6 +122,16 @@ public class TitleScreenController : MonoBehaviour
         else
         {
             Debug.LogError("Cannot enable Player Object - it was not assigned!");
+        }
+
+        if (inGameUI != null)
+        {
+            inGameUI.SetActive(true);
+            Debug.Log("In-Game UI enabled.");
+        }
+        else
+        {
+            Debug.LogError("Cannot enable In-Game UI - it was not assigned!");
         }
 
         // Optional: You might want to disable this controller script now if it's no longer needed
