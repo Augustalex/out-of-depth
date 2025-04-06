@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class PlayerHurt : MonoBehaviour
 {
+    [SerializeField] private UiLifeController uiLifeController;
+    [SerializeField] private GameObject endScreen;
+    [SerializeField] private MusicController musicController;
+
     [Header("Collision Settings")]
     [Tooltip("List of tags that identify an enemy.")]
     [SerializeField] private List<string> enemyTags = new List<string> { "Enemy" };
@@ -135,6 +139,16 @@ public class PlayerHurt : MonoBehaviour
         if (soundController != null)
         {
             soundController.PlayHurtSound();
+        }
+
+        if (uiLifeController != null)
+        {
+            uiLifeController.TakeOneLife();
+            if (uiLifeController.HasNoMoreLife())
+            {
+                endScreen.SetActive(true);
+                musicController.SwitchMode(MusicController.GameMode.Intro);
+            }
         }
 
         // ===== ADD YOUR CUSTOM HURT CODE BELOW THIS LINE =====
