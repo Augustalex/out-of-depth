@@ -1200,6 +1200,7 @@ MonoBehaviour:
   detectionTags:
   - PlayerFish
   detectionRadius: 10
+  attackRange: 2
 --- !u!114 &7436237809076247951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1483,7 +1484,7 @@ MonoBehaviour:
   flipEnabled: 1
   maxTiltAngle: 15
   tiltSmoothTime: 0.2
-  spriteFacesRightInitially: 1
+  spriteFacesRightInitially: 0
   flipVelocityThreshold: 0.5
   movementVelocityThreshold: 0.2
   flipCooldown: 0.5
