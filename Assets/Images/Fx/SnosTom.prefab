@@ -12,10 +12,8 @@ GameObject:
   - component: {fileID: 4009651317984305448}
   - component: {fileID: 1245844703373322952}
   - component: {fileID: 1459332220687566415}
-  - component: {fileID: 7734510115104820556}
-  - component: {fileID: 2239537617037733864}
   m_Layer: 0
-  m_Name: Snus
+  m_Name: SnosTom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: -309572387
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 3213220992121628062, guid: 5ce42825620134605ac8db141a462bed, type: 3}
+  m_Sprite: {fileID: 5520538840199693385, guid: 6cab9cd96446b45c79e4b3473e2323f2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -154,35 +152,3 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.67
---- !u!114 &7734510115104820556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3590986668700426748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffdb6690241f14d6d89a648d452eca6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointValue: 1
-  onEaten:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &2239537617037733864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3590986668700426748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78fe23369f8d149288c82a208958bb88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toSpawn:
-  - {fileID: 3562307584936742019, guid: 7af184d7ddda74a80b8de23d2b02629a, type: 3}
-  useRandomRotation: 1
-  maxRandomRotationAngle: 32
