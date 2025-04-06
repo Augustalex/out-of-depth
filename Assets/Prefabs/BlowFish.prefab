@@ -1699,6 +1699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4148da026560043bb8d7e04815c8ba09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipEnabled: 1
   maxTiltAngle: 15
   tiltSmoothTime: 0.2
   spriteFacesRightInitially: 1
@@ -2802,8 +2803,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce41b8de125d4a168521c836402bcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishVisuals: {fileID: 0}
-  playerSoundController: {fileID: 0}
+  rb: {fileID: 1186053262317242918}
+  fishVisuals: {fileID: 6349968265068822832}
+  playerSoundController: {fileID: 7026973537295196777}
 --- !u!114 &5950252425258346039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2873,3 +2875,4 @@ MonoBehaviour:
   physicsRotationCorrectionTorque: 5
   physicsRotationCorrectionThreshold: 2
   maxCorrectionTorque: 10
+  rb: {fileID: 1186053262317242918}

@@ -1137,8 +1137,8 @@ MonoBehaviour:
   fleeSpeedMultiplier: 1.5
   attractedToTags:
   - PlayerFish
-  attractionRange: 5
-  attractionSpeedMultiplier: 1
+  attractionRange: 10
+  attractionSpeedMultiplier: 2
   avoidCollisionWithTags: []
   collisionAvoidanceDistance: 1.5
   collisionAvoidanceOffset: 1

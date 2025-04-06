@@ -15,8 +15,13 @@ public class BadFishAgent : MonoBehaviour
     [Tooltip("Radius within which to detect tagged objects")]
     public float detectionRadius = 5f;
 
-    // Private tracking variable
+    [Tooltip("Radius within which to attack detected objects (must be smaller than detection radius)")]
+    public float attackRange = 2f;
+
+    // Private tracking variables
     private bool taggedObjectDetected = false;
+    private bool objectInAttackRange = false;
+    private GameObject currentTarget = null;
 
     private void Start()
     {
@@ -39,19 +44,42 @@ public class BadFishAgent : MonoBehaviour
 
     private void Update()
     {
-        // Check for nearby objects with specified tags
-        bool detectedThisFrame = DetectNearbyObjects();
+        // Check for nearby objects and get detection results
+        DetectionResult result = DetectNearbyObjects();
 
-        // Update mouth state based on detection
-        HandleMouthState(detectedThisFrame);
+        // Update mouth state based on detection but not attack
+        if (!result.inAttackRange)
+        {
+            HandleMouthState(result.detected);
+        }
+
+        // Handle attack behavior separately
+        HandleAttackState(result.inAttackRange);
+    }
+
+    // Structure to hold detection results
+    private struct DetectionResult
+    {
+        public bool detected;
+        public bool inAttackRange;
+        public GameObject target;
     }
 
     /// <summary>
     /// Checks for nearby game objects with specified tags within the detection radius.
     /// </summary>
-    /// <returns>True if a tagged object is detected, false otherwise.</returns>
-    private bool DetectNearbyObjects()
+    /// <returns>Detection results including if object is detected and if in attack range.</returns>
+    private DetectionResult DetectNearbyObjects()
     {
+        DetectionResult result = new DetectionResult
+        {
+            detected = false,
+            inAttackRange = false,
+            target = null
+        };
+
+        float closestDistance = float.MaxValue;
+
         // Check for each tag
         foreach (string tag in detectionTags)
         {
@@ -65,15 +93,30 @@ public class BadFishAgent : MonoBehaviour
                 if (obj == this.gameObject) continue;
 
                 float distance = Vector3.Distance(transform.position, obj.transform.position);
+
+                // Track the closest object
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    result.target = obj;
+                }
+
+                // Check detection range
                 if (distance <= detectionRadius)
                 {
-                    return true; // Found a tagged object within range
+                    result.detected = true;
+
+                    // Check if within attack range
+                    if (distance <= attackRange)
+                    {
+                        result.inAttackRange = true;
+                    }
                 }
             }
         }
 
-        // No tagged objects found within range
-        return false;
+        currentTarget = result.target; // Store the current target
+        return result;
     }
 
     /// <summary>
@@ -101,10 +144,37 @@ public class BadFishAgent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the attack behavior when objects enter attack range.
+    /// </summary>
+    /// <param name="isInAttackRange">Whether a tagged object is within attack range.</param>
+    private void HandleAttackState(bool isInAttackRange)
+    {
+        // If attack state changed
+        if (isInAttackRange != objectInAttackRange)
+        {
+            objectInAttackRange = isInAttackRange; // Update tracked state
+
+            if (objectInAttackRange)
+            {
+                // Close mouth when attacking
+                fishController.CloseMouth();
+
+                // Execute attack
+                fishController.Attack(currentTarget);
+            }
+        }
+    }
+
     // Helper method to visualize the detection radius in the editor
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan; // Changed color for differentiation
+        // Draw detection range
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
+
+        // Draw attack range with a different color
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

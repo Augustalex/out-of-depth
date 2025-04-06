@@ -102,10 +102,29 @@ public class BadFishController : MonoBehaviour
         // }
     }
 
-    // Removed methods related to Big/Small states:
-    // - SetSmallState()
-    // - SetBigState()
-    // - SetSmallStateMouth() (replaced by direct Open/Close Mouth)
-    // - IsSmallState()
-    // - IsBigState()
+    /// <summary>
+    /// Performs an attack action on the target.
+    /// </summary>
+    /// <param name="target">The GameObject being attacked (can be null)</param>
+    public void Attack(GameObject target)
+    {
+        // Trigger attack animation if available
+        TriggerAttackSquish();
+
+        // Call the attack event that can be implemented later
+        OnAttack(target);
+
+        // Debug log for now
+        Debug.Log("Fish attacking: " + (target != null ? target.name : "no target"), this);
+    }
+
+    /// <summary>
+    /// Override this method to implement custom attack logic.
+    /// </summary>
+    /// <param name="target">The GameObject being attacked (can be null)</param>
+    protected virtual void OnAttack(GameObject target)
+    {
+        // This is a placeholder for custom attack logic
+        // Override this in derived classes to implement specific behavior
+    }
 }

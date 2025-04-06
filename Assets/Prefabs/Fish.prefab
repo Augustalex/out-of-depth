@@ -749,6 +749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4148da026560043bb8d7e04815c8ba09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipEnabled: 1
   maxTiltAngle: 15
   tiltSmoothTime: 0.2
   spriteFacesRightInitially: 1
@@ -1065,6 +1066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce41b8de125d4a168521c836402bcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 8340884570026657536}
   fishVisuals: {fileID: 1910560555213740970}
   playerSoundController: {fileID: 7488052155300138295}
 --- !u!58 &5690493482341660329
@@ -1204,6 +1206,7 @@ MonoBehaviour:
   physicsRotationCorrectionTorque: 5
   physicsRotationCorrectionThreshold: 2
   maxCorrectionTorque: 10
+  rb: {fileID: 8340884570026657536}
 --- !u!1 &6017094326816255575
 GameObject:
   m_ObjectHideFlags: 0
