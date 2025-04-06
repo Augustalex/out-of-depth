@@ -20584,7 +20584,7 @@ MonoBehaviour:
   playerObject: {fileID: 846229811}
   inGameUI: {fileID: 1223623018}
   delayBeforePlayerEnable: 2
-  autoStartTime: 1
+  autoStartTime: 10
 --- !u!4 &1877939754
 Transform:
   m_ObjectHideFlags: 0
