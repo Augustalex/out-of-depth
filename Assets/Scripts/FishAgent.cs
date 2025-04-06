@@ -213,7 +213,8 @@ public class FishAgent : MonoBehaviour
         currentAttractions.Clear();
         currentFollowTarget = null;
         currentObstacles.Clear();
-        Collider2D[] nearbyColliders = Physics2D.OverlapCircleAll(transform.position, eyeSight, perceptionLayers);
+        // Collider2D[] nearbyColliders = Physics2D.OverlapCircleAll(transform.position, eyeSight, perceptionLayers);
+        Collider2D[] nearbyColliders = Physics2D.OverlapCircleAll(transform.position, eyeSight);
         Transform closestFollowTarget = null;
         float closestFollowDist = float.MaxValue;
 

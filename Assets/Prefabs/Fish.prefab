@@ -851,7 +851,7 @@ GameObject:
   - component: {fileID: 204979691788536550}
   m_Layer: 0
   m_Name: Fish
-  m_TagString: Untagged
+  m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1177,19 +1177,22 @@ MonoBehaviour:
   movementRadius: 10
   boundaryForce: 1.5
   randomDirectionChangeSpeed: 0.3
-  eyeSight: 7
+  eyeSight: 11
   perceptionCheckInterval: 0.6
   perceptionLayers:
     serializedVersion: 2
-    m_Bits: 0
-  scaredOfTags: []
+    m_Bits: 4294967295
+  scaredOfTags:
+  - BlowFish
   scaredFleeForce: 1.8
-  attractedToTags: []
-  attractionForce: 0.8
-  followTag: 
+  attractedToTags:
+  - PlayerFishMouth
+  attractionForce: 2
+  followTag: PlayerFish
   followForce: 1.2
   followDistance: 3.5
-  avoidCollisionWithTags: []
+  avoidCollisionWithTags:
+  - Fish
   collisionAvoidanceDistance: 1.5
   collisionAvoidanceForce: 2.5
   showDebugGizmos: 0
