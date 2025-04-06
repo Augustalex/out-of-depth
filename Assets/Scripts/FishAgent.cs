@@ -127,18 +127,6 @@ public class FishAgent : MonoBehaviour
             Vector2 directionToTarget = collider.transform.position - transform.position;
             float distanceSqr = directionToTarget.sqrMagnitude; // Use squared distance for efficiency
 
-            // Check for Threats (within eyeSight)
-            foreach (var scaryTag in scaredOfTags)
-            {
-                if (!string.IsNullOrEmpty(scaryTag) && targetObj.CompareTag(scaryTag))
-                {
-                    if (distanceSqr < eyeSight * eyeSight)
-                    {
-                        currentThreats.Add(collider.transform);
-                        goto NextCollider; // Found purpose for this collider, move to next one
-                    }
-                }
-            }
 
             // Check for Attractions (within attractionRange) - Only if not already a threat
             foreach (var attractiveTag in attractedToTags)
@@ -149,6 +137,19 @@ public class FishAgent : MonoBehaviour
                     {
                         currentAttractions.Add(collider.transform);
                         goto NextCollider; // Found purpose for this collider
+                    }
+                }
+            }
+
+            // Check for Threats (within eyeSight)
+            foreach (var scaryTag in scaredOfTags)
+            {
+                if (!string.IsNullOrEmpty(scaryTag) && targetObj.CompareTag(scaryTag))
+                {
+                    if (distanceSqr < eyeSight * eyeSight)
+                    {
+                        currentThreats.Add(collider.transform);
+                        goto NextCollider; // Found purpose for this collider, move to next one
                     }
                 }
             }
