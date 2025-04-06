@@ -63,5 +63,8 @@ TagManager:
   - name: Light
     uniqueID: 3112956131
     locked: 0
+  - name: Bubbles
+    uniqueID: 3011444965
+    locked: 0
   m_RenderingLayers:
   - Default

@@ -117,6 +117,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BeHappy"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2e9e490-a939-47a7-82e9-fcf6f11aec5d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,6 +205,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""OpenMouth"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5321467f-d0d8-46a9-8d78-45f0ef6b4b44"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BeHappy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c90084c-a6f4-4771-8201-04c554b567bf"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BeHappy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -246,6 +277,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_OpenMouth = m_Player.FindAction("OpenMouth", throwIfNotFound: true);
+        m_Player_BeHappy = m_Player.FindAction("BeHappy", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
@@ -333,6 +365,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_OpenMouth;
+    private readonly InputAction m_Player_BeHappy;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -356,6 +389,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/OpenMouth".
         /// </summary>
         public InputAction @OpenMouth => m_Wrapper.m_Player_OpenMouth;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/BeHappy".
+        /// </summary>
+        public InputAction @BeHappy => m_Wrapper.m_Player_BeHappy;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -391,6 +428,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OpenMouth.started += instance.OnOpenMouth;
             @OpenMouth.performed += instance.OnOpenMouth;
             @OpenMouth.canceled += instance.OnOpenMouth;
+            @BeHappy.started += instance.OnBeHappy;
+            @BeHappy.performed += instance.OnBeHappy;
+            @BeHappy.canceled += instance.OnBeHappy;
         }
 
         /// <summary>
@@ -411,6 +451,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OpenMouth.started -= instance.OnOpenMouth;
             @OpenMouth.performed -= instance.OnOpenMouth;
             @OpenMouth.canceled -= instance.OnOpenMouth;
+            @BeHappy.started -= instance.OnBeHappy;
+            @BeHappy.performed -= instance.OnBeHappy;
+            @BeHappy.canceled -= instance.OnBeHappy;
         }
 
         /// <summary>
@@ -568,6 +611,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenMouth(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BeHappy" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBeHappy(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Camera" which allows adding and removing callbacks.

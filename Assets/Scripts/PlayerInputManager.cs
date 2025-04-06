@@ -13,6 +13,9 @@ public class PlayerInputManager : MonoBehaviour
     [Tooltip("Reference to the PlayerCameraController component")]
     [SerializeField] private PlayerCameraController cameraController;
 
+    [Tooltip("Reference to the HappyAnimation component")]
+    [SerializeField] private HappyAnimation happyAnimation;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -37,6 +40,8 @@ public class PlayerInputManager : MonoBehaviour
 
         // Camera Zoom Control
         inputActions.Camera.Zoom.performed += OnZoomPerformed;
+
+        inputActions.Player.BeHappy.performed += OnBeHappyPerformed;
     }
 
     private void OnDisable()
@@ -95,6 +100,14 @@ public class PlayerInputManager : MonoBehaviour
         {
             float scrollInput = context.ReadValue<float>();
             cameraController.HandleZoomInput(scrollInput);
+        }
+    }
+
+    private void OnBeHappyPerformed(InputAction.CallbackContext context)
+    {
+        if (happyAnimation != null)
+        {
+            happyAnimation.PlayAnimation();
         }
     }
 }
