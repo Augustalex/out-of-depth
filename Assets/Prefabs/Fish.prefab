@@ -1046,7 +1046,7 @@ MonoBehaviour:
   useRandomScale: 1
   minScale: 0.896
   maxScale: 2
-  fishBoneTemplate: {fileID: 3571941505890944657, guid: b947537ee826349239b23a5799bd83a0, type: 3}
+  fishBoneTemplate: {fileID: 1669804793712892331, guid: ab8c2ab39b0f3460d8b392df58f5c999, type: 3}
 --- !u!114 &8258382212973970609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1399,7 +1399,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5587272954440087377}

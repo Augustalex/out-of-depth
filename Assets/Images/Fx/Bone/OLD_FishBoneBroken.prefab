@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7084939625849672680}
   m_Layer: 0
-  m_Name: DetachedFishBone
+  m_Name: OLD_FishBoneBroken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ SpriteRenderer:
   m_SortingLayerID: 831792809
   m_SortingLayer: 5
   m_SortingOrder: 99
-  m_Sprite: {fileID: -7468634125171291345, guid: 751144f68ff3447f2b05f18098487749, type: 3}
+  m_Sprite: {fileID: 4221122301876573733, guid: 27f7dac4ab12c4afdb0972ba5f8c602c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -163,6 +163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 0
   maxSpeed: 0.2
+  applyRandomTorque: 1
+  minTorque: -10
+  maxTorque: 10
 --- !u!1 &8490762479188970311
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +244,7 @@ SpriteRenderer:
   m_SortingLayerID: 831792809
   m_SortingLayer: 5
   m_SortingOrder: 99
-  m_Sprite: {fileID: -3303559027311521509, guid: 751144f68ff3447f2b05f18098487749, type: 3}
+  m_Sprite: {fileID: 1091865560633332238, guid: 27f7dac4ab12c4afdb0972ba5f8c602c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -293,3 +296,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 0
   maxSpeed: 0.2
+  applyRandomTorque: 1
+  minTorque: -10
+  maxTorque: 10
