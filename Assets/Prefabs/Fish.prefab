@@ -846,6 +846,7 @@ GameObject:
   - component: {fileID: 5690493482341660329}
   - component: {fileID: 9218446644594345741}
   - component: {fileID: 7103268820930557215}
+  - component: {fileID: 204979691788536550}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -1155,6 +1156,41 @@ MonoBehaviour:
   - {fileID: 7461934049047385016}
   - {fileID: 4908109630836937078}
   - {fileID: 2527561340223529799}
+--- !u!114 &204979691788536550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fc048ddca6b423f82ebb231fe0ca9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  movementVariation: 0.5
+  rotationSpeed: 5
+  movementRadius: 10
+  boundaryForce: 5
+  eyeSight: 8
+  perceptionCheckInterval: 1
+  perceptionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  scaredOfTags:
+  - BlowFish
+  scaredFleeForce: 3
+  attractedToTags: []
+  attractionForce: 1.5
+  followTag: PlayerFish
+  followForce: 2
+  followDistance: 3
+  avoidCollisionWithTags:
+  - Fish
+  collisionAvoidanceDistance: 2
+  collisionAvoidanceForce: 2
+  showDebugGizmos: 0
 --- !u!1 &6017094326816255575
 GameObject:
   m_ObjectHideFlags: 0
