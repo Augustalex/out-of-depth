@@ -12,7 +12,8 @@ public class FishData : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        // Set the initial scale of the fish
+        transform.localScale = initialScale;
     }
 
     // Update is called once per frame

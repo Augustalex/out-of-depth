@@ -6,57 +6,41 @@ using UnityEngine;
 [RequireComponent(typeof(FishController))]
 public class FishAgent : MonoBehaviour
 {
+    // --- Existing Headers and Parameters (Adjusted Defaults from previous step) ---
     [Header("Movement Settings")]
-    [Tooltip("Maximum strength of random movement variations")]
-    public float movementVariation = 0.2f; // Further Reduced
-    [Tooltip("Fish tries to stay within this distance from its spawn point")]
+    public float movementVariation = 0.2f;
     public float movementRadius = 10f;
-    [Tooltip("Strength of the desire to stay within movement radius")]
-    public float boundaryForce = 1.5f; // Further Reduced
-    [Tooltip("How quickly the fish changes its random wander direction (lower is slower/calmer)")]
-    public float randomDirectionChangeSpeed = 0.3f; // Reduced for calmer turns
+    public float boundaryForce = 1.5f;
+    public float randomDirectionChangeSpeed = 0.3f;
 
     [Header("Perception Settings")]
-    [Tooltip("How far the fish can see other objects")]
-    public float eyeSight = 7f; // Slightly reduced range
-    [Tooltip("How often (in seconds) the fish checks for objects of interest")]
-    public float perceptionCheckInterval = 0.6f; // Slightly less frequent checks due to slower speed
-    [Tooltip("Layer mask for objects the fish can perceive")]
+    public float eyeSight = 7f;
+    public float perceptionCheckInterval = 0.6f;
     public LayerMask perceptionLayers;
 
     [Header("Behavior Settings")]
-    [Tooltip("Tags that scare the fish away")]
     public List<string> scaredOfTags = new List<string>();
-    [Tooltip("Force multiplier when fleeing from scary objects")]
-    public float scaredFleeForce = 1.8f; // Further Reduced
-
-    [Tooltip("Tags the fish is attracted to")]
+    public float scaredFleeForce = 1.8f;
     public List<string> attractedToTags = new List<string>();
-    [Tooltip("Force multiplier when moving toward attractive objects")]
-    public float attractionForce = 0.8f; // Further Reduced
-
-    [Tooltip("Tag the fish will follow if seen")]
+    public float attractionForce = 0.8f;
     public string followTag;
-    [Tooltip("Force multiplier when following target")]
-    public float followForce = 1.2f; // Further Reduced
-    [Tooltip("How close the fish tries to get to follow target")]
-    public float followDistance = 3.5f; // Slightly increased distance
+    public float followForce = 1.2f;
+    public float followDistance = 3.5f;
 
     [Header("Collision Avoidance")]
-    [Tooltip("Tags to avoid colliding with")]
     public List<string> avoidCollisionWithTags = new List<string>();
-    [Tooltip("Distance at which collision avoidance activates")]
     public float collisionAvoidanceDistance = 1.5f;
-    [Tooltip("Force applied to avoid collisions")]
-    public float collisionAvoidanceForce = 2.5f; // Keep avoidance relatively strong but lower than before
+    public float collisionAvoidanceForce = 2.5f;
 
     [Header("Debug Visualization")]
     public bool showDebugGizmos = false;
 
-    // --- Private fields remain the same ---
+    // --- Component references ---
     private FishController fishController;
     private Vector3 startPosition;
-    private Vector2 currentWanderDirection;
+
+    // --- State tracking ---
+    private Vector2 currentWanderDirection; // This needs to be accessible
     private float nextPerceptionCheckTime;
     private Transform currentFollowTarget;
     private List<Transform> currentThreats = new List<Transform>();
@@ -65,10 +49,12 @@ public class FishAgent : MonoBehaviour
     private Vector2 randomMovementInfluence;
     private float nextRandomInfluenceTime;
 
+    // --- Public Getter for Wander Direction ---
+    /// <summary>
+    /// Gets the current underlying wander direction of the fish.
+    /// </summary>
+    public Vector2 CurrentWanderDirection => currentWanderDirection;
 
-    // --- Awake, Update, PerceiveEnvironment, CalculateCollisionAvoidance, UpdateRandomMovementInfluence, OnDrawGizmos ---
-    // No logical changes needed in these methods from the previous revision for this request.
-    // The core logic for calculating desired direction remains, but the forces influencing it are weaker.
 
     void Awake()
     {
@@ -78,8 +64,6 @@ public class FishAgent : MonoBehaviour
         UpdateRandomMovementInfluence();
         fishController.SetAIControlled(true);
     }
-
-    void Start() { } // Keep Start empty or add initialization if needed
 
     void Update()
     {
@@ -92,24 +76,27 @@ public class FishAgent : MonoBehaviour
         if (Time.time >= nextRandomInfluenceTime)
         {
             UpdateRandomMovementInfluence();
-            nextRandomInfluenceTime = Time.time + Random.Range(2.0f, 5.0f); // Longer interval for influence changes
+            nextRandomInfluenceTime = Time.time + Random.Range(2.0f, 5.0f);
         }
 
+        // Smoothly update the base wander direction
         currentWanderDirection = Vector2.Lerp(currentWanderDirection, (currentWanderDirection + randomMovementInfluence).normalized, Time.deltaTime * randomDirectionChangeSpeed).normalized;
 
-        Vector2 desiredDirection = CalculateDesiredDirection();
-        fishController.SetMoveInput(desiredDirection);
+        // Calculate the desired high-level direction (flee, follow, attract, avoid, boundary nudge)
+        // If none of these are strong, the fish controller will use the CurrentWanderDirection for idle movement.
+        Vector2 primaryDesiredDirection = CalculatePrimaryDesiredDirection();
+        fishController.SetMoveInput(primaryDesiredDirection); // Send the primary goal direction
     }
 
-
-    Vector2 CalculateDesiredDirection()
+    // Renamed to better reflect its purpose - calculates the *main* goal, excluding basic wander
+    Vector2 CalculatePrimaryDesiredDirection()
     {
         Vector2 combinedForce = Vector2.zero;
-        float totalWeight = 0f;
+        bool hasPrimaryGoal = false; // Flag if flee/follow/attract/boundary provides a direction
 
-        // --- Calculate forces/influences ---
+        // --- Calculate Primary Forces ---
 
-        // 1. Flee from threats
+        // 1. Flee from threats (Highest Priority)
         Vector2 fleeForce = Vector2.zero;
         if (currentThreats.Count > 0)
         {
@@ -127,28 +114,28 @@ public class FishAgent : MonoBehaviour
             if (fleeForce.magnitude > 0.01f)
             {
                 combinedForce += fleeForce.normalized * scaredFleeForce;
-                totalWeight += scaredFleeForce;
+                hasPrimaryGoal = true;
             }
         }
 
-        // 2. Follow target
+        // 2. Follow target (High Priority, but less than fleeing)
         Vector2 followForceVec = Vector2.zero;
-        if (totalWeight < scaredFleeForce * 0.5f && currentFollowTarget != null)
+        if (!hasPrimaryGoal && currentFollowTarget != null) // Only follow if not fleeing
         {
             Vector2 dirToTarget = (Vector2)(currentFollowTarget.position - transform.position);
             float distance = dirToTarget.magnitude;
             if (distance > 0.01f)
             {
-                float desiredSpeed = (distance > followDistance) ? 1.0f : Mathf.Clamp01(distance / followDistance);
-                followForceVec = dirToTarget.normalized * desiredSpeed;
-                combinedForce += followForceVec.normalized * followForce;
-                totalWeight += followForce;
+                float desiredSpeedFactor = (distance > followDistance) ? 1.0f : Mathf.Clamp01(distance / followDistance); // Slow down when close
+                followForceVec = dirToTarget.normalized * desiredSpeedFactor;
+                combinedForce += followForceVec.normalized * followForce; // Use normalized direction scaled by force
+                hasPrimaryGoal = true;
             }
         }
 
-        // 3. Move toward attractions
+        // 3. Move toward attractions (Medium Priority)
         Vector2 attractForce = Vector2.zero;
-        if (totalWeight < (scaredFleeForce + followForce) * 0.5f && currentAttractions.Count > 0)
+        if (!hasPrimaryGoal && currentAttractions.Count > 0) // Only attract if not fleeing/following
         {
             foreach (var attraction in currentAttractions)
             {
@@ -164,63 +151,61 @@ public class FishAgent : MonoBehaviour
             if (attractForce.magnitude > 0.01f)
             {
                 combinedForce += attractForce.normalized * attractionForce;
-                totalWeight += attractionForce;
+                hasPrimaryGoal = true;
             }
         }
 
-        // 4. Default behavior: Wander within radius
-        Vector2 wanderForce = currentWanderDirection;
+        // 4. Boundary Nudge (Considered a primary goal if active)
         float distanceFromStart = Vector2.Distance(transform.position, startPosition);
-        if (distanceFromStart > movementRadius)
+        if (distanceFromStart > movementRadius * 0.7f) // Start nudging back somewhat early
         {
             Vector2 dirToStart = ((Vector2)startPosition - (Vector2)transform.position).normalized;
-            float boundaryInfluence = Mathf.Clamp01((distanceFromStart - movementRadius) / (movementRadius * 0.5f));
-            wanderForce = Vector2.Lerp(wanderForce, dirToStart, boundaryInfluence).normalized;
-            combinedForce += wanderForce * boundaryForce;
-            totalWeight += boundaryForce;
-        }
-        else if (distanceFromStart > movementRadius * 0.7f)
-        {
-            Vector2 dirToStart = ((Vector2)startPosition - (Vector2)transform.position).normalized;
-            float boundaryInfluence = Mathf.Clamp01((distanceFromStart - movementRadius * 0.7f) / (movementRadius * 0.3f));
-            wanderForce = Vector2.Lerp(wanderForce, dirToStart, boundaryInfluence * 0.5f).normalized;
-            combinedForce += wanderForce * 1.0f; // Use a base weight of 1 for wander/boundary
-            totalWeight += 1.0f;
-        }
-        else
-        {
-            if (totalWeight < 0.1f) // Only wander strongly if nothing else is happening
+            float boundaryInfluence = 0f;
+            if (distanceFromStart > movementRadius) // Stronger force when outside
             {
-                combinedForce += wanderForce * 1.0f; // Base wander weight
-                totalWeight += 1.0f;
+                boundaryInfluence = Mathf.Clamp01((distanceFromStart - movementRadius) / (movementRadius * 0.5f));
+                combinedForce += dirToStart * boundaryForce * boundaryInfluence; // Scaled by how far outside
+                hasPrimaryGoal = true; // Definitely a primary goal if outside radius
+            }
+            else // Gentle nudge when approaching edge
+            {
+                boundaryInfluence = Mathf.Clamp01((distanceFromStart - movementRadius * 0.7f) / (movementRadius * 0.3f));
+                // Add a weaker boundary force blended slightly with wander, only if no other goal exists yet
+                if (!hasPrimaryGoal)
+                {
+                    Vector2 nudgeForce = Vector2.Lerp(currentWanderDirection, dirToStart, boundaryInfluence * 0.6f).normalized; // Gentle blend
+                    combinedForce += nudgeForce * (boundaryForce * 0.5f); // Use half boundary force for the nudge inside
+                    hasPrimaryGoal = true; // Nudging is now the primary goal
+                }
             }
         }
 
 
-        // 5. Always apply collision avoidance
+        // 5. Always calculate collision avoidance
         Vector2 avoidanceForce = CalculateCollisionAvoidance();
         if (avoidanceForce.magnitude > 0.01f)
         {
+            // Add avoidance force. If other forces exist, it blends. If avoidance is strong, it might dominate.
             combinedForce += avoidanceForce * collisionAvoidanceForce;
-            // Avoidance is additive and weighted by its force
+            // We don't set hasPrimaryGoal = true here, avoidance modifies the existing goal or wander.
         }
 
 
-        // --- Combine and Finalize ---
+        // --- Finalize ---
         if (combinedForce.magnitude > 0.01f)
         {
-            // Clamp magnitude to prevent excessive speed from combined forces, especially avoidance
-            return Vector2.ClampMagnitude(combinedForce, 1.0f);
-        }
-        else if (wanderForce.magnitude > 0.01f && totalWeight < 0.1f) // Ensure wander doesn't fight boundary nudge
-        {
-            // If all else is zero, just wander (but check totalWeight to avoid conflicts)
-            return wanderForce.normalized;
+            // If there's any calculated force (flee, follow, attract, boundary, avoidance) return its direction
+            return combinedForce.normalized; // Normalize the final calculated direction
         }
 
-        // Default fallback if truly idle (e.g., perfectly balanced forces)
-        return Vector2.zero; // Return zero vector if no direction decided
+        // If no primary goal was determined (and avoidance wasn't strong enough to create a vector),
+        // return Vector2.zero. The FishController will then use CurrentWanderDirection for idle movement.
+        return Vector2.zero;
     }
+
+    // --- PerceiveEnvironment, CalculateCollisionAvoidance, UpdateRandomMovementInfluence, OnDrawGizmos ---
+    // No changes needed in these from the previous step for these specific requests.
+    // Calculation logic remains, but the output interpretation changes slightly based on hasPrimaryGoal.
 
     void PerceiveEnvironment()
     {
@@ -228,7 +213,6 @@ public class FishAgent : MonoBehaviour
         currentAttractions.Clear();
         currentFollowTarget = null;
         currentObstacles.Clear();
-
         Collider2D[] nearbyColliders = Physics2D.OverlapCircleAll(transform.position, eyeSight, perceptionLayers);
         Transform closestFollowTarget = null;
         float closestFollowDist = float.MaxValue;
@@ -236,67 +220,16 @@ public class FishAgent : MonoBehaviour
         foreach (var collider in nearbyColliders)
         {
             if (collider.transform == transform) continue;
-
             GameObject targetObj = collider.gameObject;
-            bool isThreat = false;
-            bool isAttraction = false;
-            // bool isFollowTarget = false; // Not needed here
-            // bool isObstacle = false; // Not needed here
+            bool isThreat = false; bool isAttraction = false;
 
-            foreach (var scaryTag in scaredOfTags)
-            {
-                if (!string.IsNullOrEmpty(scaryTag) && targetObj.CompareTag(scaryTag))
-                {
-                    currentThreats.Add(collider.transform);
-                    isThreat = true;
-                    break;
-                }
-            }
-
-            if (!isThreat)
-            {
-                foreach (var attractiveTag in attractedToTags)
-                {
-                    if (!string.IsNullOrEmpty(attractiveTag) && targetObj.CompareTag(attractiveTag))
-                    {
-                        currentAttractions.Add(collider.transform);
-                        isAttraction = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!isThreat && !isAttraction && !string.IsNullOrEmpty(followTag))
-            {
-                if (targetObj.CompareTag(followTag))
-                {
-                    float dist = Vector2.Distance(transform.position, collider.transform.position);
-                    if (dist < closestFollowDist)
-                    {
-                        closestFollowDist = dist;
-                        closestFollowTarget = collider.transform;
-                        // isFollowTarget = true;
-                    }
-                }
-            }
-
-            foreach (var avoidTag in avoidCollisionWithTags)
-            {
-                if (!string.IsNullOrEmpty(avoidTag) && targetObj.CompareTag(avoidTag))
-                {
-                    float dist = Vector2.Distance(transform.position, collider.transform.position);
-                    if (dist < collisionAvoidanceDistance * 1.2f)
-                    {
-                        currentObstacles.Add(collider.transform);
-                        // isObstacle = true;
-                        break;
-                    }
-                }
-            }
+            foreach (var scaryTag in scaredOfTags) { if (!string.IsNullOrEmpty(scaryTag) && targetObj.CompareTag(scaryTag)) { currentThreats.Add(collider.transform); isThreat = true; break; } }
+            if (!isThreat) { foreach (var attractiveTag in attractedToTags) { if (!string.IsNullOrEmpty(attractiveTag) && targetObj.CompareTag(attractiveTag)) { currentAttractions.Add(collider.transform); isAttraction = true; break; } } }
+            if (!isThreat && !isAttraction && !string.IsNullOrEmpty(followTag)) { if (targetObj.CompareTag(followTag)) { float dist = Vector2.Distance(transform.position, collider.transform.position); if (dist < closestFollowDist) { closestFollowDist = dist; closestFollowTarget = collider.transform; } } }
+            foreach (var avoidTag in avoidCollisionWithTags) { if (!string.IsNullOrEmpty(avoidTag) && targetObj.CompareTag(avoidTag)) { float dist = Vector2.Distance(transform.position, collider.transform.position); if (dist < collisionAvoidanceDistance * 1.2f) { currentObstacles.Add(collider.transform); break; } } }
         }
         currentFollowTarget = closestFollowTarget;
     }
-
 
     Vector2 CalculateCollisionAvoidance()
     {
@@ -313,42 +246,21 @@ public class FishAgent : MonoBehaviour
                 avoidanceDirection += dirFromObstacle * avoidanceStrength * avoidanceStrength;
             }
         }
-        return avoidanceDirection; // Return raw avoidance vector
+        return avoidanceDirection;
     }
 
-
-    void UpdateRandomMovementInfluence()
-    {
-        randomMovementInfluence = Random.insideUnitCircle * movementVariation;
-    }
-
+    void UpdateRandomMovementInfluence() { randomMovementInfluence = Random.insideUnitCircle * movementVariation; }
     void OnDrawGizmos()
     {
-        if (!showDebugGizmos || fishController == null) return;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(startPosition, movementRadius);
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, eyeSight);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, collisionAvoidanceDistance);
-
-        Gizmos.color = Color.cyan;
-        Vector2 desiredDir = CalculateDesiredDirection();
-        if (Application.isPlaying) Gizmos.DrawRay(transform.position, desiredDir * 1.5f); // Draw desired direction from Agent
-
-        if (Application.isPlaying && fishController != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position, fishController.GetCurrentVelocity().normalized * 1.5f); // Draw current velocity
-        }
-
-
-        Vector2 avoidance = CalculateCollisionAvoidance();
-        if (Application.isPlaying && avoidance.magnitude > 0.01f)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(transform.position, avoidance.normalized * collisionAvoidanceForce * 0.5f); // Visualize scaled avoidance influence
-        }
+        if (!showDebugGizmos) return;
+        Gizmos.color = Color.yellow; Gizmos.DrawWireSphere(startPosition, movementRadius);
+        Gizmos.color = Color.white; Gizmos.DrawWireSphere(transform.position, eyeSight);
+        Gizmos.color = Color.red; Gizmos.DrawWireSphere(transform.position, collisionAvoidanceDistance);
+        if (!Application.isPlaying) return;
+        Gizmos.color = Color.blue; Gizmos.DrawRay(transform.position, CurrentWanderDirection * 1.2f); // Draw wander direction
+        Vector2 primaryDir = CalculatePrimaryDesiredDirection();
+        if (primaryDir.sqrMagnitude > 0.01f) { Gizmos.color = Color.cyan; Gizmos.DrawRay(transform.position, primaryDir * 1.5f); } // Draw primary goal direction
+        if (fishController != null) { Gizmos.color = Color.green; Gizmos.DrawRay(transform.position, fishController.GetCurrentVelocity().normalized * 1.5f); } // Draw current velocity
+        Vector2 avoidance = CalculateCollisionAvoidance(); if (avoidance.magnitude > 0.01f) { Gizmos.color = Color.magenta; Gizmos.DrawRay(transform.position, avoidance.normalized * collisionAvoidanceForce * 0.5f); } // Draw avoidance influence
     }
 }

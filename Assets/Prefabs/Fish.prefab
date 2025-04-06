@@ -1064,14 +1064,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce41b8de125d4a168521c836402bcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  acceleration: 5
-  deceleration: 8
-  dashSpeed: 15
-  dashAcceleration: 15
-  dashDuration: 0.2
-  dashCooldown: 1
-  stopThreshold: 0.1
+  moveSpeed: 2
+  acceleration: 3
+  deceleration: 5
+  idleWanderSpeed: 0.75
+  dashSpeed: 6
+  dashAcceleration: 10
+  dashDuration: 0.35
+  dashCooldown: 2.5
+  physicsRotationCorrectionTorque: 5
+  physicsRotationCorrectionThreshold: 2
+  maxCorrectionTorque: 10
+  stopThreshold: 0.05
   fishVisuals: {fileID: 0}
   playerSoundController: {fileID: 0}
   fishSquisher: {fileID: 0}
