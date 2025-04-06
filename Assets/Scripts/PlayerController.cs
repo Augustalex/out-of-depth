@@ -13,6 +13,19 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 1f;
     public float dashImpulse = 10f;
 
+    [Header("Boost Settings")]
+    [Tooltip("Speed multiplier applied during boost")]
+    public float boostSpeedMultiplier = 1.5f;
+    [Tooltip("Duration of the boost effect in seconds")]
+    public float boostTime = 5f;
+    [Tooltip("Visual effect prefab that appears during boost (optional)")]
+    public GameObject boostEffectPrefab;
+
+    // Boost tracking variables
+    private bool isBoostActive = false;
+    private float boostEndTime = 0f;
+    private GameObject activeBoostEffect = null;
+
     [Header("Rotation Stability")]
     [Tooltip("How quickly the player returns to intended rotation")]
     public float rotationStabilitySpeed = 10f;
@@ -192,9 +205,28 @@ public class PlayerController : MonoBehaviour
         // The camera controller now directly accesses the Rigidbody2D
         // No need to update it with velocity information
 
+        // Check if boost should expire
+        if (isBoostActive && Time.time >= boostEndTime)
+        {
+            // Deactivate boost
+            isBoostActive = false;
+
+            // Clean up any boost effects
+            if (activeBoostEffect != null)
+            {
+                Destroy(activeBoostEffect);
+                activeBoostEffect = null;
+            }
+
+            Debug.Log("Speed boost ended!");
+        }
 
         Vector2 currentMoveDirection = moveInput.normalized;
         Vector2 targetVelocity;
+
+        // Apply current speed with boost if active
+        float currentMoveSpeed = isBoostActive ? moveSpeed * boostSpeedMultiplier : moveSpeed;
+        float currentDashSpeed = isBoostActive ? dashSpeed * boostSpeedMultiplier : dashSpeed;
 
         if (isDashing)
         {
@@ -203,17 +235,17 @@ public class PlayerController : MonoBehaviour
             {
                 isDashing = false;
                 isDashButtonHeld = false;
-                targetVelocity = currentMoveDirection * moveSpeed;
+                targetVelocity = currentMoveDirection * currentMoveSpeed;
             }
             else
             {
                 // Continue sprinting in the direction of movement input
-                targetVelocity = currentMoveDirection * dashSpeed;
+                targetVelocity = currentMoveDirection * currentDashSpeed;
             }
         }
         else
         {
-            targetVelocity = currentMoveDirection * moveSpeed;
+            targetVelocity = currentMoveDirection * currentMoveSpeed;
         }
 
         rb.linearVelocity = targetVelocity;
@@ -239,5 +271,31 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, newRotation);
             }
         }
+    }
+
+    /// <summary>
+    /// Activates a temporary speed boost for the player
+    /// </summary>
+    public void Boost()
+    {
+        // Set boost as active
+        isBoostActive = true;
+
+        // Set end time
+        boostEndTime = Time.time + boostTime;
+
+        // Create visual effect if specified
+        if (boostEffectPrefab != null && activeBoostEffect == null)
+        {
+            activeBoostEffect = Instantiate(boostEffectPrefab, transform);
+        }
+
+        // Optional: Add sound effect
+        if (playerSoundController != null)
+        {
+            playerSoundController.PlayDashSound(); // Reuse dash sound or add dedicated boost sound
+        }
+
+        Debug.Log($"Speed boost activated! Multiplier: {boostSpeedMultiplier}x for {boostTime} seconds");
     }
 }
