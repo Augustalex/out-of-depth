@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(FishData))]
 public class FishController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -39,9 +40,12 @@ public class FishController : MonoBehaviour
     [Header("Camera Control")]
     [SerializeField] private PlayerCameraController cameraController;
 
+    private FishData fishData;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        fishData = GetComponent<FishData>();
 
         // --- Auto-find references if not set in Inspector ---
         if (fishVisuals == null) fishVisuals = GetComponentInChildren<FishVisualController>() ?? GetComponentInParent<FishVisualController>() ?? GetComponent<FishVisualController>();
@@ -54,11 +58,18 @@ public class FishController : MonoBehaviour
             cameraController = FindObjectOfType<PlayerCameraController>();
         }
 
+        // Apply initial scale if FishData is available
+        if (fishData != null)
+        {
+            transform.localScale = fishData.InitialScale;
+        }
+
         // --- Error Checks ---
         if (fishVisuals == null) Debug.LogWarning("PlayerController: FishVisualController reference not found.", this);
         if (fishSquisher == null) Debug.LogWarning("PlayerController: FishSquisher reference not found.", this);
         if (playerSoundController == null) Debug.LogWarning("PlayerController: PlayerSoundController reference not found. Dash sounds will not play.", this);
         if (cameraController == null) Debug.LogWarning("PlayerController: PlayerCameraController reference not found. Velocity-based camera zoom will not work.", this);
+        if (fishData == null) Debug.LogWarning("PlayerController: FishData reference not found. Initial scale will not be applied.", this);
     }
 
     // --- Public API methods for PlayerInputManager ---

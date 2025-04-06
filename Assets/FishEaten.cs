@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Edible))]
+[RequireComponent(typeof(FishData))]
 public class FishEaten : MonoBehaviour
 {
     [Header("Blood Effects")]
@@ -36,6 +37,13 @@ public class FishEaten : MonoBehaviour
     [SerializeField]
     [Tooltip("Fish bone prefab to spawn when the fish is eaten")]
     private GameObject fishBoneTemplate;
+
+    private FishData fishData;
+
+    void Awake()
+    {
+        fishData = GetComponent<FishData>();
+    }
 
     void OnEnable()
     {
@@ -108,7 +116,21 @@ public class FishEaten : MonoBehaviour
             maxScale
         );
 
-        // Spawn the fish bone using the global spawner
-        GlobalItemSpawner.Spawn(spawnParams);
+        // Apply fish's initial scale if available
+        if (fishData != null)
+        {
+            // If we have a FishData component, override the random scale and use the fish's original scale
+            GameObject bone = GlobalItemSpawner.Spawn(spawnParams);
+            if (bone != null)
+            {
+                // Apply the fish's initial scale to the bone
+                bone.transform.localScale = fishData.InitialScale;
+            }
+        }
+        else
+        {
+            // Spawn the fish bone using the global spawner with default parameters
+            GlobalItemSpawner.Spawn(spawnParams);
+        }
     }
 }
