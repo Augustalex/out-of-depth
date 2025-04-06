@@ -5095,6 +5095,7 @@ MonoBehaviour:
   objectToDisable: {fileID: 1024691482}
   componentToDisable: {fileID: 0}
   disableDuration: 1
+  knockbackForce: 10
   hurtCooldown: 2
 --- !u!114 &846229821
 MonoBehaviour:

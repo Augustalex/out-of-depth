@@ -65,7 +65,7 @@ public class PlayerHurt : MonoBehaviour
             // Apply knockback force
             if (rb != null)
             {
-                rb.velocity = knockbackDirection * knockbackForce;
+                rb.linearVelocity = knockbackDirection * knockbackForce;
             }
 
             TriggerHurtSequence();
