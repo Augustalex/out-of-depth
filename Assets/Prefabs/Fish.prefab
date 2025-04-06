@@ -845,6 +845,7 @@ GameObject:
   - component: {fileID: 8258382212973970609}
   - component: {fileID: 5690493482341660329}
   - component: {fileID: 9218446644594345741}
+  - component: {fileID: 7103268820930557215}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -1122,6 +1123,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialScale: {x: 0.45, y: 0.45, z: 0.45}
+--- !u!114 &7103268820930557215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854994121049501140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 820c72cbd73a8484383ceaf8b2c291fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorPairs:
+  - primaryHexCode: '#f2b476'
+    secondaryHexCode: '#f7e4aa'
+  - primaryHexCode: '#cf9479'
+    secondaryHexCode: '#f0aa89'
+  - primaryHexCode: '#acbd8a'
+    secondaryHexCode: '#ddd8ab'
+  - primaryHexCode: '#babca1'
+    secondaryHexCode: '#f6c193'
+  - primaryHexCode: '#789c8a'
+    secondaryHexCode: '#e2806a'
+  randomizeAlpha: 0
+  minAlpha: 0.5
+  maxAlpha: 1
+  primaryRenderers:
+  - {fileID: 5144393665774497167}
+  secondaryRenderers:
+  - {fileID: 7461934049047385016}
+  - {fileID: 4908109630836937078}
+  - {fileID: 2527561340223529799}
 --- !u!1 &6017094326816255575
 GameObject:
   m_ObjectHideFlags: 0

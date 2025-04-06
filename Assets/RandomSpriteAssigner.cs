@@ -110,18 +110,17 @@ public class RandomSpriteAssigner : MonoBehaviour
                 continue;
             }
 
-            Rect currentSpriteRect = currentSprite.rect;
-
-            // Compare dimensions. Use Mathf.Approximately for floating-point comparisons.
-            if (!Mathf.Approximately(currentSpriteRect.width, referenceWidth) ||
-                !Mathf.Approximately(currentSpriteRect.height, referenceHeight))
-            {
-                Debug.LogError($"[{gameObject.name}] Sprite dimension mismatch in 'Available Sprites'! " +
-                               $"Sprite '{referenceSprite.name}' (at index {referenceIndex}) has dimensions ({referenceWidth}x{referenceHeight}), " +
-                               $"but sprite '{currentSprite.name}' (at index {i}) has dimensions ({currentSpriteRect.width}x{currentSpriteRect.height}). " +
-                               $"All sprites in 'Available Sprites' must have the same dimensions. Disabling script.", this);
-                return false; // Dimensions do not match
-            }
+            // Rect currentSpriteRect = currentSprite.rect;
+            // // Compare dimensions. Use Mathf.Approximately for floating-point comparisons.
+            // if (!Mathf.Approximately(currentSpriteRect.width, referenceWidth) ||
+            //     !Mathf.Approximately(currentSpriteRect.height, referenceHeight))
+            // {
+            //     Debug.LogError($"[{gameObject.name}] Sprite dimension mismatch in 'Available Sprites'! " +
+            //                    $"Sprite '{referenceSprite.name}' (at index {referenceIndex}) has dimensions ({referenceWidth}x{referenceHeight}), " +
+            //                    $"but sprite '{currentSprite.name}' (at index {i}) has dimensions ({currentSpriteRect.width}x{currentSpriteRect.height}). " +
+            //                    $"All sprites in 'Available Sprites' must have the same dimensions. Disabling script.", this);
+            //     return false; // Dimensions do not match
+            // }
         }
 
         // If the loop completes without returning false, all non-null dimensions match.
