@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-// Ensures there are at least THREE AudioSource components on this GameObject
-// Two for music crossfading, one for one-shot sounds
-[RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
 public class MusicController : MonoBehaviour
 {
     // --- Enums ---
@@ -32,40 +29,39 @@ public class MusicController : MonoBehaviour
     public float crossfadeDuration = 2.0f; // Duration of the crossfade in seconds
     public GameMode startMode = GameMode.Intro; // Which mode to start in
 
+    [Header("Volume Settings")]
+    [Range(0f, 1f)]
+    [SerializeField] private float maxMusicVolume = 0.8f;
+    [Range(0f, 1f)]
+    [SerializeField] private float maxOneShotVolume = 1.0f;
+
     [Header("Proximity Detection")]
     public Transform playerTransform; // Assign the player's Transform here
-    public LayerMask enemyLayerMask;  // Set this to the layer(s) your enemies are on
-    public float detectionRange = 15.0f; // Max distance to check for enemies
-    [Tooltip("How often (in seconds) to check for nearby enemies. Lower values are more responsive but less performant.")]
-    public float enemyCheckInterval = 0.25f; // Check frequency
+    public Transform dangerSourceTransform; // The specific object that triggers danger music
+    public float dangerDistanceThreshold = 15.0f; // Distance to trigger danger music
+    [Tooltip("How often (in seconds) to check proximity to danger source. Lower values are more responsive but less performant.")]
+    public float proximityCheckInterval = 0.25f; // Check frequency
 
     // --- Private Fields ---
 
-    private AudioSource musicAudioSource1;    // Renamed for clarity
-    private AudioSource musicAudioSource2;    // Renamed for clarity
-    private AudioSource oneShotAudioSource;   // Dedicated source for one-shots
-    private AudioSource activeMusicAudioSource; // Renamed for clarity
+    private AudioSource musicAudioSource1;
+    private AudioSource musicAudioSource2;
+    private AudioSource oneShotAudioSource;
+    private AudioSource activeMusicAudioSource;
 
     private GameMode currentMode;
     private Coroutine fadeCoroutine;
-    private float enemyCheckTimer = 0f;
-    private bool isEnemyNearby = false;
+    private float proximityCheckTimer = 0f;
+    private bool isDangerNearby = false;
 
     // --- Unity Methods ---
 
     void Awake()
     {
-        // Get the AudioSource components
-        AudioSource[] sources = GetComponents<AudioSource>();
-        if (sources.Length < 3)
-        {
-            // This should technically not happen due to [RequireComponent]
-            Debug.LogError("MusicController requires exactly three AudioSource components.", this);
-            return;
-        }
-        musicAudioSource1 = sources[0];
-        musicAudioSource2 = sources[1];
-        oneShotAudioSource = sources[2]; // Assign the third source
+        // Create AudioSources programmatically like GlobalSoundManager does
+        musicAudioSource1 = gameObject.AddComponent<AudioSource>();
+        musicAudioSource2 = gameObject.AddComponent<AudioSource>();
+        oneShotAudioSource = gameObject.AddComponent<AudioSource>();
 
         // Configure Music AudioSources
         ConfigureMusicAudioSource(musicAudioSource1);
@@ -74,15 +70,18 @@ public class MusicController : MonoBehaviour
         // Configure OneShot AudioSource
         ConfigureOneShotAudioSource(oneShotAudioSource);
 
-        // Ensure music sources start silent
-        musicAudioSource1.volume = 0f;
-        musicAudioSource2.volume = 0f;
-
         // Initial check for player assignment
         if (playerTransform == null)
         {
             Debug.LogWarning("MusicController: Player Transform is not assigned. Proximity detection inactive.", this);
         }
+
+        // Initial check for danger source assignment
+        if (dangerSourceTransform == null)
+        {
+            Debug.LogWarning("MusicController: Danger Source Transform is not assigned. Proximity detection inactive.", this);
+        }
+
         // Initial check for start sound assignment
         if (startSound == null)
         {
@@ -100,7 +99,7 @@ public class MusicController : MonoBehaviour
         {
             activeMusicAudioSource = musicAudioSource1; // Start with source 1
             activeMusicAudioSource.clip = startingClip;
-            activeMusicAudioSource.volume = 1f; // Start at full volume
+            activeMusicAudioSource.volume = maxMusicVolume; // Start at max volume
             activeMusicAudioSource.Play();
         }
         else
@@ -108,8 +107,8 @@ public class MusicController : MonoBehaviour
             Debug.LogWarning($"MusicController: No audio clip assigned for starting mode '{startMode}'.", this);
         }
 
-        // Perform an initial enemy check if not starting in Intro mode
-        if (currentMode != GameMode.Intro && playerTransform != null)
+        // Perform an initial proximity check if not starting in Intro mode
+        if (currentMode != GameMode.Intro && playerTransform != null && dangerSourceTransform != null)
         {
             CheckProximityAndSwitch();
         }
@@ -118,12 +117,12 @@ public class MusicController : MonoBehaviour
     void Update()
     {
         // --- Proximity Check Logic ---
-        if (currentMode != GameMode.Intro && playerTransform != null)
+        if (currentMode != GameMode.Intro && playerTransform != null && dangerSourceTransform != null)
         {
-            enemyCheckTimer += Time.deltaTime;
-            if (enemyCheckTimer >= enemyCheckInterval)
+            proximityCheckTimer += Time.deltaTime;
+            if (proximityCheckTimer >= proximityCheckInterval)
             {
-                enemyCheckTimer = 0f;
+                proximityCheckTimer = 0f;
                 CheckProximityAndSwitch();
             }
         }
@@ -148,7 +147,7 @@ public class MusicController : MonoBehaviour
             SwitchMode(GameMode.Normal);
 
             // Optional: Immediately check proximity after switching from intro
-            if (playerTransform != null)
+            if (playerTransform != null && dangerSourceTransform != null)
             {
                 CheckProximityAndSwitch();
             }
@@ -205,7 +204,7 @@ public class MusicController : MonoBehaviour
     {
         if (startSound != null && oneShotAudioSource != null)
         {
-            oneShotAudioSource.PlayOneShot(startSound, startSoundVolume);
+            oneShotAudioSource.PlayOneShot(startSound, startSoundVolume * maxOneShotVolume);
             Debug.Log($"MusicController: Playing start sound '{startSound.name}'.");
         }
         else if (startSound == null)
@@ -241,9 +240,9 @@ public class MusicController : MonoBehaviour
         {
             source.loop = false;        // One-shot sounds don't loop
             source.playOnAwake = false;
-            source.spatialBlend = 0f; // Typically UI/non-diegetic sounds are 2D
-            source.volume = 1f;       // Volume controlled per-clip via PlayOneShot
-            source.priority = 128;    // Default priority, adjust if needed
+            source.spatialBlend = 0f;   // Typically UI/non-diegetic sounds are 2D
+            source.volume = 0f;         // Start silent and control volume via PlayOneShot
+            source.priority = 128;      // Default priority
         }
     }
 
@@ -254,12 +253,12 @@ public class MusicController : MonoBehaviour
     {
         if (activeMusicAudioSource == musicAudioSource1)
         {
-            musicAudioSource1.volume = 1f;
+            musicAudioSource1.volume = maxMusicVolume;
             musicAudioSource2.volume = 0f;
         }
         else if (activeMusicAudioSource == musicAudioSource2)
         {
-            musicAudioSource2.volume = 1f;
+            musicAudioSource2.volume = maxMusicVolume;
             musicAudioSource1.volume = 0f;
         }
         else
@@ -270,31 +269,28 @@ public class MusicController : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks for nearby enemies and triggers mode switches between Normal and Danger.
+    /// Checks proximity to danger source and triggers mode switches between Normal and Danger.
     /// </summary>
     private void CheckProximityAndSwitch()
     {
-        if (playerTransform == null) return;
+        if (playerTransform == null || dangerSourceTransform == null) return;
 
-        bool enemyDetected = Physics.CheckSphere(
-            playerTransform.position, detectionRange, enemyLayerMask, QueryTriggerInteraction.Ignore
-        );
+        float distanceToDanger = Vector3.Distance(playerTransform.position, dangerSourceTransform.position);
+        bool dangerDetected = distanceToDanger <= dangerDistanceThreshold;
 
-        if (enemyDetected && currentMode == GameMode.Normal)
+        if (dangerDetected && currentMode == GameMode.Normal)
         {
-            // Debug.Log("MusicController: Enemy detected nearby. Switching to Danger mode.");
             SwitchMode(GameMode.Danger);
-            isEnemyNearby = true;
+            isDangerNearby = true;
         }
-        else if (!enemyDetected && currentMode == GameMode.Danger)
+        else if (!dangerDetected && currentMode == GameMode.Danger)
         {
-            // Debug.Log("MusicController: No enemies nearby. Switching back to Normal mode.");
             SwitchMode(GameMode.Normal);
-            isEnemyNearby = false;
+            isDangerNearby = false;
         }
-        else if (enemyDetected != isEnemyNearby)
+        else if (dangerDetected != isDangerNearby)
         {
-            isEnemyNearby = enemyDetected;
+            isDangerNearby = dangerDetected;
         }
     }
 
@@ -326,7 +322,6 @@ public class MusicController : MonoBehaviour
         {
             sourceToFadeOut = musicAudioSource2;
             sourceToFadeIn = musicAudioSource1;
-            // Don't pre-assign activeMusicAudioSource here, wait until fade completes
         }
 
         sourceToFadeIn.clip = newClip;
@@ -341,7 +336,7 @@ public class MusicController : MonoBehaviour
             float progress = Mathf.Clamp01(timer / crossfadeDuration);
             if (sourceToFadeOut != null)
                 sourceToFadeOut.volume = Mathf.Lerp(initialFadeOutVolume, 0f, progress);
-            sourceToFadeIn.volume = Mathf.Lerp(0f, 1f, progress);
+            sourceToFadeIn.volume = Mathf.Lerp(0f, maxMusicVolume, progress);
             timer += Time.deltaTime;
             yield return null;
         }
@@ -352,9 +347,24 @@ public class MusicController : MonoBehaviour
             sourceToFadeOut.Stop();
             sourceToFadeOut.clip = null;
         }
-        sourceToFadeIn.volume = 1f;
+        sourceToFadeIn.volume = maxMusicVolume;
 
         activeMusicAudioSource = sourceToFadeIn; // Update the truly active music source
         fadeCoroutine = null;
+    }
+
+    // Add methods to update volume settings during runtime
+    public void SetMusicVolume(float volume)
+    {
+        maxMusicVolume = Mathf.Clamp01(volume);
+        if (fadeCoroutine == null && activeMusicAudioSource != null)
+        {
+            activeMusicAudioSource.volume = maxMusicVolume;
+        }
+    }
+
+    public void SetOneShotVolume(float volume)
+    {
+        maxOneShotVolume = Mathf.Clamp01(volume);
     }
 }

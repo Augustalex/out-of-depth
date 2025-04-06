@@ -733,98 +733,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &192771450
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 192771453}
-  - component: {fileID: 192771452}
-  - component: {fileID: 192771451}
-  m_Layer: 0
-  m_Name: FishSpawner 2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!58 &192771451
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192771450}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 60
---- !u!114 &192771452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192771450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83a7477e06cc418c9fa7b5e6bb689de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabsToSpawn:
-  - {fileID: 5854994121049501140, guid: 5f1203685433746a78ce98bcaa09b0f6, type: 3}
-  maxSpawnedItems: 30
-  minRespawnTime: 1
-  maxRespawnTime: 3
-  spawnAreaCollider: {fileID: 192771451}
-  playerTag: PlayerFish
-  mainCamera: {fileID: 519420031}
-  spawnedObjects: []
-  timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
---- !u!4 &192771453
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192771450}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -149.7, y: 37.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1069747737}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &214703357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,6 +1616,98 @@ MonoBehaviour:
   - {x: 0.4157348, y: -0.27778515, z: 0}
   - {x: 0.46193978, y: -0.19134171, z: 0}
   - {x: 0.49039266, y: -0.09754512, z: 0}
+--- !u!1 &340140895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 340140896}
+  - component: {fileID: 340140898}
+  - component: {fileID: 340140897}
+  m_Layer: 0
+  m_Name: FishSpawner 2 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &340140896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340140895}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 70.4, y: 41.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1069747737}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &340140897
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340140895}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 50
+--- !u!114 &340140898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340140895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83a7477e06cc418c9fa7b5e6bb689de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabsToSpawn:
+  - {fileID: 5854994121049501140, guid: bbe195d1e00e342ed9bc40ae0f26322d, type: 3}
+  maxSpawnedItems: 10
+  minRespawnTime: 1
+  maxRespawnTime: 3
+  spawnAreaCollider: {fileID: 340140897}
+  playerTag: PlayerFish
+  mainCamera: {fileID: 519420031}
+  spawnedObjects: []
+  timeUntilNextSpawn: 0
+  playerTransform: {fileID: 0}
 --- !u!1 &382333862
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,7 +2146,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 25
+  m_Radius: 50
 --- !u!114 &503754253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2179,7 +2179,7 @@ Transform:
   m_GameObject: {fileID: 503754251}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -115.8, y: 21.1, z: 0}
+  m_LocalPosition: {x: 88.8, y: 43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2490,7 +2490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabsToSpawn:
   - {fileID: 7904841618314894037, guid: 152a51bbd8161440ab4859a2d80f5e70, type: 3}
-  maxSpawnedItems: 100
+  maxSpawnedItems: 30
   minRespawnTime: 1
   maxRespawnTime: 3
   spawnAreaCollider: {fileID: 521963181}
@@ -3500,6 +3500,98 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &656661161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 656661162}
+  - component: {fileID: 656661164}
+  - component: {fileID: 656661163}
+  m_Layer: 0
+  m_Name: FishSpawner 2 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &656661162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656661161}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.7, y: 75.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1069747737}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &656661163
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656661161}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 50
+--- !u!114 &656661164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656661161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83a7477e06cc418c9fa7b5e6bb689de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabsToSpawn:
+  - {fileID: 5854994121049501140, guid: bbe195d1e00e342ed9bc40ae0f26322d, type: 3}
+  maxSpawnedItems: 5
+  minRespawnTime: 1
+  maxRespawnTime: 3
+  spawnAreaCollider: {fileID: 656661163}
+  playerTag: PlayerFish
+  mainCamera: {fileID: 519420031}
+  spawnedObjects: []
+  timeUntilNextSpawn: 0
+  playerTransform: {fileID: 0}
 --- !u!1 &686365288
 GameObject:
   m_ObjectHideFlags: 0
@@ -4253,7 +4345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabsToSpawn:
   - {fileID: 5854994121049501140, guid: 5f1203685433746a78ce98bcaa09b0f6, type: 3}
-  maxSpawnedItems: 30
+  maxSpawnedItems: 20
   minRespawnTime: 1
   maxRespawnTime: 3
   spawnAreaCollider: {fileID: 807713556}
@@ -5116,11 +5208,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 878209120335572447, guid: 9be5f7e16467e432593335f210aaafb7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -144
+      value: -164
       objectReference: {fileID: 0}
     - target: {fileID: 878209120335572447, guid: 9be5f7e16467e432593335f210aaafb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.5
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 878209120335572447, guid: 9be5f7e16467e432593335f210aaafb7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5531,15 +5623,15 @@ MonoBehaviour:
   normalMusic: {fileID: 8300000, guid: 90692d6c9082d4eea946453683009993, type: 3}
   dangerMusic: {fileID: 8300000, guid: 3ce4d9d12c36b4507b4d4462352e0d07, type: 3}
   startSound: {fileID: 8300000, guid: 2b12e2569c6d84d2eb32629cfb597414, type: 3}
-  startSoundVolume: 0.8
+  startSoundVolume: 1
   crossfadeDuration: 2
   startMode: 0
+  maxMusicVolume: 0.8
+  maxOneShotVolume: 1
   playerTransform: {fileID: 846229815}
-  enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  detectionRange: 30
-  enemyCheckInterval: 0.25
+  dangerSourceTransform: {fileID: 1483506107}
+  dangerDistanceThreshold: 15
+  proximityCheckInterval: 0.25
 --- !u!4 &966367226
 Transform:
   m_ObjectHideFlags: 0
@@ -5822,7 +5914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabsToSpawn:
   - {fileID: 7904841618314894037, guid: 152a51bbd8161440ab4859a2d80f5e70, type: 3}
-  maxSpawnedItems: 100
+  maxSpawnedItems: 30
   minRespawnTime: 1
   maxRespawnTime: 3
   spawnAreaCollider: {fileID: 990277041}
@@ -6017,7 +6109,8 @@ Transform:
   - {fileID: 990277040}
   - {fileID: 521963180}
   - {fileID: 807713554}
-  - {fileID: 192771453}
+  - {fileID: 340140896}
+  - {fileID: 656661162}
   - {fileID: 1588186899}
   - {fileID: 503754254}
   - {fileID: 1457606605}
@@ -7450,10 +7543,10 @@ MonoBehaviour:
   interactablePrefabs:
   - {fileID: 1037930735788549425, guid: 942bf58bf46b04ec5bcb32b84796abe2, type: 3}
   minClusterSize: 1
-  maxClusterSize: 4
+  maxClusterSize: 5
   minClusterGap: 2
   maxClusterGap: 5
-  minMargin: 50
+  minMargin: 30
   maxMargin: 100
   spawnZ: 0
 --- !u!4 &1457606605
@@ -7549,6 +7642,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 10000, y: 20}
   m_EdgeRadius: 0
+--- !u!4 &1483506107 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 878209120335572447, guid: 9be5f7e16467e432593335f210aaafb7, type: 3}
+  m_PrefabInstance: {fileID: 906071255}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1552235884
 GameObject:
   m_ObjectHideFlags: 0
@@ -7986,7 +8084,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 25
+  m_Radius: 50
 --- !u!114 &1588186898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8001,7 +8099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabsToSpawn:
   - {fileID: 9053708324568892574, guid: ea6e2470a579c45a0bdd14d6bfbaaac3, type: 3}
-  maxSpawnedItems: 3
+  maxSpawnedItems: 2
   minRespawnTime: 1
   maxRespawnTime: 3
   spawnAreaCollider: {fileID: 1588186897}
@@ -8019,7 +8117,7 @@ Transform:
   m_GameObject: {fileID: 1588186896}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.8, y: 16.8, z: 0}
+  m_LocalPosition: {x: -21.5, y: 20.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8950,7 +9048,7 @@ MonoBehaviour:
   titleScreenUIContainer: {fileID: 323939621}
   playerObject: {fileID: 846229811}
   delayBeforePlayerEnable: 2
-  autoStartTime: 6
+  autoStartTime: 20
 --- !u!4 &1877939754
 Transform:
   m_ObjectHideFlags: 0
