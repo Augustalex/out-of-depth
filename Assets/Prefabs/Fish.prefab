@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e49140ca01e34fed87b05ab1de26547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialScale: {x: 0.45, y: 0.45, z: 0.45}
+  initialScale: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!114 &7103268820930557215
 MonoBehaviour:
   m_ObjectHideFlags: 0

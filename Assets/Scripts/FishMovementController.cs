@@ -1,7 +1,5 @@
 using UnityEngine;
-using System.Collections;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class FishMovementController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -17,11 +15,11 @@ public class FishMovementController : MonoBehaviour
     public float deceleration = 5.0f;
     [Tooltip("Distance threshold to consider target reached")]
     public float reachTargetThreshold = 0.2f;
-    
+
     [Header("Dash Settings")]
     public float dashDuration = 0.35f;
     public float dashCooldown = 2.5f;
-    
+
     [Header("Rotation Settings")]
     [Tooltip("How strongly the fish tries to rotate back upright (torque force)")]
     public float physicsRotationCorrectionTorque = 5.0f;
@@ -38,22 +36,25 @@ public class FishMovementController : MonoBehaviour
         FollowingTarget,
         Dashing
     }
-    
+
     // Component references
+    [Header("Component References")]
+    [Tooltip("Rigidbody2D component for physics interactions")]
+    [SerializeField]
     private Rigidbody2D rb;
-    
+
     // State tracking
     private MovementState currentState = MovementState.Idle;
     private Vector2 targetPosition;
     private Transform targetTransform;
     private float currentTargetSpeed;
     private Vector2 currentVelocityRef; // For smooth dampening
-    
+
     // Dash state
     private bool isDashing = false;
     private float dashEndTime;
     private float nextDashAvailableTime;
-    
+
     // Wandering state
     private Vector2 wanderDirection = Vector2.right;
     private float wanderDirectionChangeInterval = 2.0f;
@@ -66,7 +67,6 @@ public class FishMovementController : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         currentTargetSpeed = idleSpeed;
         UpdateWanderDirection();
@@ -86,7 +86,7 @@ public class FishMovementController : MonoBehaviour
         {
             EndDash();
         }
-        
+
         // Update wander direction periodically when idle
         if (currentState == MovementState.Idle && Time.time >= nextWanderDirectionChange)
         {
@@ -104,24 +104,24 @@ public class FishMovementController : MonoBehaviour
             }
         }
     }
-    
+
     private void UpdateWanderDirection()
     {
         float randomAngle = Random.Range(0f, 360f);
         wanderDirection = new Vector2(
-            Mathf.Cos(randomAngle * Mathf.Deg2Rad), 
+            Mathf.Cos(randomAngle * Mathf.Deg2Rad),
             Mathf.Sin(randomAngle * Mathf.Deg2Rad)
         ).normalized;
-        
-        nextWanderDirectionChange = Time.time + 
+
+        nextWanderDirectionChange = Time.time +
             Random.Range(wanderDirectionChangeInterval * 0.5f, wanderDirectionChangeInterval * 1.5f);
     }
-    
+
     private void ApplyMovement()
     {
         Vector2 moveDirection;
         float targetSpeed;
-        
+
         switch (currentState)
         {
             case MovementState.Dashing:
@@ -129,12 +129,12 @@ public class FishMovementController : MonoBehaviour
                 if (moveDirection.sqrMagnitude < 0.1f) moveDirection = transform.right; // Fallback direction
                 targetSpeed = dashSpeed;
                 break;
-                
+
             case MovementState.MovingToPosition:
                 moveDirection = ((Vector2)targetPosition - rb.position).normalized;
                 targetSpeed = currentTargetSpeed;
                 break;
-                
+
             case MovementState.FollowingTarget:
                 if (targetTransform != null)
                 {
@@ -149,24 +149,24 @@ public class FishMovementController : MonoBehaviour
                     targetSpeed = idleSpeed;
                 }
                 break;
-                
+
             case MovementState.Idle:
             default:
                 moveDirection = wanderDirection;
                 targetSpeed = idleSpeed;
                 break;
         }
-        
+
         Vector2 targetVelocity = moveDirection * targetSpeed;
-        
+
         // Determine if accelerating or decelerating
         float currentAccel = isDashing ? acceleration * 2 : acceleration;
         bool isDecelerating = targetVelocity.sqrMagnitude < rb.linearVelocity.sqrMagnitude;
         float smoothTime = isDecelerating ? (1.0f / deceleration) : (1.0f / currentAccel);
-        
+
         // Apply smoothed movement
         rb.linearVelocity = Vector2.SmoothDamp(
-            rb.linearVelocity, 
+            rb.linearVelocity,
             targetVelocity,
             ref currentVelocityRef,
             smoothTime,
@@ -174,12 +174,12 @@ public class FishMovementController : MonoBehaviour
             Time.fixedDeltaTime
         );
     }
-    
+
     private void ApplyRotationCorrection()
     {
         float currentAngle = rb.rotation;
         float angleDifference = Mathf.DeltaAngle(currentAngle, 0f);
-        
+
         if (Mathf.Abs(angleDifference) > physicsRotationCorrectionThreshold)
         {
             float targetTorque = -angleDifference * physicsRotationCorrectionTorque;
@@ -187,9 +187,9 @@ public class FishMovementController : MonoBehaviour
             rb.AddTorque(targetTorque * Time.fixedDeltaTime, ForceMode2D.Impulse);
         }
     }
-    
+
     // Public methods for controlling the fish movement
-    
+
     /// <summary>
     /// Sets a target position for the fish to move toward
     /// </summary>
@@ -200,7 +200,7 @@ public class FishMovementController : MonoBehaviour
         currentState = MovementState.MovingToPosition;
         currentTargetSpeed = normalSpeed;
     }
-    
+
     /// <summary>
     /// Sets a transform for the fish to follow
     /// </summary>
@@ -210,7 +210,7 @@ public class FishMovementController : MonoBehaviour
         currentState = MovementState.FollowingTarget;
         currentTargetSpeed = normalSpeed;
     }
-    
+
     /// <summary>
     /// Sets the fish to idle mode with random wandering
     /// </summary>
@@ -221,7 +221,7 @@ public class FishMovementController : MonoBehaviour
         currentState = MovementState.Idle;
         currentTargetSpeed = idleSpeed;
     }
-    
+
     /// <summary>
     /// Sets the target speed for movement
     /// </summary>
@@ -229,7 +229,7 @@ public class FishMovementController : MonoBehaviour
     {
         currentTargetSpeed = speed;
     }
-    
+
     /// <summary>
     /// Makes the fish dash in its current direction
     /// </summary>
@@ -246,7 +246,7 @@ public class FishMovementController : MonoBehaviour
         }
         return false;
     }
-    
+
     /// <summary>
     /// Force-ends the current dash if one is active
     /// </summary>
@@ -257,12 +257,12 @@ public class FishMovementController : MonoBehaviour
             EndDash();
         }
     }
-    
+
     private void EndDash()
     {
         isDashing = false;
         OnDashEnd?.Invoke();
-        
+
         // Return to previous state
         if (targetTransform != null)
             currentState = MovementState.FollowingTarget;
@@ -271,7 +271,7 @@ public class FishMovementController : MonoBehaviour
         else
             currentState = MovementState.Idle;
     }
-    
+
     /// <summary>
     /// Gets the current velocity of the fish
     /// </summary>
@@ -279,7 +279,7 @@ public class FishMovementController : MonoBehaviour
     {
         return rb != null ? rb.linearVelocity : Vector2.zero;
     }
-    
+
     /// <summary>
     /// Gets the current movement state
     /// </summary>
@@ -287,7 +287,7 @@ public class FishMovementController : MonoBehaviour
     {
         return currentState;
     }
-    
+
     /// <summary>
     /// Gets current wander direction (useful for visual orientation)
     /// </summary>
@@ -295,7 +295,7 @@ public class FishMovementController : MonoBehaviour
     {
         return wanderDirection;
     }
-    
+
     /// <summary>
     /// Checks if the fish has approximately reached its target position
     /// </summary>
@@ -304,7 +304,7 @@ public class FishMovementController : MonoBehaviour
         if (currentState != MovementState.MovingToPosition) return false;
         return Vector2.Distance(rb.position, targetPosition) <= reachTargetThreshold;
     }
-    
+
     /// <summary>
     /// Checks if a dash is currently available
     /// </summary>
@@ -312,7 +312,7 @@ public class FishMovementController : MonoBehaviour
     {
         return !isDashing && Time.time >= nextDashAvailableTime;
     }
-    
+
     /// <summary>
     /// Gets the cooldown remaining before dash is available again
     /// </summary>
