@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      snus_dos_prilla_0: -5189084162619001944
+      snus_dos_prilla_1: 6335358780658745065
+      snus_dos_prilla_2: 5520538840199693385
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

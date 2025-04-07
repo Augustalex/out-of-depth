@@ -57,35 +57,6 @@ public class InitialRandomVelocity : MonoBehaviour
         ApplyInitialVelocity();
     }
 
-    // Optional: Editor validation to ensure minSpeed <= maxSpeed
-    void OnValidate()
-    {
-        // Ensure minSpeed is not greater than maxSpeed when values are changed in the Inspector
-        if (minSpeed > maxSpeed)
-        {
-            Debug.LogWarning($"[{nameof(InitialRandomVelocity)}] Min Speed ({minSpeed}) cannot be greater than Max Speed ({maxSpeed}) on {gameObject.name}. Adjusting Min Speed.", this);
-            minSpeed = maxSpeed;
-        }
-        if (maxSpeed < minSpeed) // Also handle if maxSpeed is adjusted below minSpeed
-        {
-            Debug.LogWarning($"[{nameof(InitialRandomVelocity)}] Max Speed ({maxSpeed}) cannot be less than Min Speed ({minSpeed}) on {gameObject.name}. Adjusting Max Speed.", this);
-            maxSpeed = minSpeed;
-        }
-
-        // Ensure minTorque is not greater than maxTorque
-        if (minTorque > maxTorque)
-        {
-            Debug.LogWarning($"[{nameof(InitialRandomVelocity)}] Min Torque ({minTorque}) cannot be greater than Max Torque ({maxTorque}) on {gameObject.name}. Adjusting Min Torque.", this);
-            minTorque = maxTorque;
-        }
-        if (maxTorque < minTorque)
-        {
-            Debug.LogWarning($"[{nameof(InitialRandomVelocity)}] Max Torque ({maxTorque}) cannot be less than Min Torque ({minTorque}) on {gameObject.name}. Adjusting Max Torque.", this);
-            maxTorque = minTorque;
-        }
-    }
-
-
     // --- Core Logic ---
 
     /// <summary>
@@ -120,12 +91,6 @@ public class InitialRandomVelocity : MonoBehaviour
         {
             float randomTorque = Random.Range(minTorque, maxTorque);
             rb.angularVelocity = randomTorque;
-
-            // Optional: Log the applied torque for debugging
-            // Debug.Log($"[{nameof(InitialRandomVelocity)}] Applied initial torque {randomTorque} to {gameObject.name}", this);
         }
-
-        // Optional: Log the applied velocity for debugging
-        // Debug.Log($"[{nameof(InitialRandomVelocity)}] Applied initial velocity {initialVelocity} (Speed: {randomSpeed}) to {gameObject.name}", this);
     }
 }

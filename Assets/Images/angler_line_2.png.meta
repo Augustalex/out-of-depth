@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      angler_line_2_0: 1492691921244498141
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

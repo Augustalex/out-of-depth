@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic; // Required for using List
 
-// Require an AudioSource component to be attached to the same GameObject
-// This ensures you don't forget to add it in the Unity Editor.
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundController : MonoBehaviour
 {

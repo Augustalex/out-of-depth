@@ -1,9 +1,5 @@
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor; // Put the UnityEditor using statement inside the block
-#endif
-
 public class PupilController : MonoBehaviour
 {
     [Header("Target References")]
@@ -118,54 +114,4 @@ public class PupilController : MonoBehaviour
         currentIdleDuration = Random.Range(minIdleLookTime, maxIdleLookTime);
         idleTimer = currentIdleDuration;
     }
-
-
-    // --- Editor Visualization ---
-#if UNITY_EDITOR
-    void OnDrawGizmosSelected()
-    {
-        // Use the assigned eyeCenter, or default to parent if available during editing
-        Transform center = eyeCenter != null ? eyeCenter : transform.parent;
-
-        if (center != null)
-        {
-            // Store current Gizmo matrix
-            Matrix4x4 originalMatrix = Handles.matrix;
-            // Set matrix to follow the eye center's transform
-            Handles.matrix = center.localToWorldMatrix;
-
-            // Draw the elliptical boundary relative to the eye center
-            Handles.color = Color.cyan;
-            // Handles.DrawWireEllipse needs the position/rotation handled by the matrix,
-            // the normal (Vector3.forward for 2D XY), and the radii (Vector2).
-            // We pass Vector3.zero as position because the matrix is already set to the center.
-            Handles.DrawWireArc(Vector3.zero, Vector3.forward, Vector3.right, 360f, lookRadius.x, 1f);
-            // Restore original Gizmo matrix
-            Handles.matrix = originalMatrix;
-
-            // Optional: Draw a line to the current target look position
-            Gizmos.color = Color.yellow;
-            Vector3 worldTarget = center.TransformPoint((Vector3)currentLookTargetLocal);
-            Gizmos.DrawLine(center.position, worldTarget);
-        }
-    }
-
-    // Helper for drawing ellipse if Handles are not preferred (less smooth)
-    void DrawGizmosEllipse(Vector3 center, Vector2 radius, int segments = 30)
-    {
-        Gizmos.color = Color.cyan;
-        Vector3 startPoint = center + new Vector3(radius.x, 0, 0);
-        Vector3 lastPoint = startPoint;
-
-        for (int i = 1; i <= segments; i++)
-        {
-            float angle = i / (float)segments * 360f * Mathf.Deg2Rad;
-            Vector3 nextPointRelative = new Vector3(Mathf.Cos(angle) * radius.x, Mathf.Sin(angle) * radius.y, 0);
-            Vector3 nextPoint = center + nextPointRelative;
-            Gizmos.DrawLine(lastPoint, nextPoint);
-            lastPoint = nextPoint;
-        }
-    }
-
-#endif // UNITY_EDITOR
 }

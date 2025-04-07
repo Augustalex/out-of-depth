@@ -24,7 +24,6 @@ public class FadeOutOverTime : MonoBehaviour
     [Tooltip("Should the fade start automatically when the object is enabled?")]
     private bool startFadeOnEnable = true;
 
-    // Optional: Define what happens after the fade is complete
     public enum FadeCompleteAction
     {
         None, // Do nothing, just leave it transparent
@@ -76,22 +75,6 @@ public class FadeOutOverTime : MonoBehaviour
         {
             StopCoroutine(activeFadeCoroutine);
             activeFadeCoroutine = null; // Clear the reference
-        }
-    }
-
-    // Optional: Editor validation for configuration values
-    void OnValidate()
-    {
-        // Ensure minFadeTime is not greater than maxFadeTime when values are changed in the Inspector
-        if (minFadeTime > maxFadeTime)
-        {
-            Debug.LogWarning($"[{nameof(FadeOutOverTime)}] Min Fade Time ({minFadeTime}) cannot be greater than Max Fade Time ({maxFadeTime}) on {gameObject.name}. Adjusting Min Fade Time.", this);
-            minFadeTime = maxFadeTime;
-        }
-        if (maxFadeTime < minFadeTime) // Also handle if maxFadeTime is adjusted below minFadeTime
-        {
-            Debug.LogWarning($"[{nameof(FadeOutOverTime)}] Max Fade Time ({maxFadeTime}) cannot be less than Min Fade Time ({minFadeTime}) on {gameObject.name}. Adjusting Max Fade Time.", this);
-            maxFadeTime = minFadeTime;
         }
     }
 
@@ -199,9 +182,6 @@ public class FadeOutOverTime : MonoBehaviour
     /// </summary>
     private void HandleFadeCompleteAction()
     {
-        // Optional: Add a small delay if needed before the action
-        // yield return new WaitForSeconds(0.1f); // Example delay
-
         switch (actionOnComplete)
         {
             case FadeCompleteAction.DisableRenderer:

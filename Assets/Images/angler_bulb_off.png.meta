@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      angler_bulb_off_0: -6072422127385605427
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

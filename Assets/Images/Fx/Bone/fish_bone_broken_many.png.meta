@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fish_bone_broken_many_0: 271621498465089104
+      fish_bone_broken_many_1: -4069493574276243188
+      fish_bone_broken_many_2: 8346217392761537003
+      fish_bone_broken_many_3: -2727258009230713974
+      fish_bone_broken_many_4: -3357654914055352303
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

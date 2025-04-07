@@ -157,11 +157,4 @@ public class BlowFishAgent : MonoBehaviour
             mouthCloseTime = currentTime + mouthOpenDuration;
         }
     }
-
-    // Helper method to visualize the detection radius in the editor
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-    }
 }

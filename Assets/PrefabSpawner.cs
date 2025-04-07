@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class PrefabSpawner : MonoBehaviour
@@ -27,9 +26,8 @@ public class PrefabSpawner : MonoBehaviour
     [SerializeField] private Camera mainCamera;
 
     [Header("Runtime Info (Read Only)")]
-    [SerializeField][ReadOnly] private List<GameObject> spawnedObjects = new List<GameObject>();
-    [SerializeField][ReadOnly] private float timeUntilNextSpawn = 0f;
-    [SerializeField][ReadOnly] private Transform playerTransform; // Keep track of the player
+    [SerializeField] private List<GameObject> spawnedObjects = new List<GameObject>();
+    [SerializeField] private float timeUntilNextSpawn = 0f;
 
     // Internal variables
     private Vector2 spawnCenter;
@@ -50,18 +48,6 @@ public class PrefabSpawner : MonoBehaviour
         spawnCenter = spawnAreaCollider.bounds.center; // Use bounds.center for world position
         spawnRadius = spawnAreaCollider.radius * Mathf.Max(transform.localScale.x, transform.localScale.y); // Account for spawner's scale
 
-        // Find the player
-        GameObject playerObject = GameObject.FindWithTag(playerTag);
-        if (playerObject != null)
-        {
-            playerTransform = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogWarning($"PrefabSpawner: Player object with tag '{playerTag}' not found. Player position checks might not work as expected if needed later.");
-            // Note: Player reference isn't strictly needed for camera view check,
-            // but kept it as requested.
-        }
 
         // Initial spawn fill
         InitializeSpawns();
@@ -317,24 +303,3 @@ public class PrefabSpawner : MonoBehaviour
         }
     }
 }
-
-
-// Optional Helper Attribute to make fields read-only in the inspector
-public class ReadOnlyAttribute : PropertyAttribute { }
-
-#if UNITY_EDITOR
-[UnityEditor.CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-public class ReadOnlyDrawer : UnityEditor.PropertyDrawer
-{
-    public override void OnGUI(Rect position, UnityEditor.SerializedProperty property, GUIContent label)
-    {
-        GUI.enabled = false; // Disable editing
-        UnityEditor.EditorGUI.PropertyField(position, property, label, true);
-        GUI.enabled = true; // Re-enable GUI for other fields
-    }
-    public override float GetPropertyHeight(UnityEditor.SerializedProperty property, GUIContent label)
-    {
-        return UnityEditor.EditorGUI.GetPropertyHeight(property, label, true);
-    }
-}
-#endif // UNITY_EDITOR

@@ -165,16 +165,4 @@ public class BadFishAgent : MonoBehaviour
             }
         }
     }
-
-    // Helper method to visualize the detection radius in the editor
-    private void OnDrawGizmosSelected()
-    {
-        // Draw detection range
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-
-        // Draw attack range with a different color
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-    }
 }

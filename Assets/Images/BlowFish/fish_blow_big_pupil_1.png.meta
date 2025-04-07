@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fish_blow_big_pupil_1_0: -779469062921021932
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

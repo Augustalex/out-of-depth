@@ -1,5 +1,3 @@
-// FishAgent.cs:
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,9 +45,6 @@ public class FishAgent : MonoBehaviour
     public bool dashWhenFleeing = true;
     [Tooltip("Minimum distance to threat before considering dash")]
     public float minDistanceToDash = 3.0f;
-
-    [Header("Debug Visualization")]
-    public bool showDebugGizmos = true;
 
     // --- Component references ---
     private FishMovementController movement;
@@ -363,75 +358,5 @@ public class FishAgent : MonoBehaviour
     {
         // After a dash completes, immediately make a new decision
         nextDecisionTime = Time.time;
-    }
-
-    void OnDrawGizmos()
-    {
-        if (!showDebugGizmos) return;
-
-        // Draw perception ranges
-        Gizmos.color = new Color(1f, 0f, 0f, 0.2f); // Transparent Red - Threats
-        Gizmos.DrawWireSphere(transform.position, eyeSight);
-
-        Gizmos.color = new Color(1f, 1f, 0f, 0.2f); // Transparent Yellow - Attractions
-        Gizmos.DrawWireSphere(transform.position, attractionRange);
-
-        Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f); // Transparent Orange - Collision Avoidance
-        Gizmos.DrawWireSphere(transform.position, collisionAvoidanceDistance);
-
-        if (!Application.isPlaying || movement == null) return;
-
-        // Draw current target if we have one
-        if (hasActiveTarget)
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawSphere(currentTargetPosition, 0.2f);
-
-            if (currentTargetTransform != null)
-            {
-                // Draw line to moving target
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(transform.position, currentTargetTransform.position);
-            }
-            else
-            {
-                // Draw line to position target
-                Gizmos.color = Color.cyan;
-                Gizmos.DrawLine(transform.position, currentTargetPosition);
-            }
-        }
-
-        // Draw wander direction when idling
-        if (CurrentState == FishBehaviorState.Wandering)
-        {
-            Gizmos.color = Color.gray;
-            Gizmos.DrawRay(transform.position, movement.GetWanderDirection() * 1.5f);
-        }
-
-        // Draw current movement velocity
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, movement.GetCurrentVelocity().normalized * 1.2f);
-
-        // Draw state indicator
-        float sphereRadius = 0.2f;
-        Vector3 spherePos = transform.position + Vector3.up * 0.5f;
-
-        switch (CurrentState)
-        {
-            case FishBehaviorState.Fleeing:
-                Gizmos.color = Color.red;
-                break;
-            case FishBehaviorState.Attracted:
-                Gizmos.color = Color.yellow;
-                break;
-            case FishBehaviorState.AvoidingCollision:
-                Gizmos.color = Color.magenta;
-                break;
-            case FishBehaviorState.Wandering:
-            default:
-                Gizmos.color = Color.blue;
-                break;
-        }
-        Gizmos.DrawSphere(spherePos, sphereRadius);
     }
 }

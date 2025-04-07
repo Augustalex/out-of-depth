@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      angler_body_no_mouth_mask_0: 3322068405392652186
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      environment_rock_5_0: -8570887348673937342
+      environment_rock_5_1: 6153879834089088059
+      environment_rock_5_10: -6432835559030716868
+      environment_rock_5_11: 7627731305927322278
+      environment_rock_5_2: -1200900164625507137
+      environment_rock_5_3: -1972667641199575803
+      environment_rock_5_4: -7000095536422287713
+      environment_rock_5_5: -8397707545292708509
+      environment_rock_5_6: -3425687066643831120
+      environment_rock_5_7: -4893515666093249822
+      environment_rock_5_8: 4202051786887952676
+      environment_rock_5_9: 6110471358240248606
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
