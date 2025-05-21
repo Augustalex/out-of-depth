@@ -44,6 +44,17 @@
             ],
             "bindings": [
                 {
+                    "name": "",
+                    "id": "a9fc864e-188a-4a87-9e6c-31fdfa2b2774",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "2D Vector",
                     "id": "fc0ff663-2c51-467f-834b-3a6e67976f0a",
                     "path": "2DVector",

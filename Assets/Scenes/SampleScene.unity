@@ -1781,7 +1781,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &382333862
 GameObject:
   m_ObjectHideFlags: 0
@@ -2469,7 +2468,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!4 &503754254
 Transform:
   m_ObjectHideFlags: 0
@@ -2798,7 +2796,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &545362064
 GameObject:
   m_ObjectHideFlags: 0
@@ -3892,7 +3889,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &686365288
 GameObject:
   m_ObjectHideFlags: 0
@@ -4736,7 +4732,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!58 &807713556
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5325,6 +5320,8 @@ MonoBehaviour:
   playerController: {fileID: 846229814}
   cameraController: {fileID: 846229818}
   happyAnimation: {fileID: 846229821}
+  touchJoystickScreenFraction: 0.5
+  touchMovementResetDelay: 0.1
 --- !u!114 &846229820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6878,7 +6875,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &1010291215
 GameObject:
   m_ObjectHideFlags: 0
@@ -18064,7 +18060,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &1326508490
 GameObject:
   m_ObjectHideFlags: 0
@@ -19204,7 +19199,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!4 &1588186899
 Transform:
   m_ObjectHideFlags: 0
@@ -20015,7 +20009,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &1780086132
 GameObject:
   m_ObjectHideFlags: 0
@@ -20245,7 +20238,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &1815519993
 GameObject:
   m_ObjectHideFlags: 0
@@ -20865,7 +20857,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &1926525830
 GameObject:
   m_ObjectHideFlags: 0
@@ -21675,7 +21666,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &2074475490
 GameObject:
   m_ObjectHideFlags: 0
@@ -21881,7 +21871,6 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   spawnedObjects: []
   timeUntilNextSpawn: 0
-  playerTransform: {fileID: 0}
 --- !u!1 &2096084757
 GameObject:
   m_ObjectHideFlags: 0

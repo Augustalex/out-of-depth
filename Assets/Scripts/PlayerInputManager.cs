@@ -16,6 +16,10 @@ public class PlayerInputManager : MonoBehaviour
     [Tooltip("Reference to the HappyAnimation component")]
     [SerializeField] private HappyAnimation happyAnimation;
 
+    [Header("Touch Joystick Settings")]
+    [Tooltip("Defines the virtual joystick radius as a fraction of half the screen height. E.g., 0.5 means radius is 1/4 of screen height.")]
+    public float touchJoystickScreenFraction = 0.5f;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -70,12 +74,45 @@ public class PlayerInputManager : MonoBehaviour
     // --- Input Action Handlers ---
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
-        Vector2 moveInput = context.ReadValue<Vector2>();
+        Vector2 moveInput;
+        if (context.control.device is Touchscreen)
+        {
+            Vector2 touchPosition = context.ReadValue<Vector2>();
+            Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+
+            // Calculate the effective radius in pixels based on a fraction of half screen height
+            float joystickRadiusPixels = (Screen.height / 2f) * touchJoystickScreenFraction;
+            if (joystickRadiusPixels <= 0) joystickRadiusPixels = 100f; // Fallback
+
+            Vector2 deltaFromCenter = touchPosition - screenCenter;
+            float distance = deltaFromCenter.magnitude;
+
+            if (distance > 120)
+            {
+                if (distance > joystickRadiusPixels)
+                {
+                    moveInput = deltaFromCenter.normalized;
+                }
+                else
+                {
+                    moveInput = deltaFromCenter / joystickRadiusPixels;
+                }
+            }
+            else
+            {
+                moveInput = Vector2.zero;
+            }
+        }
+        else
+        {
+            moveInput = context.ReadValue<Vector2>();
+        }
         playerController.SetMoveInput(moveInput);
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
+        Debug.Log("MOVE CANCELED!!!!");
         playerController.SetMoveInput(Vector2.zero);
     }
 
